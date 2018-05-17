@@ -100,9 +100,10 @@ module.exports = {
       '.json',
       '.web.jsx',
       '.jsx',
+      '.scss'
     ],
     alias: {
-
+      '@': path.resolve(__dirname, 'src'),
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
@@ -208,7 +209,7 @@ module.exports = {
                       flexbox: 'no-2009',
                     }),
                     postcssAspectRatioMini({}),
-                    postcssPxToViewport({ 
+                    postcssPxToViewport({
                       viewportWidth: 750, // (Number) The width of the viewport. 
                       viewportHeight: 1334, // (Number) The height of the viewport. 
                       unitPrecision: 3, // (Number) The decimal numbers to allow the REM units to grow to. 
@@ -223,19 +224,12 @@ module.exports = {
                     postcssCssnext({}),
                     postcssViewportUnits({}),
                     cssnano({
-                      preset: "advanced", 
-                      autoprefixer: false, 
-                      "postcss-zindex": false 
+                      preset: "advanced",
+                      autoprefixer: false,
+                      "postcss-zindex": false
                     })
                   ],
                 },
-              },
-              {
-                loader: 'sass-loader',
-                options: {
-                  outputStyle: 'expanded',
-                  sourceMap: false
-                }
               },
               {
                 loader: require.resolve('sass-loader'),

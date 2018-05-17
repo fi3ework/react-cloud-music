@@ -1,0 +1,19 @@
+@import '@/constant/style.scss';
+
+.headerBar {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: $bottomBarHeight;
+  margin: 0;
+  padding: 10px;
+  list-style-type: none;
+  background-color: #ececec;
+  border-top: 1px solid #eee;
+  position: fixed;
+  top: 0;
+  li {
+    width: 20%;
+    text-align: center;
+  }
+}

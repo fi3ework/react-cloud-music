@@ -1,10 +1,12 @@
 import * as React from 'react'
-import Router from '@/router'
+import * as style from './style.scss'
 
 class App extends React.Component {
   public render() {
     return (
-      <Router />
+      <div className={style.wrapper}>
+        Account
+      </div>
     )
   }
 }

@@ -852,7 +852,7 @@ Alternatively you may use `yarn`:
 yarn add react-router-dom
 ```
 
-To try it, delete all the code in `src/App.js` and replace it with any of the examples on its website. The [Basic Example](https://reacttraining.com/react-router/web/example/basic) is a good place to get started.
+To try it, delete all the code in `src/App.js` and replace it with any of the examples on its website. The [Basic example](https://reacttraining.com/react-router/web/example/basic) is a good place to get started.
 
 Note that [you may need to configure your production server to support client-side routing](#serving-apps-with-client-side-routing) before deploying your app.
 
@@ -1504,7 +1504,7 @@ Supported overrides:
  - [`snapshotSerializers`](https://facebook.github.io/jest/docs/en/configuration.html#snapshotserializers-array-string)
  - [`moduleNameMapper`](https://facebook.github.io/jest/docs/en/configuration.html#modulenamemapper-object-string-string)
 
-Example package.json:
+example package.json:
 
 ```json
 {
@@ -2069,7 +2069,7 @@ Then run the `firebase init` command from your project’s root. You need to cho
     You can create multiple project aliases by running firebase use --add,
     but for now we'll just set up a default project.
 
-    ? What Firebase project do you want to associate as default? Example app (example-app-fd690)
+    ? What Firebase project do you want to associate as default? example app (example-app-fd690)
 
     === Database Setup
 
