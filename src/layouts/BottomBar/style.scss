@@ -1,7 +1,14 @@
 @import '@/constant/style.scss';
 
 .bottomBar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 44px;
+  bottom: 0;
+
   display: flex;
+  bottom: 0;
   box-sizing: border-box;
   justify-content: space-between;
   align-items: center;
@@ -12,7 +19,6 @@
   list-style-type: none;
   background-color: #ececec;
   border-top: 1px solid #eee;
-  position: fixed;
   bottom: 0;
   li {
     width: 20%;

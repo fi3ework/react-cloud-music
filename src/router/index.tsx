@@ -12,30 +12,32 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import * as style from './routerTrans.scss'
 const dynamicRoute = ({ location }) => {
   return (
-    <div>
+    <React.Fragment>
       <HeaderBar />
-      <TransitionGroup>
-        <CSSTransition key={location.pathname} classNames="slide" timeout={{ enter: 2000, exit: 2000 }}>
-          <div className={style.routeWrapper} key={location.pathname}>
-            <Switch>
-              <Route path={`/explore`} component={ExplorePage} />
-              <Route path={`/video`} component={VideoPage} />
-              <Route path={`/mine`} component={MinePage} />
-              <Route path={`/friends`} component={FriendsPage} />
-              <Route path={`/account`} component={AccountPage} />
-              <Route path="/playing" component={Playing} />
-            </Switch>
-          </div>
-        </CSSTransition>
-      </TransitionGroup>
+      <div className={style.routeWrapper}>
+        {/* <TransitionGroup> */}
+        {/* <CSSTransition key={location.pathname} classNames="slide" timeout={{ enter: 2000, exit: 2000 }}> */}
+        <Switch>
+          <Route path={`/explore`} component={ExplorePage} />
+          <Route path={`/video`} component={VideoPage} />
+          <Route path={`/mine`} component={MinePage} />
+          <Route path={`/friends`} component={FriendsPage} />
+          <Route path={`/account`} component={AccountPage} />
+          <Route path="/playing" component={Playing} />
+        </Switch>
+        {/* </CSSTransition> */}
+        {/* </TransitionGroup> */}
+      </div>
       <ButtomBar />
-    </div>
+    </React.Fragment>
   )
 }
 
 const Routes = () => (
   <Router>
-    <Route render={dynamicRoute} />
+    <div className={style.rootWrapper}>
+      <Route render={dynamicRoute} />
+    </div>
   </Router>
 )
 
