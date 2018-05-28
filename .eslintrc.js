@@ -26,6 +26,7 @@ module.exports = {
         "caughtErrors": "none"
       }
     ],
+    'react/jsx-indent-props': "off",
     'indent': [
       'error',
       2,

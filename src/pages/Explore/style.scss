@@ -1,12 +1,50 @@
 @import '@/constant/style.scss';
-
 .wrapper {
-    margin: $headerBarHeight 0 $bottomBarHeight 0;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+    margin: 0;
+    width: 200%;
     text-align: center;
-    height: 750px;
     background-color: red;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+}
+
+.custom,
+.dj {
+    flex-shrink: 0;
+}
+
+.custom {
+    height: 3750px;
+    background-color: salmon;
+}
+
+.dj {
+    background-color: #fff;
+    height: 750px;
+}
+
+.showDj {
+    transform: translate3d(-50%, 0, 0)
+}
+
+.showCustom {
+    transform: translate3d(0, 0, 0)
+}
+
+.innerWrapper {
+    box-sizing: border-box;
+    margin: 105px 0 44px 0;
+
+    width: 50%;
+    height: 100%;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+// Custom
+.carousel{
+    border-radius: 10px;
+    padding: 30px 16px 0 16px;
 }

@@ -4,13 +4,11 @@
   position: absolute;
   left: 0;
   right: 0;
-  height: 44px;
+  z-index: 99;
   top: 0;
 
-  display: flex;
-  justify-content: space-between;
   width: 100%;
-  height: $bottomBarHeight;
+  // height: $bottomBarHeight;
   top: 0;
   margin: 0;
   padding: 10px;

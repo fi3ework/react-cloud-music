@@ -8,26 +8,34 @@ import AccountPage from '@/pages/Account'
 import Playing from '@/pages/Playing'
 import ButtomBar from '@/layouts/BottomBar'
 import HeaderBar from '@/layouts/HeaderBar'
+import ExploreHeaderBar from '@/layouts/ExploreHeaderBar'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import * as style from './routerTrans.scss'
 const dynamicRoute = ({ location }) => {
   return (
     <React.Fragment>
-      <HeaderBar />
-      <div className={style.routeWrapper}>
-        {/* <TransitionGroup> */}
-        {/* <CSSTransition key={location.pathname} classNames="slide" timeout={{ enter: 2000, exit: 2000 }}> */}
-        <Switch>
+      {/* <TransitionGroup> */}
+      {/* <CSSTransition key={location.pathname} classNames="slide" timeout={{ enter: 2000, exit: 2000 }}> */}
+      <Switch>
+        <Route path={`/explore`} component={ExploreHeaderBar} />
+        <Route path={`/video`} component={HeaderBar} />
+        <Route path={`/mine`} component={HeaderBar} />
+        <Route path={`/friends`} component={HeaderBar} />
+        <Route path={`/account`} component={HeaderBar} />
+        <Route path="/playing" component={HeaderBar} />
+      </Switch>
+      <Switch>
+        <div className={style.routeWrapper}>
           <Route path={`/explore`} component={ExplorePage} />
           <Route path={`/video`} component={VideoPage} />
           <Route path={`/mine`} component={MinePage} />
           <Route path={`/friends`} component={FriendsPage} />
           <Route path={`/account`} component={AccountPage} />
           <Route path="/playing" component={Playing} />
-        </Switch>
-        {/* </CSSTransition> */}
-        {/* </TransitionGroup> */}
-      </div>
+        </div>
+      </Switch>
+      {/* </CSSTransition> */}
+      {/* </TransitionGroup> */}
       <ButtomBar />
     </React.Fragment>
   )
