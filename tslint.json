@@ -11,6 +11,7 @@
     ]
   },
   "rules": {
+    "jsx-no-lambda": false,
     "ordered-imports": false,
     "esModuleInterop": true,
     "no-console": false

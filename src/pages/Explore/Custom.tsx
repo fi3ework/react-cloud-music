@@ -2,31 +2,14 @@ import * as React from 'react'
 import { Carousel, WingBlank } from 'antd-mobile'
 import * as style from './style.scss'
 import { observer } from 'mobx-react'
+import Matrix from '@/components/Matrix'
 
+interface IProps{
+  store: any;
+}
 
 @observer
-export default class Custom extends React.PureComponent {
-  public state = {
-    data: ['1', '2', '3'],
-    imgHeight: 176,
-  }
-
-  public componentDidMount() {
-    // simulate img loading
-    setTimeout(() => {
-      this.setState({
-        data: ['AiyWuByWklrrUDlFignR', 'TekJlZRVCjLFexlOCuWn', 'IJOtIlfsYdTyaDTRVrLI'],
-      })
-    }, 100)
-  }
-
-  public onLoad = () => {
-    // fire window resize event to change height
-    window.dispatchEvent(new Event('resize'))
-    this.setState({ imgHeight: 'auto' })
-  }
-
-
+export default class Custom extends React.Component<IProps, any> {
   public render() {
     return (
       <div className={style.custom}>
@@ -36,23 +19,19 @@ export default class Custom extends React.PureComponent {
               autoplay={false}
               infinite={true}
             >
-              {this.state.data.map(val => (
+              {this.props.store.payload && this.props.store.payload.banners.map(banner => (
                 <a
-                  key={val}
-                  href="http://www.alipay.com"
-                  style={{ display: 'inline-block', width: '100%', height: this.state.imgHeight }}
+                  key={banner.url}
+                  href={banner.url}
+                  style={{ display: 'inline-block', borderRadius: '5px', width: '100%', height: 170 }}
                 >
-                  <img
-                    src={`https://zos.alipayobjects.com/rmsportal/${val}.png`}
-                    alt=""
-                    style={{ width: '100%', verticalAlign: 'top' }}
-                    onLoad={this.onLoad}
-                  />
+                  <img src={banner.picUrl} style={{ width: '100%', height: '100%' }} />
                 </a>
               ))}
             </Carousel>
           </WingBlank>
         </div>
+        <Matrix />
       </div>
     )
   }

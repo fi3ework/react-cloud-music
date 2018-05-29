@@ -3,7 +3,9 @@ import * as cs from 'classnames'
 import * as style from './style.scss'
 import { withRouter } from 'react-router-dom'
 import Custom from './Custom'
+import Model from '@/utils/FetchComponent/model'
 
+const store = new Model({ URL: '/banner' })
 
 interface IProps{
   location: { pathname: string };
@@ -11,13 +13,15 @@ interface IProps{
 
 class Explore extends React.Component<IProps> {
 
+  public componentDidMount() {
+    store.fetchData()
+  }
+
   public componentDidUpdate(prevProps, prevState) {
     console.log(this.props)
   }
 
   public render() {
-    console.log(this.props.location.pathname)
-
     const wrapperClass = cs({
       [style.wrapper]: true,
       [style.showCustom]: this.props.location.pathname === '/explore/custom',
@@ -27,7 +31,7 @@ class Explore extends React.Component<IProps> {
     return (
       <div className={wrapperClass}>
         <div className={style.innerWrapper}>
-          <Custom />
+          <Custom store={store} />
         </div>
         <div className={style.innerWrapper}>
           <div className={style.dj}>

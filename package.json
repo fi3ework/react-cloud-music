@@ -4,8 +4,12 @@
   "private": true,
   "proxy": {
     "/api": {
-      "target": "https://localhost:3000",
-      "secure": false
+      "target": "http://localhost:4000",
+      "pathRewrite": {
+        "^/api": "/"
+      },
+      "secure": false,
+      "changeOrigin": false
     }
   },
   "dependencies": {
@@ -28,6 +32,8 @@
     "fs-extra": "3.0.1",
     "html-webpack-plugin": "2.29.0",
     "jest": "22.4.2",
+    "less": "^3.0.4",
+    "less-loader": "^4.1.0",
     "mobx": "^4.3.0",
     "mobx-react": "^5.1.2",
     "object-assign": "4.1.1",
@@ -77,12 +83,14 @@
     "@types/node": "^10.1.0",
     "@types/react": "^16.3.14",
     "@types/react-dom": "^16.0.5",
+    "babel-plugin-import": "^1.7.0",
     "eslint": "^4.19.1",
     "eslint-config-alloy": "^1.4.2",
     "eslint-plugin-react": "^7.8.2",
     "eslint-plugin-typescript": "^0.12.0",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",
+    "ts-import-plugin": "^1.4.5",
     "typescript": "^2.8.3",
     "typescript-eslint-parser": "^15.0.0"
   },

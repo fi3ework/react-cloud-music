@@ -18,6 +18,8 @@ const postcssWriteSvg = require('postcss-write-svg');
 const postcssCssnext = require('postcss-cssnext');
 const postcssViewportUnits = require('postcss-viewport-units');
 const cssnano = require('cssnano');
+const tsImportPluginFactory = require('ts-import-plugin')
+const transformerFactory = require('ts-import-plugin')
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -154,11 +156,10 @@ module.exports = {
             include: paths.appSrc,
             loader: require.resolve('babel-loader'),
             options: {
-
               compact: true,
             },
           },
-
+          
           // Compile .tsx?
           {
             test: /\.(ts|tsx)$/,
@@ -166,6 +167,10 @@ module.exports = {
             use: [{
               loader: require.resolve('ts-loader'),
               options: {
+                getCustomTransformers: () => ({
+                  before: [ tsImportPluginFactory( transformerFactory({ libraryName: 'antd-mobile', style: 'css' })
+                ) ]
+                }),
                 // disable type checker - we will use it in fork plugin
                 transpileOnly: true,
               },
@@ -178,7 +183,7 @@ module.exports = {
           // in development "style" loader enables hot editing of CSS.
           {
             test: /\.(scss)$/,
-            exclude: paths.appNodeModules,
+            exclude: /node_modules|antd\.css/,
             use: [
               require.resolve('style-loader'),
               {
@@ -233,6 +238,42 @@ module.exports = {
               },
               {
                 loader: require.resolve('sass-loader'),
+              },
+            ],
+          },
+          {
+            test: /\.css$/,
+            include: /node_modules|antd\.css/,
+            use: [
+              require.resolve('style-loader'),
+              {
+                loader: require.resolve('css-loader'),
+                options: {
+                  importLoaders: 1,
+                  // 改动
+                  // modules: true,   // 新增对css modules的支持
+                  // localIdentName: '[name]__[local]__[hash:base64:5]', //
+                },
+              },
+              {
+                loader: require.resolve('postcss-loader'),
+                options: {
+                  // Necessary for external CSS imports to work
+                  // https://github.com/facebookincubator/create-react-app/issues/2677
+                  ident: 'postcss',
+                  plugins: () => [
+                    require('postcss-flexbugs-fixes'),
+                    autoprefixer({
+                      browsers: [
+                        '>1%',
+                        'last 4 versions',
+                        'Firefox ESR',
+                        'not ie < 9', // React doesn't support IE8 anyway
+                      ],
+                      flexbox: 'no-2009',
+                    }),
+                  ],
+                },
               },
             ],
           },

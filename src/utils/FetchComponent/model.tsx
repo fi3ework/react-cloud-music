@@ -2,21 +2,26 @@ import { configure, observable, action, runInAction, computed, autorun } from 'm
 
 configure({ enforceActions: true })
 
-interface IResponse{
-  status: any;
-}
-
 interface IPayload{
   status?: number;
   banners?: any[];
 }
 
+interface IOption{
+  URL: string;
+}
+
 class Store {
-  @observable public payload = null
-  @observable public state = 'pending' // "pending" / "done" / "error"
+  @observable public URL: string = ''
+  @observable public payload: null | object = null
+  @observable public state: string = 'pending' // "pending" / "done" / "error"
+
+  constructor(option: IOption) {
+    this.URL = option.URL
+  }
 
   public fetchURL = () => {
-    return fetch('/api/banner', {})
+    return fetch('/api' + this.URL, {})
   }
 
   @action
@@ -46,7 +51,5 @@ class Store {
     )
   }
 }
-
-
 
 export default Store

@@ -26,6 +26,8 @@ module.exports = {
         "caughtErrors": "none"
       }
     ],
+    'max-nested-callbacks': "off",
+    'typescript/member-ordering': "off",
     'react/jsx-indent-props': "off",
     'indent': [
       'error',
