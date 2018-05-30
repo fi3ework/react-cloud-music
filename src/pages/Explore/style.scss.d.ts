@@ -6,3 +6,5 @@ export const showDj: string;
 export const showCustom: string;
 export const innerWrapper: string;
 export const carousel: string;
+export const slideItem: string;
+export const slideImg: string;

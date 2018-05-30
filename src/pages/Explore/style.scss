@@ -1,4 +1,5 @@
 @import '@/constant/style.scss';
+
 .wrapper {
     margin: 0;
     width: 200%;
@@ -46,4 +47,42 @@
 .carousel{
     border-radius: 10px;
     padding: 30px 10px 0 10px;
+}
+
+.slideItem{
+    background-color: #eee;
+}
+
+.slideImg{
+    width: 100%;
+}
+
+:global{
+    .swipper-wrapper {
+        position: relative;
+        .swipper-item {
+          text-align: center;
+          width: 100%;
+          .swipper-image {
+            width: 100%;
+            height: 2.2rem;
+          }
+        }
+        .swiper-dots {
+          position: absolute;
+          width: 100%;
+          bottom: .07rem;
+          text-align: center;
+          .dot {
+            display: inline-block;
+            width: 15px;
+            height: 3px;
+            margin-right: 10px;
+            background: #d6d7d8;
+            &.active {
+              background: #b4282d;
+            }
+          }
+        }
+      }
 }

@@ -11,6 +11,7 @@
     ]
   },
   "rules": {
+    "object-literal-sort-keys": false,
     "jsx-no-lambda": false,
     "ordered-imports": false,
     "esModuleInterop": true,
