@@ -22,22 +22,23 @@ class Cover extends React.Component<IProps> {
   }
 
   public componentDidUpdate(prevProps, prevState) {
-    console.log(1111)
-    const newImg = new Image()
-    newImg.src = this.props.coverImg
-    newImg.onload = () => {
-      console.log(111)
+    if (this.state.isLoading === true) {
+      const newImg = new Image()
+      newImg.src = this.props.coverImg
+      newImg.onload = () => {
+        this.setState({
+          isLoading: false
+        })
+      }
+      newImg.src = this.props.coverImg
     }
-    newImg.src = this.props.coverImg
   }
 
   public componentWillUnmount() {
-    console.log('unmount')
+    console.log('cover unmount')
   }
 
-
   public render() {
-    console.log('rrr')
     const { coverImg, URL, playCount, listName } = this.props
     const playCountShow = playCount > 10000 ? `${Math.floor(playCount / 10000)}万` : playCount
     return (

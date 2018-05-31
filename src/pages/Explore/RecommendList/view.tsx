@@ -14,10 +14,10 @@ export default observer(({ store }) => {
     <div className={style.recommendList}>
       <Matrix width={33}>
         {
-          lists.map(list => {
+          lists.slice(0, 6).map((list, index) => {
             return (
               <Cover
-                key={list.id}
+                key={index}
                 coverImg={list.picUrl}
                 playCount={list.playCount}
                 URL={'ss'}
