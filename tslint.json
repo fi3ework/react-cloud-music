@@ -11,9 +11,11 @@
     ]
   },
   "rules": {
+    "max-classes-per-file": false,
     "object-literal-sort-keys": false,
     "jsx-no-lambda": false,
     "ordered-imports": false,
+    "no-var-requires": false,
     "esModuleInterop": true,
     "no-console": false
   }

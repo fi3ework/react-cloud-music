@@ -1,24 +1,20 @@
 @import '@/constant/style.scss';
 
-.wrapper {
+.customWrapper {
     margin: 0;
     width: 200%;
     text-align: center;
     background-color: red;
     height: 100%;
-    overflow: hidden;
+    overflow-x: scroll;
+    overflow-y:hidden;
     display: flex;
     transition: transform 0.3s ease-in-out;
 }
 
-.custom,
-.dj {
-    flex-shrink: 0;
-}
-
 .custom {
     height: 3750px;
-    background-color: salmon;
+    background-color: #fff;
 }
 
 .dj {
@@ -35,54 +31,21 @@
 }
 
 .innerWrapper {
+    flex-shrink: 0;
     box-sizing: border-box;
-    margin: 105px 0 44px 0;
+    margin: 145px 0 44px 0;
     width: 50%;
     height: 100%;
-    overflow: auto;
+    overflow-x: auto;
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 }
 
 // Custom
-.carousel{
+
+.banners{
     border-radius: 10px;
-    padding: 30px 10px 0 10px;
-}
-
-.slideItem{
-    background-color: #eee;
-}
-
-.slideImg{
-    width: 100%;
-}
-
-:global{
-    .swipper-wrapper {
-        position: relative;
-        .swipper-item {
-          text-align: center;
-          width: 100%;
-          .swipper-image {
-            width: 100%;
-            height: 2.2rem;
-          }
-        }
-        .swiper-dots {
-          position: absolute;
-          width: 100%;
-          bottom: .07rem;
-          text-align: center;
-          .dot {
-            display: inline-block;
-            width: 15px;
-            height: 3px;
-            margin-right: 10px;
-            background: #d6d7d8;
-            &.active {
-              background: #b4282d;
-            }
-          }
-        }
-      }
+    margin: 0 auto 10px auto;
+    width: 98%;
+    overflow: hidden;
 }

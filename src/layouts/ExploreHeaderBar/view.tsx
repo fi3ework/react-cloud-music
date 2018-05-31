@@ -2,20 +2,40 @@ import * as React from 'react'
 import BaseHeaderBar from '../HeaderBar'
 import * as style from './style.scss'
 import { Link } from 'react-router-dom'
+import cs from 'classnames'
 
-const SlideNav = () => {
-  return (
-    <div className={style.slideNav}>
-      <Link to="/explore/custom">个性推荐</Link>
-      <Link to="/explore/dj">主播电台</Link>
-    </div>
-  )
-}
+class SlideNav2 extends React.Component {
 
-export default class ExploreHeaderBar extends React.Component {
+  public state = {
+    index: 0,
+    pos: [100, 230]
+  }
+
+  public changePage =(index) => {
+    this.setState({
+      index
+    })
+  }
+
   public render() {
     return (
-      <BaseHeaderBar render={SlideNav} />
+      <div className={style.wrapper}>
+        <div className={style.slideNav}>
+          <Link to="/explore/custom" onClick={() => this.changePage(0)}>个性推荐</Link>
+          <Link to="/explore/dj" onClick={() => this.changePage(1)}>主播电台</Link>
+        </div>
+        <div className={cs({
+          [style.slider]: true,
+          [style.index0]: this.state.index === 0,
+          [style.index1]: this.state.index === 1
+        })}
+        />
+      </div>
     )
   }
 }
+
+export default () => {
+  return <BaseHeaderBar component={SlideNav2} />
+}
+

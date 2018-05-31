@@ -2,11 +2,6 @@ import { configure, observable, action, runInAction, computed, autorun } from 'm
 
 configure({ enforceActions: true })
 
-interface IPayload{
-  status?: number;
-  banners?: any[];
-}
-
 interface IOption{
   URL: string;
 }

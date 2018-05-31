@@ -1,4 +1,32 @@
+.wrapper{
+  position: relative;
+}
+
 .slideNav{
-  list-style-type: none;
   display: flex;
+  position: relative;
+  list-style-type: none;
+  justify-content: center;
+  a{
+    padding: 10px 80px;
+  }
+}
+
+.slider{
+  transition: all ease 200ms;
+  position: absolute;
+  bottom: 0px;
+  width: 110px;
+  left: 0;
+  height: 6px;
+  background-color: tomato;
+  border-radius: 3px;
+}
+
+.index0{
+  transform: translate(180px, 0);
+}
+
+.index1{
+  transform: translate(440px, 0);
 }

@@ -12,7 +12,7 @@ export default class Carousel extends React.Component {
 
   public swipeOpt = {
     continues: false,
-    auto: 2000,
+    auto: 2222000,
     callback: (index) => {
       this.setState({
         index
@@ -29,6 +29,8 @@ export default class Carousel extends React.Component {
   }
 
   public render() {
+    const children = this.props.children ? this.props.children : <div className={style.loading} />
+
     return (
       <div className="swipper-wrapper">
         <ReactSwipe
@@ -36,7 +38,7 @@ export default class Carousel extends React.Component {
           swipeOptions={this.swipeOpt}
           ref={ref => { this.swipe = ref }}
         >
-          {this.props.children}
+          {children}
         </ReactSwipe>
         <div className="swiper-dots">
           {Array(React.Children.count(this.props.children)).fill('ph').map((val, index) =>
