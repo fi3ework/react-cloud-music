@@ -17,17 +17,18 @@ $bottomBarHeight: 100px;
 }
 
 :global {
-
-  html, body, #root {
+  html,
+  body,
+  #root {
     position: relative;
     height: 100%;
     overflow: hidden;
   }
-
   a {
     color: $red;
     text-decoration: none;
   }
-
+  img {
+    content: normal !important;
+  }
 }
-

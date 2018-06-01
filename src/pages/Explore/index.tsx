@@ -3,19 +3,12 @@ import * as cs from 'classnames'
 import * as style from './style.scss'
 import { withRouter } from 'react-router-dom'
 import Custom from './Custom'
-import Model from '@/utils/FetchComponent/model'
-
 
 interface IProps{
   location: { pathname: string };
 }
 
 class Explore extends React.Component<IProps> {
-
-
-  public componentDidUpdate(prevProps, prevState) {
-    console.log(this.props)
-  }
 
   public render() {
     const wrapperClass = cs({

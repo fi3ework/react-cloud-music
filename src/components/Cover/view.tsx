@@ -17,6 +17,7 @@ interface IProps{
 class Cover extends React.Component<IProps> {
   public coverImg: any;
 
+
   public state = {
     isLoading: true
   }
@@ -24,7 +25,6 @@ class Cover extends React.Component<IProps> {
   public componentDidUpdate(prevProps, prevState) {
     if (this.state.isLoading === true) {
       const newImg = new Image()
-      newImg.src = this.props.coverImg
       newImg.onload = () => {
         this.setState({
           isLoading: false
@@ -40,10 +40,11 @@ class Cover extends React.Component<IProps> {
 
   public render() {
     const { coverImg, URL, playCount, listName } = this.props
+    console.log(coverImg)
     const playCountShow = playCount > 10000 ? `${Math.floor(playCount / 10000)}万` : playCount
     return (
       <div className={style.cover}>
-        <Link to={URL}>
+        <Link className={style.linkWrapper} to={URL}>
           {
             this.state.isLoading ?
               <SVGInline component={'span'} svg={phSVG} /> :
