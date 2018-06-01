@@ -6,14 +6,12 @@
   right: 0;
   z-index: 99;
   top: 0;
-
   width: 100%;
-  // height: $bottomBarHeight;
   top: 0;
   margin: 0;
   padding: 10px;
   list-style-type: none;
-  background-color: #ececec;
+  background-color: $ncmRed;
   border-top: 1px solid #eee;
   li {
     width: 20%;

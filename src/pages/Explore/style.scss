@@ -4,7 +4,7 @@
     margin: 0;
     width: 200%;
     text-align: center;
-    background-color: red;
+    background-color:$ncmRed;
     height: 100%;
     overflow-x: scroll;
     overflow-y:hidden;
@@ -33,12 +33,11 @@
 .innerWrapper {
     flex-shrink: 0;
     box-sizing: border-box;
-    margin: 145px 0 44px 0;
+    margin: 205px 0 44px 0;
     width: 50%;
     height: 100%;
     overflow-x: auto;
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
 }
 
 // Custom

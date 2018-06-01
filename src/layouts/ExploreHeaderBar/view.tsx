@@ -7,8 +7,7 @@ import cs from 'classnames'
 class SlideNav2 extends React.Component {
 
   public state = {
-    index: 0,
-    pos: [100, 230]
+    index: 0
   }
 
   public changePage =(index) => {

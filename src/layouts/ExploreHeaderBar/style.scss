@@ -1,5 +1,8 @@
+@import '@/constant/style.scss';
+
 .wrapper{
   position: relative;
+  background-color: $ncmRed;
 }
 
 .slideNav{
@@ -16,17 +19,17 @@
   transition: all ease 0.5s;
   position: absolute;
   bottom: 0px;
-  width: 110px;
+  width: 80px;
   left: 0;
   height: 6px;
-  background-color: tomato;
+  background-color: #fff;
   border-radius: 3px;
 }
 
 .index0{
-  transform: translate(180px, 0);
+  transform: translate(190px, 0);
 }
 
 .index1{
-  transform: translate(440px, 0);
+  transform: translate(480px, 0);
 }
