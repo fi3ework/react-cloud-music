@@ -12,13 +12,29 @@ interface IbannerStore{
 }
 
 const bannerStore: IbannerStore = new Model({ URL: '/banner' })
-const listStore = new Model({ URL: '/personalized' })
+const listStore: IbannerStore = new Model({ URL: '/personalized' })
+const songStore: IbannerStore = new Model({ URL: '/personalized/newsong' })
+
+const listNormalizer = (result) => (result.map(item => ({
+  id: item.id,
+  picUrl: item.picUrl,
+  playCount: item.playCount,
+  name: item.name
+})))
+
+const songNormalizer = (result) => (result.map(item => ({
+  id: item.song.id,
+  picUrl: item.song.album.picUrl,
+  playCount: null,
+  name: item.name
+})))
 
 export default class Custom extends React.Component<any> {
 
   public componentDidMount() {
     bannerStore.fetchData()
     listStore.fetchData()
+    songStore.fetchData()
   }
 
   public render() {
@@ -27,7 +43,8 @@ export default class Custom extends React.Component<any> {
         <div className={style.banners}>
           <Banner store={bannerStore} />
         </div>
-        <RecommendList store={listStore} items={[1, 2, 3, 4, 5, 6, 7]} cols={4} />
+        <RecommendList store={listStore} normalizer={listNormalizer} title="推荐歌单" />
+        <RecommendList store={songStore} normalizer={songNormalizer} title="最新音乐" />
       </div>
     )
   }

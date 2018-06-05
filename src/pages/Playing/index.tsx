@@ -5,7 +5,9 @@ class App extends React.Component {
   public render() {
     return (
       <div className={style.wrapper}>
+        <div className={style.content}>
           playing...
+        </div>
       </div>
     )
   }

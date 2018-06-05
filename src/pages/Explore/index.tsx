@@ -8,8 +8,7 @@ interface IProps{
   location: { pathname: string };
 }
 
-class Explore extends React.Component<IProps> {
-
+class Explore extends React.PureComponent<IProps> {
   public render() {
     const wrapperClass = cs({
       [style.customWrapper]: true,

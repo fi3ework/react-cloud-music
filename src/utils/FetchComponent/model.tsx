@@ -21,10 +21,11 @@ class Store {
 
   @action
   public fetchData() {
+    console.log(this.URL)
     this.state = 'pending'
     this.fetchURL().then(
       response => {
-        if (response.status !== 200) {
+        if (!(response.status === 200 || response.status === 304)) {
           throw new Error('Fail to get response with status:' + response.status)
         }
         response.json().then((payload) => {

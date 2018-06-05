@@ -17,7 +17,6 @@ interface IProps{
 class Cover extends React.Component<IProps> {
   public coverImg: any;
 
-
   public state = {
     isLoading: true
   }
@@ -34,13 +33,8 @@ class Cover extends React.Component<IProps> {
     }
   }
 
-  public componentWillUnmount() {
-    console.log('cover unmount')
-  }
-
   public render() {
     const { coverImg, URL, playCount, listName } = this.props
-    console.log(coverImg)
     const playCountShow = playCount > 10000 ? `${Math.floor(playCount / 10000)}万` : playCount
     return (
       <div className={style.cover}>
