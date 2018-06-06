@@ -2,8 +2,6 @@ import * as React from 'react'
 import ReactSwipe from 'react-swipe'
 import * as style from './style.scss'
 
-
-
 export default class Carousel extends React.Component {
 
   public swipe: any;

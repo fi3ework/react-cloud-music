@@ -1,6 +1,6 @@
 @import '@/constant/style.scss';
 
-.customWrapper {
+.exploreWrapper {
     margin: 0;
     width: 200%;
     text-align: center;
@@ -9,7 +9,7 @@
     overflow-x: scroll;
     overflow-y:hidden;
     display: flex;
-    transition: transform 0.5s ease-in-out;
+    // transition: transform 0.5s ease-in-out;
 }
 
 .custom {
@@ -46,3 +46,4 @@
     width: 98%;
     overflow: hidden;
 }
+

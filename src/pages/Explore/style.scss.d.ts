@@ -1,5 +1,5 @@
 export const iconfontCloudMusic: string;
-export const customWrapper: string;
+export const exploreWrapper: string;
 export const custom: string;
 export const dj: string;
 export const showDj: string;
