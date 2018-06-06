@@ -33,14 +33,13 @@ class Explore extends React.Component<IProps> {
   }
 
   public choosePage = () => {
-    const currOffset = this.state.prevOffsetX + this.state.swipedDisX
     this.pageWrapper.addEventListener('transitionend', () => {
       this.setState({
         isTransitioning: false
       })
     })
 
-    if (currOffset < -175) {
+    if (this.state.swipedDisX < -50) {
       this.setState({
         prevOffsetX: -375,
         swipedDisX: 0,
@@ -48,7 +47,7 @@ class Explore extends React.Component<IProps> {
       })
       this.changeRouter('dj')
       console.log(2)
-    } else {
+    } else if (this.state.swipedDisX > 50) {
       this.setState({
         prevOffsetX: 0,
         swipedDisX: 0,
