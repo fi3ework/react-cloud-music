@@ -17,6 +17,7 @@ class Explore extends React.Component<IProps> {
     swipedDisX: 0,
     isVerticalScrolling: null,
     prevOffsetX: 0,
+    isTransitioning: false
   }
 
   public componentDidMount() {
@@ -24,6 +25,31 @@ class Explore extends React.Component<IProps> {
     this.pageWrapper.addEventListener('touchstart', this.handleTouchStart)
     this.pageWrapper.addEventListener('touchmove', this.handleTouchMove)
     this.pageWrapper.addEventListener('touchend', this.handleTouchEnd)
+  }
+
+  public choosePage = () => {
+    const currOffset = this.state.prevOffsetX + this.state.swipedDisX
+    this.pageWrapper.addEventListener('transitionend', () => {
+      this.setState({
+        isTransitioning: false
+      })
+    })
+
+    if (currOffset < -175) {
+      this.setState({
+        prevOffsetX: -375,
+        swipedDisX: 0,
+        isTransitioning: true
+      })
+      console.log(2)
+    } else {
+      this.setState({
+        prevOffsetX: 0,
+        swipedDisX: 0,
+        isTransitioning: true
+      })
+      console.log(1)
+    }
   }
 
   public handleTouchStart = (e) => {
@@ -56,7 +82,27 @@ class Explore extends React.Component<IProps> {
 
       if (!this.state.isVerticalScrolling) {
         e.preventDefault()
+        // prevent overflow the screen
+
         const currSwipedXDis = e.touches[0].screenX - this.state.touchStartPos.x
+
+        if (this.state.prevOffsetX + currSwipedXDis > 0) {
+          this.setState({
+            prevOffsetX: 0,
+            swipedDisX: 0
+          })
+          return
+        }
+
+        if (this.state.prevOffsetX + currSwipedXDis < -375) {
+          this.setState({
+            prevOffsetX: -375,
+            swipedDisX: 0
+          })
+          return
+        }
+
+        // update current position
         this.setState({
           swipedDisX: currSwipedXDis,
         })
@@ -65,11 +111,10 @@ class Explore extends React.Component<IProps> {
   }
 
   public handleTouchEnd = (e) => {
-    console.log('===== end =====')
-    console.log(e)
+    if (this.state.isVerticalScrolling === false) {
+      this.choosePage()
+    }
     this.setState({
-      // prevEndingPos: { x: this.state.currPos.x },
-      // prevOffset: { x: this.state.currPos.x },
       isVerticalScrolling: null
     })
   }
@@ -79,6 +124,7 @@ class Explore extends React.Component<IProps> {
       [style.exploreWrapper]: true,
       [style.showCustom]: this.props.location.pathname === '/explore/custom',
       [style.showDj]: this.props.location.pathname === '/explore/dj',
+      [style.isTransitioning]: this.state.isTransitioning === true,
     })
 
     return (

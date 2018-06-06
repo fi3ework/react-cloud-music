@@ -9,7 +9,11 @@
     overflow-x: scroll;
     overflow-y:hidden;
     display: flex;
-    // transition: transform 0.5s ease-in-out;
+    // transition: transform 0.3s ease-in-out;
+}
+
+.isTransitioning{
+    transition: transform 0.3s ease-in-out;
 }
 
 .custom {
@@ -23,11 +27,11 @@
 }
 
 .showDj {
-    transform: translate3d(-50%, 0, 0)
+    transform: translate3d(-50%, 0, 0) !important
 }
 
 .showCustom {
-    transform: translate3d(0, 0, 0)
+    transform: translate3d(0, 0, 0) !important
 }
 
 .innerWrapper {
