@@ -5,7 +5,6 @@ import { observer } from 'mobx-react'
 
 
 export default observer(({ store }) => {
-  console.log(store.payload)
   return (
     <Carousel>
       {

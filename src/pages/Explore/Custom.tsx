@@ -31,7 +31,15 @@ const songNormalizer = (result) => (result.map(item => ({
 
 export default class Custom extends React.Component<any> {
 
+  public banner: any;
+
   public componentDidMount() {
+
+    this.banner.addEventListener('touchmove', (e) => {
+      e.stopPropagation()
+
+    })
+
     bannerStore.fetchData()
     listStore.fetchData()
     songStore.fetchData()
@@ -40,7 +48,7 @@ export default class Custom extends React.Component<any> {
   public render() {
     return (
       <div className={style.custom}>
-        <div className={style.banners}>
+        <div className={style.banners} ref={ref => { this.banner = ref }}>
           <Banner store={bannerStore} />
         </div>
         <RecommendList store={listStore} normalizer={listNormalizer} title="推荐歌单" />
