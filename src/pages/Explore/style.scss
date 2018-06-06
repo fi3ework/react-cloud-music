@@ -1,22 +1,21 @@
 @import '@/constant/style.scss';
-
 .exploreWrapper {
     margin: 0;
     width: 200%;
     text-align: center;
-    background-color:$ncmRed;
+    background-color: $ncmRed;
     height: 100%;
     overflow-x: scroll;
-    overflow-y:hidden;
-    display: flex;
-    // transition: transform 0.3s ease-in-out;
+    overflow-y: hidden;
+    display: flex; // transition: transform 0.3s ease-in-out;
 }
 
-.isTransitioning{
+.isTransitioning {
     transition: transform 0.3s ease-in-out;
 }
 
 .custom {
+    position: relative;
     height: 3750px;
     background-color: #fff;
 }
@@ -26,28 +25,33 @@
     height: 750px;
 }
 
-.showDj {
-    transform: translate3d(-50%, 0, 0) !important
-}
-
-.showCustom {
-    transform: translate3d(0, 0, 0) !important
-}
-
+// .showDj {
+//     transform: translate3d(-50%, 0, 0) !important
+// }
+// .showCustom {
+//     transform: translate3d(0, 0, 0) !important
+// }
 .innerWrapper {
     flex-shrink: 0;
-    box-sizing: border-box;
-    margin: 205px 0 44px 0;
+    box-sizing: border-box; // padding: 1px 0 0 0;
+    margin: 130px 0 44px 0;
     width: 50%;
     height: 100%;
     overflow-x: auto;
     overflow-y: auto;
 }
 
-.banners{
+.banners {
     border-radius: 10px;
-    margin: 0 auto 10px auto;
+    margin: 10px auto 10px auto;
+    -webkit-mask-image: -webkit-radial-gradient(white, black); // TODO
     width: 98%;
     overflow: hidden;
 }
 
+.redBg {
+    position: absolute;
+    background-color: $ncmRed;
+    width: 100%;
+    height: 120px;
+}

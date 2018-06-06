@@ -7,6 +7,7 @@ import { transform } from 'typescript'
 
 interface IProps{
   location: { pathname: string };
+  history: any;
 }
 
 class Explore extends React.Component<IProps> {
@@ -27,6 +28,10 @@ class Explore extends React.Component<IProps> {
     this.pageWrapper.addEventListener('touchend', this.handleTouchEnd)
   }
 
+  public changeRouter = (pathName) => {
+    console.log(this.props.history.push(`/explore/${pathName}`))
+  }
+
   public choosePage = () => {
     const currOffset = this.state.prevOffsetX + this.state.swipedDisX
     this.pageWrapper.addEventListener('transitionend', () => {
@@ -41,6 +46,7 @@ class Explore extends React.Component<IProps> {
         swipedDisX: 0,
         isTransitioning: true
       })
+      this.changeRouter('dj')
       console.log(2)
     } else {
       this.setState({
@@ -48,6 +54,7 @@ class Explore extends React.Component<IProps> {
         swipedDisX: 0,
         isTransitioning: true
       })
+      this.changeRouter('custom')
       console.log(1)
     }
   }
@@ -122,8 +129,8 @@ class Explore extends React.Component<IProps> {
   public render() {
     const wrapperClass = cs({
       [style.exploreWrapper]: true,
-      [style.showCustom]: this.props.location.pathname === '/explore/custom',
-      [style.showDj]: this.props.location.pathname === '/explore/dj',
+      // [style.showCustom]: this.props.location.pathname === '/explore/custom',
+      // [style.showDj]: this.props.location.pathname === '/explore/dj',
       [style.isTransitioning]: this.state.isTransitioning === true,
     })
 

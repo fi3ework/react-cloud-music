@@ -48,6 +48,7 @@ export default class Custom extends React.Component<any> {
   public render() {
     return (
       <div className={style.custom}>
+        <div className={style.redBg} />
         <div className={style.banners} ref={ref => { this.banner = ref }}>
           <Banner store={bannerStore} />
         </div>
