@@ -2,7 +2,12 @@
 
 .wrapper {
     position: relative;
-    padding: $headerBarHeight 0 $bottomBarHeight 0;
+    border: 1px solid transparent;
+    border-width: 0 0 $bottomBarHeight 0;
+    padding-top: $headerBarHeight;
+    height: 100%;
+    box-sizing: border-box;
+    overflow-y: auto;
     background-color: #666;
     clear: both;
 }
