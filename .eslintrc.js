@@ -27,6 +27,7 @@ module.exports = {
       }
     ],
     'max-nested-callbacks': "off",
+    'react/no-children-prop': 'off',
     'typescript/member-ordering': "off",
     'react/jsx-indent-props': "off",
     'indent': [

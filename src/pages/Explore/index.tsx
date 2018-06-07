@@ -3,12 +3,12 @@ import * as cs from 'classnames'
 import * as style from './style.scss'
 import { withRouter } from 'react-router-dom'
 import Custom from './Custom'
-import { transform } from 'typescript'
 import PropTypes from 'prop-types'
 
 interface IProps{
   location: { pathname: string };
   history: any;
+  style: any;
 }
 
 class Explore extends React.Component<IProps> {
@@ -38,6 +38,10 @@ class Explore extends React.Component<IProps> {
     this.pageWrapper.addEventListener('touchstart', this.handleTouchStart)
     this.pageWrapper.addEventListener('touchmove', this.handleTouchMove)
     this.pageWrapper.addEventListener('touchend', this.handleTouchEnd)
+  }
+
+  public componentWillUnmount() {
+    console.log('=== exlore will unmount ===')
   }
 
   public changeRouter = (pathName) => {
@@ -152,7 +156,7 @@ class Explore extends React.Component<IProps> {
       <div
         className={wrapperClass}
         ref={ref => { this.pageWrapper = ref }}
-        style={{ transform: `translate3d(${this.state.prevOffsetX + this.state.swipedDisX}px, 0, 0)` }}
+        style={{ transform: `translate3d(${this.state.prevOffsetX + this.state.swipedDisX}px, 0, 0)`, ...this.props.style }}
       >
         <div className={style.innerWrapper}>
           <Custom />
@@ -167,4 +171,5 @@ class Explore extends React.Component<IProps> {
   }
 }
 
-export default withRouter(Explore)
+
+export default Explore
