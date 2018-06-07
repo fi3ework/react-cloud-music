@@ -1,6 +1,7 @@
 $ncmRed: #e24e48; // netease cloud music red
 $headerBarHeight: 100px;
 $bottomBarHeight: 100px;
+
 @font-face {
   font-family: 'iconfont-cloud-music';
   /* project id 669459 */
@@ -8,19 +9,11 @@ $bottomBarHeight: 100px;
   src: url('//at.alicdn.com/t/font_669459_irvqlcv7z3qv9529.eot?#iefix') format('embedded-opentype'), url('//at.alicdn.com/t/font_669459_irvqlcv7z3qv9529.woff') format('woff'), url('//at.alicdn.com/t/font_669459_irvqlcv7z3qv9529.ttf') format('truetype'), url('//at.alicdn.com/t/font_669459_irvqlcv7z3qv9529.svg#iconfont-cloud-music') format('svg');
 }
 
-.iconfont-cloud-music {
-  font-family: "iconfont-archer" !important;
-  font-size: 1rem;
-  font-style: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
 :global {
   html,
   body,
   #root {
-    -webkit-overflow-scrolling: touch;    
+    -webkit-overflow-scrolling: touch;
     position: relative;
     height: 100%;
     overflow: hidden;
@@ -31,5 +24,13 @@ $bottomBarHeight: 100px;
   }
   img {
     content: normal !important;
+  }
+
+  .iconfont-ncm {
+    font-family: "iconfont-cloud-music" !important;
+    font-size: 1rem;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }

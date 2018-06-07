@@ -7,17 +7,18 @@
     height: 100%;
     overflow-x: scroll;
     overflow-y: hidden;
-    display: flex; // transition: transform 0.3s ease-in-out;
+    display: flex;
 }
 
 .isTransitioning {
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.2s ease-out;
 }
 
 .custom {
     position: relative;
-    height: 3750px;
+    // height: 3750px;
     background-color: #fff;
+    padding: 0 0 1px 0;
 }
 
 .dj {
@@ -33,8 +34,9 @@
 // }
 .innerWrapper {
     flex-shrink: 0;
-    box-sizing: border-box; // padding: 1px 0 0 0;
-    margin: 130px 0 44px 0;
+    box-sizing: border-box;
+    border: 1px solid transparent;
+    border-width: 150px 0 $bottomBarHeight 0;
     width: 50%;
     height: 100%;
     overflow-x: auto;

@@ -4,6 +4,7 @@ import * as style from './style.scss'
 import { withRouter } from 'react-router-dom'
 import Custom from './Custom'
 import { transform } from 'typescript'
+import PropTypes from 'prop-types'
 
 interface IProps{
   location: { pathname: string };
@@ -11,6 +12,15 @@ interface IProps{
 }
 
 class Explore extends React.Component<IProps> {
+
+  public static contextTypes = {
+    router: PropTypes.shape({
+      history: PropTypes.object.isRequired,
+      route: PropTypes.object.isRequired,
+      staticContext: PropTypes.object
+    })
+  };
+
   public pageWrapper: any;
 
   public state = {
@@ -22,6 +32,8 @@ class Explore extends React.Component<IProps> {
   }
 
   public componentDidMount() {
+    console.log(this.context)
+    console.log(this.props)
     console.log('explore mount')
     this.pageWrapper.addEventListener('touchstart', this.handleTouchStart)
     this.pageWrapper.addEventListener('touchmove', this.handleTouchMove)
@@ -39,7 +51,8 @@ class Explore extends React.Component<IProps> {
       })
     })
 
-    if (this.state.swipedDisX < -50) {
+    const swipedDisX = this.state.swipedDisX
+    if (swipedDisX < -50 || (swipedDisX > 0 && swipedDisX <= 50)) {
       this.setState({
         prevOffsetX: -375,
         swipedDisX: 0,
@@ -47,7 +60,9 @@ class Explore extends React.Component<IProps> {
       })
       this.changeRouter('dj')
       console.log(2)
-    } else if (this.state.swipedDisX > 50) {
+    }
+
+    if (swipedDisX > 50 || (swipedDisX < 0 && swipedDisX >= -50)) {
       this.setState({
         prevOffsetX: 0,
         swipedDisX: 0,

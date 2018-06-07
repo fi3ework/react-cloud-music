@@ -22,8 +22,8 @@ class App extends React.Component<IProps> {
     return (
       <nav className={style.headerBar}>
         <div>
-          <input type="input" />
-          <Link to="/playing">🎵</Link>
+          <Link className={style.playingLink} to="/playing"><i className={'iconfont-ncm'}>&#xe6cf;</i></Link>
+          <input className={style.search} placeholder="Music on. World off." type="text" />
         </div>
         {children}
       </nav>

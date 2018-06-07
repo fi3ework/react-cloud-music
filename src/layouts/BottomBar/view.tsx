@@ -1,19 +1,42 @@
 import * as React from 'react'
 import * as style from './style.scss'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 
-class App extends React.Component {
+
+class BottomBar extends React.Component {
   public render() {
+    const linkData = [
+      {
+        router: 'explore',
+        name: '发现'
+      },
+      {
+        router: 'video',
+        name: '视频'
+      }, {
+        router: 'mine',
+        name: '视频'
+      }, {
+        router: 'friends',
+        name: '朋友'
+      }, {
+        router: 'account',
+        name: '账号'
+      }
+    ]
+    console.log(this.props)
+
     return (
       <ul className={style.bottomBar}>
-        <li><Link to="/explore">发现</Link></li>
-        <li><Link to="/video">视频</Link></li>
-        <li><Link to="/mine">我的</Link></li>
-        <li><Link to="/friends">朋友</Link></li>
-        <li><Link to="/account">账号</Link></li>
+        {
+          linkData.map((item, index) => {
+
+            return <li key={index} style={{}}><Link to={`/${item.router}`}>{item.name}</Link></li>
+          })
+        }
       </ul>
     )
   }
 }
 
-export default App
+export default withRouter(BottomBar)

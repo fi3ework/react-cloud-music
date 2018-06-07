@@ -6,7 +6,9 @@
   right: 0;
   height: 44px;
   bottom: 0;
-
+  a{
+    color: #555;
+  }
   display: flex;
   bottom: 0;
   box-sizing: border-box;
@@ -24,4 +26,8 @@
     width: 20%;
     text-align: center;
   }
+}
+
+.activeLink{
+  color: $ncmRed;
 }

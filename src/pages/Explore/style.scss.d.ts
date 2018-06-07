@@ -1,4 +1,3 @@
-export const iconfontCloudMusic: string;
 export const exploreWrapper: string;
 export const isTransitioning: string;
 export const custom: string;

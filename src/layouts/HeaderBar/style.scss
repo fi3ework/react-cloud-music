@@ -2,19 +2,37 @@
 
 .headerBar {
   position: absolute;
+  top: 0;
   left: 0;
   right: 0;
   z-index: 99;
-  top: 0;
-  width: 100%;
-  top: 0;
   margin: 0;
-  padding: 10px;
-  list-style-type: none;
+  padding: 30px 0 10px 0;
+  width: 100%;
   background-color: $ncmRed;
   border-top: 1px solid #eee;
-  li {
-    width: 20%;
-    text-align: center;
+}
+
+.playingLink{
+  position: absolute;
+  right: 20px;
+  i{
+    font-size: 50px;
   }
+}
+
+.search{
+  &::placeholder{
+    color: rgba($color: #fff, $alpha: 0.5)
+  }
+  display: block;
+  height: 45px;
+  width: 70%;
+  margin: 0 auto;
+  padding-left: 30px;
+  color: #eee;
+  background-color: rgba($color: #eee, $alpha: 0.3);
+  border: 1px solid $ncmRed;
+  border-radius: 100px;
+  outline: none;
 }
