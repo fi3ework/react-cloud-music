@@ -3,14 +3,15 @@ import * as style from './style.scss'
 import { Link } from 'react-router-dom'
 import phSVG from './placeholder.svg'
 import SVGInline from 'react-svg-inline'
-import PropTypes from 'prop-types' // ES6
-
+import { calcPalyCount } from '@/utils/calcFucntions'
 
 interface IProps{
   coverImg?: any;
   cols?: number;
-  URL?: any;
+  path?: any;
+  query?: any;
   playCount?: any;
+  id?: any;
   listName?: any;
 }
 
@@ -34,11 +35,21 @@ class Cover extends React.Component<IProps> {
   }
 
   public render() {
-    const { coverImg, URL, playCount, listName } = this.props
-    const playCountShow = playCount > 10000 ? `${Math.floor(playCount / 10000)}万` : playCount
+    const { coverImg, path, playCount, listName, id } = this.props
+    const playCountShow = calcPalyCount(playCount)
     return (
       <div className={style.cover}>
-        <Link className={style.linkWrapper} to={URL}>
+        <Link
+          className={style.linkWrapper}
+          to={{
+            pathname: path,
+            state: {
+              picUrl: coverImg,
+              name: listName,
+              playCount,
+            }
+          }}
+        >
           {
             this.state.isLoading ?
               <SVGInline component={'span'} svg={phSVG} /> :

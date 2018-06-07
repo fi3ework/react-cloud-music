@@ -15,7 +15,6 @@ const Matrix = ({ children, cols = 3, width }): any => {
 
   const layoutWidht = width ? `${width}%` : `${100 / cols}%`
 
-  console.log(children)
   const rows: any[] = []
   for (let i = 0; i < children.length; i += cols) {
     const currRow = children.slice(i, i + cols)
@@ -25,7 +24,6 @@ const Matrix = ({ children, cols = 3, width }): any => {
       )
     }))
   }
-  console.log(rows)
   // wrap a col
   return rows.map((row, index) => {
     return <div className={style.row} key={index}>{row}</div>

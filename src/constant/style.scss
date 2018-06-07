@@ -34,3 +34,7 @@ $bottomBarHeight: 100px;
     -moz-osx-font-smoothing: grayscale;
   }
 }
+
+@function height-by-width($width){
+  @return (750 / 1334 * $width) * 1px
+}

@@ -8,7 +8,7 @@ import SectinTitle from '@/components/SectionTitle'
 export default observer(({ store, normalizer, title }) => {
 
   const lists = store.payload ? normalizer(store.payload.result) :
-    Array(6).fill({ key: '', coverImg: null, })
+    Array(6).fill({ key: '', coverImg: null, link: '' })
       .map((item, index) => ({ ...item, key: index }))
 
   return (
@@ -22,8 +22,9 @@ export default observer(({ store, normalizer, title }) => {
                 key={index}
                 coverImg={list.picUrl}
                 playCount={list.playCount}
-                URL={'ss'}
+                path={list.path}
                 listName={list.name}
+                id={list.id}
               >
                 {list.id}
               </Cover>

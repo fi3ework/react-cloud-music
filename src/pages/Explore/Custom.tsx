@@ -19,20 +19,21 @@ const listNormalizer = (result) => (result.map(item => ({
   id: item.id,
   picUrl: item.picUrl,
   playCount: item.playCount,
-  name: item.name
+  name: item.name,
+  path: `/playlist/${item.id}`,
 })))
 
 const songNormalizer = (result) => (result.map(item => ({
   id: item.song.id,
   picUrl: item.song.album.picUrl,
   playCount: null,
-  name: item.name
+  name: item.name,
+  link: `/playlist/detail?id=${item.id}`
 })))
 
 export default class Custom extends React.Component<any> {
 
   public banner: any;
-
   public componentDidMount() {
 
     this.banner.addEventListener('touchmove', (e) => {

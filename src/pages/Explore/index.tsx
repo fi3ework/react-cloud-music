@@ -32,8 +32,6 @@ class Explore extends React.Component<IProps> {
   }
 
   public componentDidMount() {
-    console.log(this.context)
-    console.log(this.props)
     console.log('explore mount')
     this.pageWrapper.addEventListener('touchstart', this.handleTouchStart)
     this.pageWrapper.addEventListener('touchmove', this.handleTouchMove)

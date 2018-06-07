@@ -6,26 +6,23 @@ import MinePage from '@/pages/Mine'
 import FriendsPage from '@/pages/Friends'
 import AccountPage from '@/pages/Account'
 import Playing from '@/pages/Playing'
+import Playlist from '@/pages/Playlist'
 import ButtomBar from '@/layouts/BottomBar'
 import BaseHeaderBar from '@/layouts/HeaderBar'
 import ExploreHeaderBar from '@/layouts/ExploreHeaderBar'
-// import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import * as style from './routerTrans.scss'
 import LiverRoute from '@/utils/LiveRoute'
-// import Reviver from '@/utils/Reviver'
 
 const dynamicRoute = ({ location }) => {
   return (
     <React.Fragment>
-      {/* <TransitionGroup> */}
-      {/* <CSSTransition key={location.pathname} classNames="slide" timeout={{ enter: 2000, exit: 2000 }}> */}
       <Switch>
         <Route path={`/explore`} component={ExploreHeaderBar} />
         <Route path={`/video`} component={BaseHeaderBar} />
         <Route path={`/mine`} component={BaseHeaderBar} />
         <Route path={`/friends`} component={BaseHeaderBar} />
         <Route path={`/account`} component={BaseHeaderBar} />
-        <Route path="/playing" component={BaseHeaderBar} />
+        <Route path={`/playing`} component={BaseHeaderBar} />
       </Switch>
       <div className={style.routeWrapper}>
         <LiverRoute path={`/explore`} liveComponent={ExplorePage} />
@@ -33,10 +30,9 @@ const dynamicRoute = ({ location }) => {
         <LiverRoute path={`/mine`} liveComponent={MinePage} />
         <LiverRoute path={`/friends`} liveComponent={FriendsPage} />
         <LiverRoute path={`/account`} liveComponent={AccountPage} />
-        <LiverRoute path="/playing" liveComponent={Playing} />
+        <LiverRoute path={`/playing`} liveComponent={Playing} />
+        <Route path={`/playlist/:id`} component={Playlist} />
       </div>
-      {/* </CSSTransition> */}
-      {/* </TransitionGroup> */}
       <ButtomBar />
     </React.Fragment>
   )
