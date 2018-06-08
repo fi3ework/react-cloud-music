@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as style from './style.scss'
-import Model from '@/utils/FetchComponent/model'
+import { ComponentFetchModel } from '@/utils/models'
 import RecommendList from './RecommendList'
 import Banner from './Banner'
 
@@ -11,9 +11,9 @@ interface IbannerStore{
   banners?: any;
 }
 
-const bannerStore: IbannerStore = new Model({ URL: '/banner' })
-const listStore: IbannerStore = new Model({ URL: '/personalized' })
-const songStore: IbannerStore = new Model({ URL: '/personalized/newsong' })
+const bannerStore: IbannerStore = new ComponentFetchModel({ URL: '/banner' })
+const listStore: IbannerStore = new ComponentFetchModel({ URL: '/personalized' })
+const songStore: IbannerStore = new ComponentFetchModel({ URL: '/personalized/newsong' })
 
 const listNormalizer = (result) => (result.map(item => ({
   id: item.id,
@@ -28,7 +28,7 @@ const songNormalizer = (result) => (result.map(item => ({
   picUrl: item.song.album.picUrl,
   playCount: null,
   name: item.name,
-  link: `/playlist/detail?id=${item.id}`
+  path: `/playlist/${item.id}`
 })))
 
 export default class Custom extends React.Component<any> {

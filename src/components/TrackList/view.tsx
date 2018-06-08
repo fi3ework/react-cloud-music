@@ -2,14 +2,15 @@ import * as React from 'react'
 import { observer } from 'mobx-react'
 import { get } from 'lodash'
 import * as style from './style.scss'
+import { Link } from 'react-router-dom'
 
 interface IProps{
   store?: any;
 }
 
-const Track = ({ name, artists, album, index }): any => {
+const Track = ({ name, artists, album, index, songID }): any => {
   return (
-    <div className={style.trackWrapper} >
+    <Link to={`/playing/`} className={style.trackWrapper} >
       <div className={style.index} >
         {index}
       </div>
@@ -21,7 +22,7 @@ const Track = ({ name, artists, album, index }): any => {
           {artists[0].name} - {album.name}
         </div>
       </div>
-    </div>
+    </Link>
   )
 }
 
@@ -41,7 +42,14 @@ export default class Tracks extends React.Component<IProps> {
     }
     else {
       return tracks.map((item, index) => {
-        return <Track key={item.id} name={item.name} artists={item.artists} album={item.album} index={index} />
+        return <Track
+          key={item.id}
+          name={item.name}
+          artists={item.artists}
+          album={item.album}
+          index={index}
+          id={item.id}
+        />
       })
     }
   }
@@ -52,12 +60,12 @@ export default class Tracks extends React.Component<IProps> {
       <div>
         {
           tracks ?
-            <div>
+            <React.Fragment>
               <Bar tracksCount={tracks.length} />
               <div>
                 {tracks}
               </div>
-            </div>
+            </React.Fragment>
             : <div className={style.loading} />
         }
       </div>

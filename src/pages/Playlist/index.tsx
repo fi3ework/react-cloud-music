@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as style from './style.scss'
 import { calcPalyCount } from '@/utils/calcFucntions'
-import Model from '@/utils/FetchComponent/model'
+import { ComponentFetchModel } from '@/utils/models'
 import { observer } from 'mobx-react'
 import { get } from 'lodash'
 import TrackList from '@/components/TrackList'
@@ -16,7 +16,7 @@ interface IProps{
 @observer
 class Playlist extends React.Component<any> {
 
-  public listStore = new Model({ URL: `/playlist/detail?id=${this.props.match.params.id}` })
+  public listStore = new ComponentFetchModel({ URL: `/playlist/detail?id=${this.props.match.params.id}` })
 
   public componentDidMount() {
     this.listStore.fetchData()

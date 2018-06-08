@@ -1,28 +1,13 @@
 :global {
-  .slide-enter {
-    opacity: 0;
-    transform: translateX(100%);
+  .switch-wrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
   }
-  .slide-enter.slide-enter-active {
-    opacity: 1;
-    transform: translateX(0);
-    transition: all 2s ease-in;
-  }
-  .slide-exit {
-    opacity: 1;
-    transform: translateX(0);
-  }
-  .slide-exit.slide-exit-active {
-    opacity: 0;
-    transform: translateX(-100%);
-    transition: all 2s ease-out;
-  }
-  .slide-appear {
-    opacity: 0.01;
-  }
-  .slide-appear.slide-appear-active {
-    opacity: 1;
-    transition: opacity 2s ease-in;
+  .switch-wrapper>div {
+    position: absolute;
+    height: 100%;
+    width: 100%;
   }
 }
 
@@ -40,6 +25,6 @@
   overflow: hidden;
 }
 
-.transitionGroup{
+.transitionGroup {
   position: relative;
 }
