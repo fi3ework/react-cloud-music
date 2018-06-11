@@ -1,12 +1,8 @@
 import * as React from 'react'
 import * as style from './style.scss'
 
-export default class SectionTitle extends React.Component {
-  public render() {
-    return (
-      <h3 className={style.title}>
-        {this.props.children}
-      </h3>
-    )
-  }
+const SectionTitle: React.SFC = ({ children }) => {
+  return <h3 className={style.title}>{children}</h3>
 }
+
+export default SectionTitle

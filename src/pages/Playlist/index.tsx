@@ -1,22 +1,22 @@
 import * as React from 'react'
 import * as style from './style.scss'
-import { calcPalyCount } from '@/utils/calcFucntions'
+import { calcPlayCount } from '@/utils/calcFunctions'
 import { ComponentFetchModel } from '@/utils/models'
 import { observer } from 'mobx-react'
 import { get } from 'lodash'
 import TrackList from '@/components/TrackList'
 
-interface IProps{
-  style?: any;
-  location?: any;
-  match?: any;
+interface IProps {
+  style?: any
+  location?: any
+  match?: any
 }
-
 
 @observer
 class Playlist extends React.Component<any> {
-
-  public listStore = new ComponentFetchModel({ URL: `/playlist/detail?id=${this.props.match.params.id}` })
+  public listStore = new ComponentFetchModel({
+    URL: `/playlist/detail?id=${this.props.match.params.id}`
+  })
 
   public componentDidMount() {
     this.listStore.fetchData()
@@ -31,20 +31,21 @@ class Playlist extends React.Component<any> {
     return (
       <div className={style.wrapper} style={{ ...this.props.style }}>
         <div className={style.foreground}>
-          <div className={style.infoWrapper} >
+          <div className={style.infoWrapper}>
             <div className={style.coverWrapper}>
               <img src={picUrl} />
-              <p className={style.playCount}>{calcPalyCount(playCount)}</p>
+              <p className={style.playCount}>{calcPlayCount(playCount)}</p>
             </div>
-            <h1 className={style.listName}>
-              {name}
-            </h1>
+            <h1 className={style.listName}>{name}</h1>
           </div>
           <div className={'songList'}>
-            <TrackList store={this.listStore.payload} />
+            <TrackList payload={this.listStore.payload} />
           </div>
         </div>
-        <div className={style.bgImg} style={{ backgroundImage: `url(${coverImg})` }} />
+        <div
+          className={style.bgImg}
+          style={{ backgroundImage: `url(${coverImg})` }}
+        />
       </div>
     )
   }

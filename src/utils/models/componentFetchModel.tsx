@@ -2,8 +2,8 @@ import { configure, observable, action, runInAction, computed, autorun } from 'm
 
 configure({ enforceActions: true })
 
-interface IOption{
-  URL: string;
+type IOption = {
+  URL: string
 }
 
 class Store {
@@ -28,14 +28,17 @@ class Store {
         if (!(response.status === 200 || response.status === 304)) {
           throw new Error('Fail to get response with status:' + response.status)
         }
-        response.json().then((payload) => {
-          runInAction(() => {
-            this.state = 'done'
-            this.payload = payload
+        response
+          .json()
+          .then(payload => {
+            runInAction(() => {
+              this.state = 'done'
+              this.payload = payload
+            })
           })
-        }).catch((error) => {
-          throw new Error('Invalid json response: ' + error)
-        })
+          .catch(error => {
+            throw new Error('Invalid json response: ' + error)
+          })
         // 将‘“最终的”修改放入一个异步动作中
       },
       error => {

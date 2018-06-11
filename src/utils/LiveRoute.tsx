@@ -1,4 +1,3 @@
-
 import warning from 'warning'
 import invariant from 'invariant'
 import React, { ReactElement } from 'react'
@@ -9,21 +8,20 @@ import Revivier from './Reviver'
 const isEmptyChildren = children => React.Children.count(children) === 0
 
 interface IProps {
-  location?: any;
-  component?: any;
-  liveComponent?: any;
-  render?: any;
-  children?: any;
-  path?: any;
-  style?: any;
-  liveRender?: any;
+  location?: any
+  component?: any
+  liveComponent?: any
+  render?: any
+  children?: any
+  path?: any
+  style?: any
+  liveRender?: any
 }
 
 /**
  * The public API for matching a single path and rendering.
  */
 class Route extends React.Component<IProps> {
-
   public static propTypes = {
     computedMatch: PropTypes.object, // private, from <Switch>
     path: PropTypes.string,
@@ -34,7 +32,7 @@ class Route extends React.Component<IProps> {
     render: PropTypes.func,
     children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     location: PropTypes.object
-  };
+  }
 
   public static contextTypes = {
     router: PropTypes.shape({
@@ -42,18 +40,17 @@ class Route extends React.Component<IProps> {
       route: PropTypes.object.isRequired,
       staticContext: PropTypes.object
     })
-  };
+  }
 
   public static childContextTypes = {
     router: PropTypes.object.isRequired
-  };
+  }
 
   public state = {
     match: this.computeMatch(this.props, this.context.router)
-  };
+  }
 
   public componentDisplayName: any = null
-
 
   public getChildContext() {
     return {
@@ -67,12 +64,13 @@ class Route extends React.Component<IProps> {
     }
   }
 
-
   public computeMatch(
     { computedMatch, location, path, strict, exact, sensitive }: any,
     router
   ) {
-    if (computedMatch) { return computedMatch } // <Switch> already computed the match for us
+    if (computedMatch) {
+      return computedMatch
+    } // <Switch> already computed the match for us
 
     invariant(
       router,
@@ -113,6 +111,7 @@ class Route extends React.Component<IProps> {
   public UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
     warning(
       !(nextProps.location && !this.props.location),
+      // tslint:disable:max-line-length
       '<Route> elements should not change from uncontrolled to controlled (or vice versa). You initially used no "location" prop and then provided one on a subsequent render.'
     )
 
@@ -126,10 +125,15 @@ class Route extends React.Component<IProps> {
     })
   }
 
-
   public render() {
     const { match } = this.state
-    const { children, component, liveComponent, liveRender, render } = this.props
+    const {
+      children,
+      component,
+      liveComponent,
+      liveRender,
+      render
+    } = this.props
     const { history, route, staticContext } = this.context.router
     const location = this.props.location || route.location
     const props = { match, location, history, staticContext }
@@ -138,17 +142,34 @@ class Route extends React.Component<IProps> {
       console.log('into live')
       const oriComponent = React.createElement(liveComponent, props)
       this.componentDisplayName = liveComponent.display
-      const displayStyle = match ? {} : { visibility: 'hidden', position: 'absolute', display: 'none', zIndex: '-999999' }
-      return React.cloneElement(oriComponent as ReactElement<any>, { style: displayStyle })
+      const displayStyle = match
+        ? {}
+        : {
+            visibility: 'hidden',
+            position: 'absolute',
+            display: 'none',
+            zIndex: '-999999'
+          }
+      return React.cloneElement(oriComponent as ReactElement<any>, {
+        style: displayStyle
+      })
     }
 
-    if (component) { return match ? React.createElement(component, props) : null }
+    if (component) {
+      return match ? React.createElement(component, props) : null
+    }
 
-    if (render) { return match ? render(props) : null }
+    if (render) {
+      return match ? render(props) : null
+    }
 
-    if (typeof children === 'function') { return children(props) }
+    if (typeof children === 'function') {
+      return children(props)
+    }
 
-    if (children && !isEmptyChildren(children)) { return React.Children.only(children) }
+    if (children && !isEmptyChildren(children)) {
+      return React.Children.only(children)
+    }
 
     return null
   }

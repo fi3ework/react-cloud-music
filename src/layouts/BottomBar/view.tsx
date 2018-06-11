@@ -2,9 +2,8 @@ import * as React from 'react'
 import * as style from './style.scss'
 import { Link, withRouter } from 'react-router-dom'
 
-
 class BottomBar extends React.Component {
-  public render() {
+  render() {
     const linkData = [
       {
         router: 'explore',
@@ -13,13 +12,16 @@ class BottomBar extends React.Component {
       {
         router: 'video',
         name: '视频'
-      }, {
+      },
+      {
         router: 'mine',
         name: '视频'
-      }, {
+      },
+      {
         router: 'friends',
         name: '朋友'
-      }, {
+      },
+      {
         router: 'account',
         name: '账号'
       }
@@ -28,12 +30,13 @@ class BottomBar extends React.Component {
 
     return (
       <ul className={style.bottomBar}>
-        {
-          linkData.map((item, index) => {
-
-            return <li key={index} style={{}}><Link to={`/${item.router}`}>{item.name}</Link></li>
-          })
-        }
+        {linkData.map((item, index) => {
+          return (
+            <li key={index} style={{}}>
+              <Link to={`/${item.router}`}>{item.name}</Link>
+            </li>
+          )
+        })}
       </ul>
     )
   }

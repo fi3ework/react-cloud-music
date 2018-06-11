@@ -5,20 +5,21 @@ const history = createHistory()
 console.log(history)
 const stateStore = {}
 
-const getUuid = (key) => {
+const getUuid = key => {
   return `${history.location.pathname}_${key}`
 }
 
-const Reviver = (WrappedComponent, option = {
-  key: 'DEFAULT_KEY',
-  restoreScrollTop: true
-}) => {
-
+const Reviver = (
+  WrappedComponent,
+  option = {
+    key: 'DEFAULT_KEY',
+    restoreScrollTop: true
+  }
+) => {
   const { key = 'DEFAULT_KEY', restoreScrollTop = true } = option
 
   class ReviveComponent extends WrappedComponent {
-
-    public static displayName = `Cached Wrapper`;
+    public static displayName = `Cached Wrapper`
 
     public componentDidMount() {
       console.log('Reviver did mount')
@@ -33,7 +34,10 @@ const Reviver = (WrappedComponent, option = {
         return
       }
 
-      const { '@@leavingScrollTop': leavingScrollTop, ...componentState } = prevLeavingState
+      const {
+        '@@leavingScrollTop': leavingScrollTop,
+        ...componentState
+      } = prevLeavingState
       this.setState({ ...componentState })
 
       // restore scrollTop
@@ -49,9 +53,12 @@ const Reviver = (WrappedComponent, option = {
     public componentWillUnmount() {
       console.log('Reviver will unmount')
       // record scrollTop
-      const leavingScrollTop = window.scrollY ||
+      const leavingScrollTop =
+        window.scrollY ||
         window.pageYOffset ||
-        document.body.scrollTop + (document.documentElement && document.documentElement.scrollTop || 0)
+        document.body.scrollTop +
+          ((document.documentElement && document.documentElement.scrollTop) ||
+            0)
 
       console.log(leavingScrollTop)
       // record state
@@ -71,14 +78,11 @@ const Reviver = (WrappedComponent, option = {
 
     public render() {
       console.log('into reviver')
-      return (
-        super.render()
-      )
+      return super.render()
     }
   }
 
   return ReviveComponent
 }
-
 
 export default Reviver

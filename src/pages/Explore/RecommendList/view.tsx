@@ -3,7 +3,7 @@ import * as style from './style.scss'
 import { observer } from 'mobx-react'
 import Matrix from '@/components/Matrix'
 import Cover from '@/components/Cover'
-import SectinTitle from '@/components/SectionTitle'
+import SectionTitle from '@/components/SectionTitle'
 
 export default observer(({ store, normalizer, title }) => {
 
@@ -13,8 +13,8 @@ export default observer(({ store, normalizer, title }) => {
 
   return (
     <div className={style.recommendList}>
-      <SectinTitle>{title}</SectinTitle>
-      <Matrix width={33}>
+      <SectionTitle>{title}</SectionTitle>
+      <Matrix width={33} >
         {
           lists.slice(0, 6).map((list, index) => {
             return (

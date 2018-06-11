@@ -5,23 +5,22 @@ import { withRouter } from 'react-router-dom'
 import Custom from './Custom'
 import PropTypes from 'prop-types'
 
-interface IProps{
-  location: { pathname: string };
-  history: any;
-  style: any;
+interface IProps {
+  location: { pathname: string }
+  history: any
+  style: any
 }
 
 class Explore extends React.Component<IProps> {
-
   public static contextTypes = {
     router: PropTypes.shape({
       history: PropTypes.object.isRequired,
       route: PropTypes.object.isRequired,
       staticContext: PropTypes.object
     })
-  };
+  }
 
-  public pageWrapper: any;
+  public pageWrapper: any
 
   public state = {
     touchStartPos: { x: 0, y: 0 },
@@ -42,7 +41,7 @@ class Explore extends React.Component<IProps> {
     console.log('=== exlore will unmount ===')
   }
 
-  public changeRouter = (pathName) => {
+  public changeRouter = pathName => {
     console.log(this.props.history.push(`/explore/${pathName}`))
   }
 
@@ -75,7 +74,7 @@ class Explore extends React.Component<IProps> {
     }
   }
 
-  public handleTouchStart = (e) => {
+  public handleTouchStart = e => {
     console.log('===== start =====')
     console.log(this.state.isVerticalScrolling)
     if (e.touches.length === 1) {
@@ -87,7 +86,7 @@ class Explore extends React.Component<IProps> {
     }
   }
 
-  public handleTouchMove = (e) => {
+  public handleTouchMove = e => {
     if (e.touches.length === 1) {
       const touch = e.touches[0]
       // measure change in x and y
@@ -127,13 +126,13 @@ class Explore extends React.Component<IProps> {
 
         // update current position
         this.setState({
-          swipedDisX: currSwipedXDis,
+          swipedDisX: currSwipedXDis
         })
       }
     }
   }
 
-  public handleTouchEnd = (e) => {
+  public handleTouchEnd = e => {
     if (this.state.isVerticalScrolling === false) {
       this.choosePage()
     }
@@ -147,27 +146,30 @@ class Explore extends React.Component<IProps> {
       [style.exploreWrapper]: true,
       // [style.showCustom]: this.props.location.pathname === '/explore/custom',
       // [style.showDj]: this.props.location.pathname === '/explore/dj',
-      [style.isTransitioning]: this.state.isTransitioning === true,
+      [style.isTransitioning]: this.state.isTransitioning === true
     })
 
     return (
       <div
         className={wrapperClass}
-        ref={ref => { this.pageWrapper = ref }}
-        style={{ transform: `translate3d(${this.state.prevOffsetX + this.state.swipedDisX}px, 0, 0)`, ...this.props.style }}
+        ref={ref => {
+          this.pageWrapper = ref
+        }}
+        style={{
+          transform: `translate3d(${this.state.prevOffsetX +
+            this.state.swipedDisX}px, 0, 0)`,
+          ...this.props.style
+        }}
       >
         <div className={style.innerWrapper}>
           <Custom />
         </div>
-        <div className={style.innerWrapper} >
-          <div className={style.dj}>
-          2
-          </div>
+        <div className={style.innerWrapper}>
+          <div className={style.dj}>2</div>
         </div>
       </div>
     )
   }
 }
-
 
 export default Explore

@@ -3,9 +3,7 @@ import Router from '@/router'
 
 class App extends React.Component {
   public render() {
-    return (
-      <Router />
-    )
+    return <Router />
   }
 }
 

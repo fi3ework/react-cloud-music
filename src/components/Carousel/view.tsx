@@ -1,49 +1,69 @@
-import * as React from 'react'
+import React from 'react'
 import ReactSwipe from 'react-swipe'
-import * as style from './style.scss'
+import style from './style.scss'
 
-export default class Carousel extends React.Component {
+type IProps = {}
 
-  public swipe: any;
+type IState = {
+  index: number
+}
 
-  public state = {
+
+export default class Carousel extends React.Component<IProps, IState> {
+  swipe: ReactSwipe | null = null
+
+  state = {
     index: 0
   }
 
-  public swipeOpt = {
-    continues: false,
-    auto: 2222000,
-    callback: (index) => {
+  swipeOpt: SwipeOptions = {
+    auto: 5000,
+    continuous: false,
+    callback: index => {
       this.setState({
         index
       })
-    },
+    }
   }
 
-  public dotClass = (index) => {
+  dotClass = index => {
     return this.state.index === index ? 'dot active' : 'dot'
   }
 
-  public handleClickDot = (index) => {
-    this.swipe.swipe.slide(index)
+  handleClickDot = index => {
+    if (this.swipe !== null) {
+      this.swipe.slide(index, 1000)
+    }
   }
 
-  public render() {
-    const children = this.props.children ? this.props.children : <div className={style.loading} />
+  render() {
+    const children = this.props.children ? (
+      this.props.children
+    ) : (
+      <div className={style.loading} />
+    )
 
     return (
-      <div className="swipper-wrapper">
+      <div className="swipe-wrapper">
         <ReactSwipe
           key={React.Children.count(this.props.children)}
           swipeOptions={this.swipeOpt}
-          ref={ref => { this.swipe = ref }}
+          ref={ref => {
+            this.swipe = ref
+          }}
         >
           {children}
         </ReactSwipe>
-        <div className="swiper-dots">
-          {Array(React.Children.count(this.props.children)).fill('ph').map((val, index) =>
-            <span onClick={() => this.handleClickDot(index)} key={index} className={this.dotClass(index)} />
-          )}
+        <div className="swipe-dots">
+          {Array(React.Children.count(this.props.children))
+            .fill('ph')
+            .map((val, index) => (
+              <span
+                onClick={() => this.handleClickDot(index)}
+                key={index}
+                className={this.dotClass(index)}
+              />
+            ))}
         </div>
       </div>
     )
