@@ -4,25 +4,9 @@ import App from './App'
 import registerServiceWorker from './registerServiceWorker'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
+import { reducers, defaultState } from './store'
 
-const PLAY_SONG = 'click a song to play'
-
-const playSong = (state, action) => {
-  switch (action.type) {
-    case PLAY_SONG:
-      if (state.playingSong.id === action.id) {
-        return state
-      } else {
-        const nextPlayingSong = { id: action.id }
-        return { ...state, playingSong: nextPlayingSong }
-      }
-  }
-}
-
-const reducers = () => {
-  console.log(123)
-}
-const store = createStore(reducers)
+const store = createStore(reducers, defaultState as any)
 
 ReactDOM.render(
   <Provider store={store}>

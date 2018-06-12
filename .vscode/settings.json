@@ -2,5 +2,9 @@
   "javascript.implicitProjectConfig.experimentalDecorators": true,
   "files.exclude": {
       "**/.git": true
-  }
+  },
+  "cSpell.words": [
+    "NETEASE"
+  ],
+  "cSpell.enabled": false
 }

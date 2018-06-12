@@ -1,0 +1,44 @@
+.trackWrapper{
+  display: flex;
+  background-color: #fff;
+  color: #333;
+  padding: 0 0 20px 0;
+}
+
+.index{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  text-align: center;
+  color: #777;
+}
+
+.info{
+  flex-grow: 1;
+  color: #333;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+.album{
+  font-size: 20px;
+  color: #888;
+}
+
+.bar{
+  padding: 30px 100px;
+  text-align: left;
+  background-color: #fff;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+}
+
+.loading{
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  height: 1000px;
+  background-color: #fff;
+}
+

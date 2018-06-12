@@ -3,17 +3,11 @@ import * as style from './style.scss'
 import { ComponentFetchModel } from '@/utils/models'
 import RecommendList from './RecommendList'
 import Banner from './Banner'
+import NETEASE_API, { getAPI } from '../../constant/api'
 
-// interface IBannerStore {
-//   banner?: any
-//   payload?: any
-//   fetchData?: any
-//   banners?: any
-// }
-
-const bannerStore: ComponentFetchModel = new ComponentFetchModel({ URL: '/banner' })
-const listStore: ComponentFetchModel = new ComponentFetchModel({ URL: '/personalized' })
-const songStore: ComponentFetchModel = new ComponentFetchModel({ URL: '/personalized/newsong' })
+const bannerStore: ComponentFetchModel = new ComponentFetchModel({ URL: getAPI(NETEASE_API.banner) })
+const listStore: ComponentFetchModel = new ComponentFetchModel({ URL: getAPI(NETEASE_API.recommendList) })
+const songStore: ComponentFetchModel = new ComponentFetchModel({ URL: getAPI(NETEASE_API.recommendSong) })
 
 const listNormalizer = result =>
   result.map(item => ({

@@ -2,41 +2,10 @@ import * as React from 'react'
 import { observer } from 'mobx-react'
 import { get } from 'lodash'
 import * as style from './style.scss'
-import { Link } from 'react-router-dom'
-import Store from '@/utils/models/componentFetchModel'
+import Track from '@/components/Track'
 
 type ITrackListProps = {
   payload: object | null
-}
-
-type IArtist = {
-  name: string
-}
-
-type IAlbum = {
-  name: string
-}
-
-type ITrackProps = {
-  name: string
-  artists: IArtist[]
-  album: IAlbum
-  index: number
-  id: string
-}
-
-const Track: React.SFC<ITrackProps> = ({ name, artists, album, index }) => {
-  return (
-    <Link to={`/playing/`} className={style.trackWrapper}>
-      <div className={style.index}>{index}</div>
-      <div className={style.info}>
-        <div>{name}</div>
-        <div className={style.album}>
-          {artists[0].name} - {album.name}
-        </div>
-      </div>
-    </Link>
-  )
 }
 
 const Bar: React.SFC<{ tracksCount: number }> = ({ tracksCount }) => {
