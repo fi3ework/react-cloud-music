@@ -3,7 +3,6 @@ import * as style from './style.scss'
 import { ComponentFetchModel } from '@/utils/models'
 import RecommendList from './RecommendList'
 import Banner from './Banner'
-// import { IRecommendListPayload } from '../../pages/Explore/RecommendList/view'
 
 // interface IBannerStore {
 //   banner?: any
@@ -35,18 +34,20 @@ const songNormalizer = result =>
   }))
 
 export default class Custom extends React.Component<any> {
-  public banner: any
-  public componentDidMount() {
-    this.banner.addEventListener('touchmove', e => {
-      e.stopPropagation()
-    })
+  banner: HTMLDivElement | null
+  componentDidMount() {
+    if (this.banner) {
+      this.banner.addEventListener('touchmove', e => {
+        e.stopPropagation()
+      })
+    }
 
     bannerStore.fetchData()
     listStore.fetchData()
     songStore.fetchData()
   }
 
-  public render() {
+  render() {
     return (
       <div className={style.custom}>
         <div className={style.redBg} />

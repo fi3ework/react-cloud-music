@@ -1,24 +1,22 @@
 import * as React from 'react'
 import * as style from './style.scss'
 
-
-interface IProps{
-  style: any;
+interface IProps {
+  style: React.CSSProperties
 }
 
 class App extends React.Component<IProps> {
+  count: number
 
-  public count: any;
-
-  public state = {
+  state = {
     count: 0
   }
 
-  public componentWillUnmount() {
+  componentWillUnmount() {
     console.log('=== Friends will unmount  =====')
   }
 
-  public componentDidMount() {
+  componentDidMount() {
     setInterval(() => {
       this.setState({
         count: this.state.count + 1
@@ -26,7 +24,7 @@ class App extends React.Component<IProps> {
     }, 200)
   }
 
-  public render() {
+  render() {
     return (
       <div className={style.wrapper} style={{ ...this.props.style }}>
         <h1>a</h1>

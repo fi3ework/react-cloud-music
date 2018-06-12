@@ -45,27 +45,20 @@ const Bar: React.SFC<{ tracksCount: number }> = ({ tracksCount }) => {
 
 @observer
 export default class TrackList extends React.Component<ITrackListProps> {
-  public calcTracks = store => {
+  calcTracks = store => {
     const tracks = get(store, 'result.tracks')
     if (!tracks) {
       return null
     } else {
       return tracks.map((item, index) => {
         return (
-          <Track
-            key={item.id}
-            name={item.name}
-            artists={item.artists}
-            album={item.album}
-            index={index}
-            id={item.id}
-          />
+          <Track key={item.id} name={item.name} artists={item.artists} album={item.album} index={index} id={item.id} />
         )
       })
     }
   }
 
-  public render() {
+  render() {
     const tracks = this.calcTracks(this.props.payload)
     return (
       <div>

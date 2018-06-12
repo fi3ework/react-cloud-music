@@ -8,21 +8,20 @@ import PropTypes from 'prop-types'
 interface IProps {
   location: { pathname: string }
   history: any
-  style: any
+  style: React.CSSProperties
 }
 
 class Explore extends React.Component<IProps> {
-  public static contextTypes = {
+  static contextTypes = {
     router: PropTypes.shape({
       history: PropTypes.object.isRequired,
       route: PropTypes.object.isRequired,
       staticContext: PropTypes.object
     })
   }
+  pageWrapper: HTMLElement | null
 
-  public pageWrapper: any
-
-  public state = {
+  state = {
     touchStartPos: { x: 0, y: 0 },
     swipedDisX: 0,
     isVerticalScrolling: null,
@@ -30,27 +29,31 @@ class Explore extends React.Component<IProps> {
     isTransitioning: false
   }
 
-  public componentDidMount() {
+  componentDidMount() {
     console.log('explore mount')
-    this.pageWrapper.addEventListener('touchstart', this.handleTouchStart)
-    this.pageWrapper.addEventListener('touchmove', this.handleTouchMove)
-    this.pageWrapper.addEventListener('touchend', this.handleTouchEnd)
+    if (this.pageWrapper) {
+      this.pageWrapper.addEventListener('touchstart', this.handleTouchStart)
+      this.pageWrapper.addEventListener('touchmove', this.handleTouchMove)
+      this.pageWrapper.addEventListener('touchend', this.handleTouchEnd)
+    }
   }
 
-  public componentWillUnmount() {
+  componentWillUnmount() {
     console.log('=== exlore will unmount ===')
   }
 
-  public changeRouter = pathName => {
+  changeRouter = pathName => {
     console.log(this.props.history.push(`/explore/${pathName}`))
   }
 
-  public choosePage = () => {
-    this.pageWrapper.addEventListener('transitionend', () => {
-      this.setState({
-        isTransitioning: false
+  choosePage = () => {
+    if (this.pageWrapper) {
+      this.pageWrapper.addEventListener('transitionend', () => {
+        this.setState({
+          isTransitioning: false
+        })
       })
-    })
+    }
 
     const swipedDisX = this.state.swipedDisX
     if (swipedDisX < -50 || (swipedDisX > 0 && swipedDisX <= 50)) {
@@ -74,7 +77,7 @@ class Explore extends React.Component<IProps> {
     }
   }
 
-  public handleTouchStart = e => {
+  handleTouchStart = e => {
     console.log('===== start =====')
     console.log(this.state.isVerticalScrolling)
     if (e.touches.length === 1) {
@@ -86,7 +89,7 @@ class Explore extends React.Component<IProps> {
     }
   }
 
-  public handleTouchMove = e => {
+  handleTouchMove = e => {
     if (e.touches.length === 1) {
       const touch = e.touches[0]
       // measure change in x and y
@@ -132,7 +135,7 @@ class Explore extends React.Component<IProps> {
     }
   }
 
-  public handleTouchEnd = e => {
+  handleTouchEnd = e => {
     if (this.state.isVerticalScrolling === false) {
       this.choosePage()
     }
@@ -141,7 +144,7 @@ class Explore extends React.Component<IProps> {
     })
   }
 
-  public render() {
+  render() {
     const wrapperClass = cs({
       [style.exploreWrapper]: true,
       // [style.showCustom]: this.props.location.pathname === '/explore/custom',
@@ -152,12 +155,11 @@ class Explore extends React.Component<IProps> {
     return (
       <div
         className={wrapperClass}
-        ref={ref => {
-          this.pageWrapper = ref
+        ref={node => {
+          this.pageWrapper = node
         }}
         style={{
-          transform: `translate3d(${this.state.prevOffsetX +
-            this.state.swipedDisX}px, 0, 0)`,
+          transform: `translate3d(${this.state.prevOffsetX + this.state.swipedDisX}px, 0, 0)`,
           ...this.props.style
         }}
       >

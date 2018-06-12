@@ -19,9 +19,9 @@ const Reviver = (
   const { key = 'DEFAULT_KEY', restoreScrollTop = true } = option
 
   class ReviveComponent extends WrappedComponent {
-    public static displayName = `Cached Wrapper`
+    static displayName = `Cached Wrapper`
 
-    public componentDidMount() {
+    componentDidMount() {
       console.log('Reviver did mount')
       if (super.componentDidMount) {
         super.componentDidMount()
@@ -34,10 +34,7 @@ const Reviver = (
         return
       }
 
-      const {
-        '@@leavingScrollTop': leavingScrollTop,
-        ...componentState
-      } = prevLeavingState
+      const { '@@leavingScrollTop': leavingScrollTop, ...componentState } = prevLeavingState
       this.setState({ ...componentState })
 
       // restore scrollTop
@@ -50,15 +47,13 @@ const Reviver = (
       }
     }
 
-    public componentWillUnmount() {
+    componentWillUnmount() {
       console.log('Reviver will unmount')
       // record scrollTop
       const leavingScrollTop =
         window.scrollY ||
         window.pageYOffset ||
-        document.body.scrollTop +
-          ((document.documentElement && document.documentElement.scrollTop) ||
-            0)
+        document.body.scrollTop + ((document.documentElement && document.documentElement.scrollTop) || 0)
 
       console.log(leavingScrollTop)
       // record state
@@ -76,7 +71,7 @@ const Reviver = (
       }
     }
 
-    public render() {
+    render() {
       console.log('into reviver')
       return super.render()
     }

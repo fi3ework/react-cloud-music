@@ -9,7 +9,7 @@ interface IProps {
 
 @observer
 export default class Custom extends React.Component<IProps, any> {
-  public render() {
+  render() {
     return (
       <div className={style.custom}>
         {/* <div className="swipe-wrapper"> */}

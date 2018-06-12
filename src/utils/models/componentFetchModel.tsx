@@ -1,6 +1,6 @@
 import { configure, observable, action, runInAction, computed, autorun } from 'mobx'
 import { IRecommendListPayload } from '../../pages/Explore/RecommendList/view'
-import { IBannerPayload } from '../../pages/Explore/Banner/view';
+import { IBannerPayload } from '../../pages/Explore/Banner/view'
 
 configure({ enforceActions: true })
 
@@ -9,20 +9,20 @@ type IOption = {
 }
 
 class Store {
-  @observable public URL: string = ''
-  @observable public payload: IRecommendListPayload | IBannerPayload | null = null
-  @observable public state: string = 'pending' // "pending" / "done" / "error"
+  @observable URL: string = ''
+  @observable payload: IRecommendListPayload | IBannerPayload | null = null
+  @observable state: string = 'pending' // "pending" / "done" / "error"
 
   constructor(option: IOption) {
     this.URL = option.URL
   }
 
-  public fetchURL = () => {
+  fetchURL = () => {
     return fetch('/api' + this.URL, {})
   }
 
   @action
-  public fetchData() {
+  fetchData() {
     console.log(this.URL)
     this.state = 'pending'
     this.fetchURL().then(

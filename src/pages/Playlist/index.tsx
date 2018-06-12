@@ -7,22 +7,22 @@ import { get } from 'lodash'
 import TrackList from '@/components/TrackList'
 
 interface IProps {
-  style?: any
+  style?: React.CSSProperties
   location?: any
   match?: any
 }
 
 @observer
 class Playlist extends React.Component<any> {
-  public listStore = new ComponentFetchModel({
+  listStore = new ComponentFetchModel({
     URL: `/playlist/detail?id=${this.props.match.params.id}`
   })
 
-  public componentDidMount() {
+  componentDidMount() {
     this.listStore.fetchData()
   }
 
-  public render() {
+  render() {
     const locationState = this.props.location.state || {}
     const { playCount, picUrl, name } = locationState
     const coverImg = get(this.listStore, 'payload.result.coverImgUrl')
@@ -42,10 +42,7 @@ class Playlist extends React.Component<any> {
             <TrackList payload={this.listStore.payload} />
           </div>
         </div>
-        <div
-          className={style.bgImg}
-          style={{ backgroundImage: `url(${coverImg})` }}
-        />
+        <div className={style.bgImg} style={{ backgroundImage: `url(${coverImg})` }} />
       </div>
     )
   }

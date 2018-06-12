@@ -1,6 +1,6 @@
 import warning from 'warning'
 import invariant from 'invariant'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, Attributes } from 'react'
 import PropTypes from 'prop-types'
 import matchPath from '../../node_modules/react-router/matchPath'
 import Revivier from './Reviver'
@@ -9,20 +9,20 @@ const isEmptyChildren = children => React.Children.count(children) === 0
 
 interface IProps {
   location?: any
-  component?: any
+  component?: React.ComponentClass
   liveComponent?: any
-  render?: any
-  children?: any
+  render?: (props: any) => React.ReactNode
+  children?: (props: any) => React.ReactNode
   path?: any
-  style?: any
-  liveRender?: any
+  style?: React.CSSProperties
+  liveRender?: () => React.ReactNode
 }
 
 /**
  * The public API for matching a single path and rendering.
  */
 class Route extends React.Component<IProps> {
-  public static propTypes = {
+  static propTypes = {
     computedMatch: PropTypes.object, // private, from <Switch>
     path: PropTypes.string,
     exact: PropTypes.bool,
@@ -34,7 +34,7 @@ class Route extends React.Component<IProps> {
     location: PropTypes.object
   }
 
-  public static contextTypes = {
+  static contextTypes = {
     router: PropTypes.shape({
       history: PropTypes.object.isRequired,
       route: PropTypes.object.isRequired,
@@ -42,17 +42,17 @@ class Route extends React.Component<IProps> {
     })
   }
 
-  public static childContextTypes = {
+  static childContextTypes = {
     router: PropTypes.object.isRequired
   }
 
-  public state = {
+  state = {
     match: this.computeMatch(this.props, this.context.router)
   }
 
-  public componentDisplayName: any = null
+  componentDisplayName: any = null
 
-  public getChildContext() {
+  getChildContext() {
     return {
       router: {
         ...this.context.router,
@@ -64,18 +64,12 @@ class Route extends React.Component<IProps> {
     }
   }
 
-  public computeMatch(
-    { computedMatch, location, path, strict, exact, sensitive }: any,
-    router
-  ) {
+  computeMatch({ computedMatch, location, path, strict, exact, sensitive }: any, router) {
     if (computedMatch) {
       return computedMatch
     } // <Switch> already computed the match for us
 
-    invariant(
-      router,
-      'You should not use <Route> or withRouter() outside a <Router>'
-    )
+    invariant(router, 'You should not use <Route> or withRouter() outside a <Router>')
 
     const { route } = router
     const pathname = (location || route.location).pathname
@@ -83,32 +77,24 @@ class Route extends React.Component<IProps> {
     return matchPath(pathname, { path, strict, exact, sensitive }, route.match)
   }
 
-  public UNSAFE_componentWillMount() {
+  UNSAFE_componentWillMount() {
     warning(
       !(this.props.component && this.props.render),
       'You should not use <Route component> and <Route render> in the same route; <Route render> will be ignored'
     )
 
     warning(
-      !(
-        this.props.component &&
-        this.props.children &&
-        !isEmptyChildren(this.props.children)
-      ),
+      !(this.props.component && this.props.children && !isEmptyChildren(this.props.children)),
       'You should not use <Route component> and <Route children> in the same route; <Route children> will be ignored'
     )
 
     warning(
-      !(
-        this.props.render &&
-        this.props.children &&
-        !isEmptyChildren(this.props.children)
-      ),
+      !(this.props.render && this.props.children && !isEmptyChildren(this.props.children)),
       'You should not use <Route render> and <Route children> in the same route; <Route children> will be ignored'
     )
   }
 
-  public UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
+  UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
     warning(
       !(nextProps.location && !this.props.location),
       // tslint:disable:max-line-length
@@ -125,15 +111,9 @@ class Route extends React.Component<IProps> {
     })
   }
 
-  public render() {
+  render() {
     const { match } = this.state
-    const {
-      children,
-      component,
-      liveComponent,
-      liveRender,
-      render
-    } = this.props
+    const { children, component, liveComponent, liveRender, render } = this.props
     const { history, route, staticContext } = this.context.router
     const location = this.props.location || route.location
     const props = { match, location, history, staticContext }
@@ -156,7 +136,7 @@ class Route extends React.Component<IProps> {
     }
 
     if (component) {
-      return match ? React.createElement(component, props) : null
+      return match ? React.createElement(component, props as Attributes) : null
     }
 
     if (render) {
