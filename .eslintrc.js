@@ -1,9 +1,5 @@
 module.exports = {
-  extends: [
-    'eslint-config-alloy/typescript-react',
-    'prettier',
-    'prettier/react'
-  ],
+  extends: ['eslint-config-alloy/typescript-react', 'prettier', 'prettier/react'],
   plugins: ['prettier', 'typescript'],
   globals: {
     // 这里填入你的项目需要的全局变量
@@ -33,7 +29,7 @@ module.exports = {
     'typescript/member-delimiter-style': 'off',
     'react/jsx-indent-props': 'off',
     indent: [
-      'error',
+      'off',
       2,
       {
         SwitchCase: 1,

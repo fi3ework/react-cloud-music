@@ -3,42 +3,42 @@ import * as style from './style.scss'
 import { ComponentFetchModel } from '@/utils/models'
 import RecommendList from './RecommendList'
 import Banner from './Banner'
+// import { IRecommendListPayload } from '../../pages/Explore/RecommendList/view'
 
-interface IbannerStore{
-  banner?: any;
-  payload?: any;
-  fetchData?: any;
-  banners?: any;
-}
+// interface IBannerStore {
+//   banner?: any
+//   payload?: any
+//   fetchData?: any
+//   banners?: any
+// }
 
-const bannerStore: IbannerStore = new ComponentFetchModel({ URL: '/banner' })
-const listStore: IbannerStore = new ComponentFetchModel({ URL: '/personalized' })
-const songStore: IbannerStore = new ComponentFetchModel({ URL: '/personalized/newsong' })
+const bannerStore: ComponentFetchModel = new ComponentFetchModel({ URL: '/banner' })
+const listStore: ComponentFetchModel = new ComponentFetchModel({ URL: '/personalized' })
+const songStore: ComponentFetchModel = new ComponentFetchModel({ URL: '/personalized/newsong' })
 
-const listNormalizer = (result) => (result.map(item => ({
-  id: item.id,
-  picUrl: item.picUrl,
-  playCount: item.playCount,
-  name: item.name,
-  path: `/playlist/${item.id}`,
-})))
+const listNormalizer = result =>
+  result.map(item => ({
+    id: item.id,
+    picUrl: item.picUrl,
+    playCount: item.playCount,
+    name: item.name,
+    path: `/playlist/${item.id}`
+  }))
 
-const songNormalizer = (result) => (result.map(item => ({
-  id: item.song.id,
-  picUrl: item.song.album.picUrl,
-  playCount: null,
-  name: item.name,
-  path: `/playlist/${item.id}`
-})))
+const songNormalizer = result =>
+  result.map(item => ({
+    id: item.song.id,
+    picUrl: item.song.album.picUrl,
+    playCount: null,
+    name: item.name,
+    path: `/playlist/${item.id}`
+  }))
 
 export default class Custom extends React.Component<any> {
-
-  public banner: any;
+  public banner: any
   public componentDidMount() {
-
-    this.banner.addEventListener('touchmove', (e) => {
+    this.banner.addEventListener('touchmove', e => {
       e.stopPropagation()
-
     })
 
     bannerStore.fetchData()
@@ -50,7 +50,12 @@ export default class Custom extends React.Component<any> {
     return (
       <div className={style.custom}>
         <div className={style.redBg} />
-        <div className={style.banners} ref={ref => { this.banner = ref }}>
+        <div
+          className={style.banners}
+          ref={ref => {
+            this.banner = ref
+          }}
+        >
           <Banner store={bannerStore} />
         </div>
         <RecommendList store={listStore} normalizer={listNormalizer} title="推荐歌单" />

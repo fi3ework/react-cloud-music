@@ -1,4 +1,6 @@
 import { configure, observable, action, runInAction, computed, autorun } from 'mobx'
+import { IRecommendListPayload } from '../../pages/Explore/RecommendList/view'
+import { IBannerPayload } from '../../pages/Explore/Banner/view';
 
 configure({ enforceActions: true })
 
@@ -8,7 +10,7 @@ type IOption = {
 
 class Store {
   @observable public URL: string = ''
-  @observable public payload: null | object = null
+  @observable public payload: IRecommendListPayload | IBannerPayload | null = null
   @observable public state: string = 'pending' // "pending" / "done" / "error"
 
   constructor(option: IOption) {
