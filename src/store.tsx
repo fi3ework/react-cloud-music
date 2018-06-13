@@ -1,4 +1,8 @@
+import NETEASE_API, { getURL } from '@/constant/api'
+import axios from 'axios'
+
 export const PLAY_SONG = 'click on a fucking song to fucking play'
+export const FETCH_URL = 'start to fetching a fucking url'
 
 export type IAction = {
   readonly type: string
@@ -48,21 +52,52 @@ export const playSongActionCreator: IActionCreator = id => ({
   nextPlayingSongId: id
 })
 
+export const generateFetchActionCreator = URL => {
+  return new Promise(() => {
+    return axios
+      .get('/api' + URL)
+      .then(response => {
+        console.log(response)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  })
+}
+
+export const fetchSongDetail = id => {
+  console.log(getURL(NETEASE_API.songDetail, { ids: id }))
+  return generateFetchActionCreator(getURL(NETEASE_API.songDetail, { ids: id }))
+}
+
+// fetch new song details
+const fetchURL: IReducer = (state, action) => {
+  const songId = action.id
+  return state
+}
+
+// click on a new song to play
+const playSong: IReducer = (state, action) => {
+  if (state.playingSong.id === action.id) {
+    return state
+  } else {
+    const nextPlayingSong: IPlayingSong = { id: action.nextPlayingSongId, coverImg: '' }
+    const nextPlayingState: IPlayingState = {
+      isPlaying: true,
+      cycleMode: state.playingState.cycleMode,
+      playingTime: 0
+    }
+    return { ...state, playingSong: nextPlayingSong, playingState: nextPlayingState }
+  }
+}
+
 export const reducers: IReducer = (state, action) => {
+  console.log(action)
   switch (action.type) {
     case PLAY_SONG:
-      console.log(state)
-      if (state.playingSong.id === action.id) {
-        return state
-      } else {
-        const nextPlayingSong: IPlayingSong = { id: action.nextPlayingSongId, coverImg: '' }
-        const nextPlayingState: IPlayingState = {
-          isPlaying: true,
-          cycleMode: state.playingState.cycleMode,
-          playingTime: 0
-        }
-        return { ...state, playingSong: nextPlayingSong, playingState: nextPlayingState }
-      }
+      return playSong(state, action)
+    case FETCH_URL:
+      return fetchURL(state, action)
     default:
       return state
   }

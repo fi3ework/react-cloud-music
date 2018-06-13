@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as style from './style.scss'
 import { Link } from 'react-router-dom'
-import { playSongActionCreator } from '../../store'
+import { playSongActionCreator, fetchSongDetail } from '@/store'
 import PropTypes from 'prop-types'
 
 type IArtist = {
@@ -27,6 +27,7 @@ export default class Track extends React.Component<ITrackProps> {
 
   handleClick: React.MouseEventHandler<HTMLLinkElement> = e => {
     this.context.store.dispatch(playSongActionCreator(this.props.id))
+    this.context.store.dispatch(fetchSongDetail(this.props.id))
     console.log(this.context.store.getState())
   }
 
