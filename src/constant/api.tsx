@@ -1,5 +1,20 @@
 import { compile } from 'path-to-regexp'
 
+type Iapi = string & {
+  path: string
+}
+
+type Iapis = {
+  banner: Iapi
+  recommendList: Iapi
+  recommendSong: Iapi
+  songDetail: Iapi
+  playlist: Iapi
+  songUrl: Iapi
+}
+
+const ProxyHost = '/api'
+
 const NETEASE_API = {
   banner: '/banner', // 轮播图
   recommendList: '/personalized', // 推荐歌单
@@ -10,12 +25,27 @@ const NETEASE_API = {
   },
   // 歌单详情
   playlist: {
-    path: '/playlist/:id'
+    path: '/playlist/detail?id=:id'
   },
   // 歌曲URL
   songUrl: {
     path: 'http://music.163.com/song/media/outer/url?id=:id.mp3 '
   }
+}
+
+const addHost = (APIs, hostPath) => {
+  const ApiWithPrefix = {} as Iapis
+  Object.keys(APIs).forEach(key => {
+    if (typeof APIs[key] === 'string') {
+      ApiWithPrefix[key] = `${hostPath}${APIs[key]}`
+    } else {
+      ApiWithPrefix[key] = {
+        path: `${hostPath}${APIs[key].path}`
+      }
+    }
+  })
+  console.log(ApiWithPrefix)
+  return ApiWithPrefix
 }
 
 export const getURL = (API: any, params?) => {
@@ -28,4 +58,4 @@ export const getURL = (API: any, params?) => {
   return toPath(params)
 }
 
-export default NETEASE_API
+export default addHost(NETEASE_API, ProxyHost)

@@ -5,6 +5,7 @@ import { ComponentFetchModel } from '@/utils/models'
 import { observer } from 'mobx-react'
 import { get } from 'lodash'
 import TrackList from '@/components/TrackList'
+import NETEASE_API, { getURL } from '@/constant/api'
 
 interface IProps {
   style?: React.CSSProperties
@@ -15,7 +16,7 @@ interface IProps {
 @observer
 class Playlist extends React.Component<any> {
   listStore = new ComponentFetchModel({
-    URL: `/playlist/detail?id=${this.props.match.params.id}`
+    URL: getURL(NETEASE_API.playlist, { id: this.props.match.params.id })
   })
 
   componentDidMount() {

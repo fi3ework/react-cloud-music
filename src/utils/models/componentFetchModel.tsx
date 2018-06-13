@@ -18,7 +18,7 @@ class Store {
   }
 
   fetchURL = () => {
-    return fetch('/api' + this.URL, {})
+    return fetch(this.URL, {})
   }
 
   @action

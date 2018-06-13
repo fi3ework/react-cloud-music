@@ -55,7 +55,7 @@ export const playSongActionCreator: IActionCreator = id => ({
 export const generateFetchActionCreator = URL => {
   return new Promise(() => {
     return axios
-      .get('/api' + URL)
+      .get(URL)
       .then(response => {
         console.log(response)
       })
