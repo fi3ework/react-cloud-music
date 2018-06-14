@@ -3,10 +3,12 @@ $headerBarHeight: 100px;
 $bottomBarHeight: 100px;
 
 @font-face {
-  font-family: 'iconfont-cloud-music';
-  /* project id 669459 */
-  src: url('//at.alicdn.com/t/font_669459_irvqlcv7z3qv9529.eot');
-  src: url('//at.alicdn.com/t/font_669459_irvqlcv7z3qv9529.eot?#iefix') format('embedded-opentype'), url('//at.alicdn.com/t/font_669459_irvqlcv7z3qv9529.woff') format('woff'), url('//at.alicdn.com/t/font_669459_irvqlcv7z3qv9529.ttf') format('truetype'), url('//at.alicdn.com/t/font_669459_irvqlcv7z3qv9529.svg#iconfont-cloud-music') format('svg');
+  font-family: 'iconfont-cloud-music'; /* project id 669459 */
+  src: url('//at.alicdn.com/t/font_669459_trzjh0p3i0o.eot');
+  src: url('//at.alicdn.com/t/font_669459_trzjh0p3i0o.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_669459_trzjh0p3i0o.woff') format('woff'),
+    url('//at.alicdn.com/t/font_669459_trzjh0p3i0o.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_669459_trzjh0p3i0o.svg#iconfont-cloud-music') format('svg');
 }
 
 :global {
@@ -27,7 +29,7 @@ $bottomBarHeight: 100px;
   }
 
   .iconfont-ncm {
-    font-family: "iconfont-cloud-music" !important;
+    font-family: 'iconfont-cloud-music' !important;
     font-size: 1rem;
     font-style: normal;
     -webkit-font-smoothing: antialiased;
@@ -35,6 +37,6 @@ $bottomBarHeight: 100px;
   }
 }
 
-@function height-by-width($width){
-  @return (750 / 1334 * $width) * 1px
+@function height-by-width($width) {
+  @return (750 / 1334 * $width) * 1px;
 }

@@ -1,9 +1,13 @@
 import NETEASE_API, { getURL } from '@/constant/api'
 import axios from 'axios'
 
+// ===== constant ===== //
 export const PLAY_SONG = 'click on a fucking song to fucking play'
 export const FETCH_URL = 'start to fetching a fucking url'
 export const FETCH_SONG_DETIAL_SUCCESS = 'the fucking song fetch success'
+export const FETCH_SONG_URL_SUCCESS = 'the fucking song url fetch success'
+
+// ===== type ===== //
 
 export type IAction = {
   readonly type: string
@@ -18,15 +22,20 @@ enum CycleMode {
   random
 }
 
+// 同步 action 修改
 export type IPlayingState = {
   isPlaying: boolean
   cycleMode: CycleMode
   playingTime: number
 }
 
+// 异步 action 修改
 export type IPlayingSong = {
   id: string
   coverImg: string
+  url: string
+  artists: string
+  album: string
 }
 
 export type IStoreState = {
@@ -37,7 +46,10 @@ export type IStoreState = {
 export const defaultState: IStoreState = {
   playingSong: {
     id: '',
-    coverImg: ''
+    coverImg: '',
+    url: '',
+    artists: '',
+    album: ''
   },
   playingState: {
     isPlaying: false,
@@ -47,6 +59,8 @@ export const defaultState: IStoreState = {
 }
 
 type IReducer = (state: IStoreState, action: IAction) => IStoreState
+
+// ===== action creator ===== //
 
 export const playSongActionCreator: IActionCreator = id => ({
   type: PLAY_SONG,
@@ -58,42 +72,58 @@ export const fetchSongDetailSucceedActionCreator: IActionCreator = payload => ({
   payload
 })
 
-export const generateFetchActionCreator = URL => {
-  console.log(URL)
+export const fetchSongUrlActionCreator: IActionCreator = payload => ({
+  type: FETCH_SONG_URL_SUCCESS,
+  payload
+})
+
+export const fetchSongDetail = id =>
+  generateFetchActionCreator(getURL(NETEASE_API.songDetail, { ids: id }), fetchSongDetailSucceedActionCreator)
+
+export const fetchSongUrl = id =>
+  generateFetchActionCreator(getURL(NETEASE_API.songUrl, { ids: id }), fetchSongUrlActionCreator)
+
+export const generateFetchActionCreator = (URL, actionCreator) => {
   return axios
     .get(URL)
     .then(response => {
       console.log(response.data)
-      return fetchSongDetailSucceedActionCreator(response.data)
+      return actionCreator(response.data)
     })
     .catch(error => {
       console.log(error)
     })
 }
 
-export const fetchSongDetail = id => {
-  console.log(getURL(NETEASE_API.songDetail, { ids: id }))
-  return generateFetchActionCreator(getURL(NETEASE_API.songDetail, { ids: id }))
-}
+// ===== action reducers ===== //
 
-// got the song detaills
+// 歌曲详情 reducer
 const fetchSongDetialSuccess: IReducer = (state, action) => {
-  console.log(action.payload)
-  return state
+  console.log(action)
+  const firstSong = action.payload.songs[0]
+  const prevPlaingSong = state.playingSong
+  const nextPlayingSong = { ...prevPlaingSong, coverImg: firstSong.al.picUrl }
+  return { ...state, playingSong: nextPlayingSong }
 }
 
-// // fetch new song details
-// const fetchURL: IReducer = (state, action) => {
-//   const songId = action.id
-//   return state
-// }
+// 歌曲 URL reducer
+const fetchSongUrlSuccess: IReducer = (state, action) => {
+  // console.log(action)
+  const firstSong = action.payload.data[0]
+  const prevPlaingSong = state.playingSong
+  const nextPlayingSong = { ...prevPlaingSong, url: firstSong.url }
+  // console.log({ ...state, playingSong: nextPlayingSong })
+  return { ...state, playingSong: nextPlayingSong }
+}
 
-// click on a new song to play
+// 点击一首歌开始播放，更改同步状态
 const playSong: IReducer = (state, action) => {
+  console.log(action)
   if (state.playingSong.id === action.id) {
     return state
   } else {
-    const nextPlayingSong: IPlayingSong = { id: action.nextPlayingSongId, coverImg: '' }
+    const prevPlayingSong: IPlayingSong = state.playingSong
+    const nextPlayingSong: IPlayingSong = { ...prevPlayingSong, id: action.nextPlayingSongId,  }
     const nextPlayingState: IPlayingState = {
       isPlaying: true,
       cycleMode: state.playingState.cycleMode,
@@ -108,10 +138,10 @@ export const reducers: IReducer = (state, action) => {
   switch (action.type) {
     case PLAY_SONG:
       return playSong(state, action)
-    // case FETCH_URL:
-    //   return fetchURL(state, action)
     case FETCH_SONG_DETIAL_SUCCESS:
       return fetchSongDetialSuccess(state, action)
+    case FETCH_SONG_URL_SUCCESS:
+      return fetchSongUrlSuccess(state, action)
     default:
       return state
   }

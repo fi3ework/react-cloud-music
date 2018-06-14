@@ -1,9 +1,8 @@
 import * as React from 'react'
 import * as style from './style.scss'
 import { Link } from 'react-router-dom'
-import { playSongActionCreator, fetchSongDetail, generateFetchActionCreator } from '@/store'
+import { playSongActionCreator, fetchSongDetail, fetchSongUrl } from '@/store'
 import PropTypes from 'prop-types'
-import NETEASE_API, { getURL } from '@/constant/api'
 
 type IArtist = {
   name: string
@@ -27,8 +26,18 @@ export default class Track extends React.Component<ITrackProps> {
   }
 
   handleClick: React.MouseEventHandler<HTMLLinkElement> = e => {
-    this.context.store.dispatch(playSongActionCreator(this.props.id))
-    this.context.store.dispatch(generateFetchActionCreator(getURL(NETEASE_API.songDetail, { ids: this.props.id })))
+    console.log(this.props)
+    // 同步修改
+    const nextSongSyncInfo = {
+      id: this.props.id,
+      artists: this.props.artists,
+      album: this.props.album
+    }
+    this.context.store.dispatch(playSongActionCreator(nextSongSyncInfo))
+    // 异步获取 url
+    this.context.store.dispatch(fetchSongUrl(this.props.id))
+    // 异步获取详情
+    this.context.store.dispatch(fetchSongDetail(this.props.id))
     console.log(this.context.store.getState())
   }
 
@@ -38,7 +47,7 @@ export default class Track extends React.Component<ITrackProps> {
       <Link to={`/playing/`} className={style.trackWrapper} onClick={this.handleClick}>
         <div className={style.index}>{index}</div>
         <div className={style.info}>
-          <div>{name}</div>
+          <div className={style.songName}>{name}</div>
           <div className={style.album}>
             {artists[0].name} - {album.name}
           </div>

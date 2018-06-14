@@ -19,17 +19,21 @@ const NETEASE_API = {
   banner: '/banner', // 轮播图
   recommendList: '/personalized', // 推荐歌单
   recommendSong: '/personalized/newsong', // 推荐歌曲
-  songDetail: {
-    // 歌曲详情
-    path: '/song/detail?ids=:ids'
-  },
   // 歌单详情
   playlist: {
     path: '/playlist/detail?id=:id'
   },
   // 歌曲URL
   songUrl: {
-    path: 'http://music.163.com/song/media/outer/url?id=:id.mp3 '
+    path: '/music/url?id=:ids'
+  },
+  songDetail: {
+    // 歌曲详情
+    path: '/song/detail?ids=:ids'
+  },
+  // 歌曲 URL 备胎
+  songUrlBackUp: {
+    path: 'http://music.163.com/song/media/outer/url?id=:id.mp3'
   }
 }
 
@@ -39,8 +43,14 @@ const addHost = (APIs, hostPath) => {
     if (typeof APIs[key] === 'string') {
       ApiWithPrefix[key] = `${hostPath}${APIs[key]}`
     } else {
-      ApiWithPrefix[key] = {
-        path: `${hostPath}${APIs[key].path}`
+      if (APIs[key].path[0] === '/') {
+        ApiWithPrefix[key] = {
+          path: `${hostPath}${APIs[key].path}`
+        }
+      } else {
+        ApiWithPrefix[key] = {
+          path: `${APIs[key].path}`
+        }
       }
     }
   })

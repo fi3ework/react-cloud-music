@@ -23,7 +23,6 @@ const dynamicRoute = ({ location }) => {
         <Route path={`/mine`} component={BaseHeaderBar} />
         <Route path={`/friends`} component={BaseHeaderBar} />
         <Route path={`/account`} component={BaseHeaderBar} />
-        <Route path={`/playing`} component={BaseHeaderBar} />
       </Switch>
       <div className={style.routeWrapper}>
         <LiverRoute path={`/explore`} liveComponent={ExplorePage} />

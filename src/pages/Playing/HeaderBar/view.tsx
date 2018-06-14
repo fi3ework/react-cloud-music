@@ -1,16 +1,17 @@
 import React from 'react'
 import * as style from './style.scss'
-import { IPlayingSong, IPlayingState } from '../../../store'
 
 type IProps = {
-  playingSong: IPlayingSong
+  artists: string
+  album: string
 }
 
 export default class RotatingCover extends React.Component<IProps> {
   render() {
     return (
       <div>
-        <img className={style.coverImg} src={this.props.playingSong.coverImg} />
+        <div>{this.props.artists}</div>
+        <div>{this.props.album}</div>
       </div>
     )
   }
