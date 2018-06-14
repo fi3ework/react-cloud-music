@@ -7,7 +7,13 @@ import { createStore, applyMiddleware } from 'redux'
 import { reducers, defaultState } from './store'
 import promiseMiddleware from 'redux-promise'
 
-const store = createStore(reducers, defaultState as any, applyMiddleware(promiseMiddleware))
+const middlewares = [promiseMiddleware]
+if (process.env.NODE_ENV === `development`) {
+  const { logger } = require(`redux-logger`)
+  middlewares.push(logger)
+}
+
+const store = createStore(reducers, defaultState as any, applyMiddleware(...middlewares))
 
 ReactDOM.render(
   <Provider store={store}>

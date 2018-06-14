@@ -185,6 +185,7 @@ const playSongReducer: IReducer = (state, action) => {
 
 // 切换前后歌
 const switchSongReducer: IReducer = (state, action) => {
+  console.log('切歌')
   const prevPlaylist = state.playlist
   const nextSongIndex = prevPlaylist.currIndex + action.pace
   // 如果超出播放列表的边界则什么都不做

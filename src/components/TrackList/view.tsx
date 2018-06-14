@@ -38,7 +38,7 @@ export default class TrackList extends React.Component<ITrackListProps> {
     } else {
       return tracks.map((item, index) => {
         return (
-          <Track key={item.id} name={item.name} artists={item.artists} album={item.album} index={index} id={item.id} />
+          <Track key={item.id} name={item.name} artists={item.artists} album={item.album} index={index + 1} id={item.id} />
         )
       })
     }

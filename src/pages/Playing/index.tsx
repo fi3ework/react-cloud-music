@@ -2,10 +2,11 @@ import * as React from 'react'
 import * as style from './style.scss'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { connect } from 'react-redux'
-import { IStoreState, IPlayingSong, IPlayState } from '../../store'
+import { IStoreState, IPlayingSong, IPlayState, switchPrevSong, switchNextSong, switchPlayState } from '../../store'
 import RotatingCover from './RotatingCover'
 import Header from './HeaderBar'
 import ControlBar from './ControlBar'
+import PropTypes from 'prop-types'
 
 interface IProps {
   style: React.CSSProperties
@@ -14,11 +15,17 @@ interface IProps {
 }
 
 class PlayingPage extends React.Component<IProps> {
+  static contextTypes = {
+    store: PropTypes.object
+  }
+
   handleSwitchPrevSong = () => {
+    this.context.store.dispatch(switchPrevSong)
     console.log('←')
   }
 
   handleSwitchNextSong = () => {
+    this.context.store.dispatch(switchNextSong)
     console.log('→')
   }
 

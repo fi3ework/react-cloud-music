@@ -8,6 +8,7 @@
     "exclude": ["config/**/*.js", "node_modules/**/*.ts"]
   },
   "rules": {
+    "no-var-requires": false,
     "max-classes-per-file": false,
     "prettier": true,
     "arrow-parens": false,
