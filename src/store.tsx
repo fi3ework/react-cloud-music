@@ -3,6 +3,7 @@ import axios from 'axios'
 
 export const PLAY_SONG = 'click on a fucking song to fucking play'
 export const FETCH_URL = 'start to fetching a fucking url'
+export const FETCH_SONG_DETIAL_SUCCESS = 'the fucking song fetch success'
 
 export type IAction = {
   readonly type: string
@@ -52,17 +53,22 @@ export const playSongActionCreator: IActionCreator = id => ({
   nextPlayingSongId: id
 })
 
+export const fetchSongDetailSucceedActionCreator: IActionCreator = payload => ({
+  type: FETCH_SONG_DETIAL_SUCCESS,
+  payload
+})
+
 export const generateFetchActionCreator = URL => {
-  return new Promise(() => {
-    return axios
-      .get(URL)
-      .then(response => {
-        console.log(response)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-  })
+  console.log(URL)
+  return axios
+    .get(URL)
+    .then(response => {
+      console.log(response.data)
+      return fetchSongDetailSucceedActionCreator(response.data)
+    })
+    .catch(error => {
+      console.log(error)
+    })
 }
 
 export const fetchSongDetail = id => {
@@ -70,11 +76,17 @@ export const fetchSongDetail = id => {
   return generateFetchActionCreator(getURL(NETEASE_API.songDetail, { ids: id }))
 }
 
-// fetch new song details
-const fetchURL: IReducer = (state, action) => {
-  const songId = action.id
+// got the song detaills
+const fetchSongDetialSuccess: IReducer = (state, action) => {
+  console.log(action.payload)
   return state
 }
+
+// // fetch new song details
+// const fetchURL: IReducer = (state, action) => {
+//   const songId = action.id
+//   return state
+// }
 
 // click on a new song to play
 const playSong: IReducer = (state, action) => {
@@ -96,8 +108,10 @@ export const reducers: IReducer = (state, action) => {
   switch (action.type) {
     case PLAY_SONG:
       return playSong(state, action)
-    case FETCH_URL:
-      return fetchURL(state, action)
+    // case FETCH_URL:
+    //   return fetchURL(state, action)
+    case FETCH_SONG_DETIAL_SUCCESS:
+      return fetchSongDetialSuccess(state, action)
     default:
       return state
   }

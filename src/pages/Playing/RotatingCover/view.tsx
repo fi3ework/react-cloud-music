@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { IPlayingSong } from '../../../store'
 
 type IProps = {
@@ -7,8 +8,17 @@ type IProps = {
 
 class RotatingCover extends React.Component<IProps> {
   render() {
-    return <div>2</div>
+    return (
+      <div>
+        asdfjkasdklfsa;jklddf
+        <audio src="someaudio.wav" />
+      </div>
+    )
   }
 }
 
-export default RotatingCover
+const mapStateToProps = (state, ownProps) => {
+  return state
+}
+
+export default connect(mapStateToProps)(RotatingCover)

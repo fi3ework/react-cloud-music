@@ -1,8 +1,9 @@
 import * as React from 'react'
 import * as style from './style.scss'
 import { Link } from 'react-router-dom'
-import { playSongActionCreator, fetchSongDetail } from '@/store'
+import { playSongActionCreator, fetchSongDetail, generateFetchActionCreator } from '@/store'
 import PropTypes from 'prop-types'
+import NETEASE_API, { getURL } from '@/constant/api'
 
 type IArtist = {
   name: string
@@ -27,7 +28,7 @@ export default class Track extends React.Component<ITrackProps> {
 
   handleClick: React.MouseEventHandler<HTMLLinkElement> = e => {
     this.context.store.dispatch(playSongActionCreator(this.props.id))
-    this.context.store.dispatch(fetchSongDetail(this.props.id))
+    this.context.store.dispatch(generateFetchActionCreator(getURL(NETEASE_API.songDetail, { ids: this.props.id })))
     console.log(this.context.store.getState())
   }
 
