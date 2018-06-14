@@ -2,14 +2,14 @@ import * as React from 'react'
 import * as style from './style.scss'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { connect } from 'react-redux'
-import { IStoreState, IPlayingSong, IPlayingState } from '../../store'
+import { IStoreState, IPlayingSong, IPlayState } from '../../store'
 import RotatingCover from './RotatingCover'
 import Header from './HeaderBar'
 import ControlBar from './ControlBar'
 
 interface IProps {
   style: React.CSSProperties
-  playingState: IPlayingState
+  playState: IPlayState
   playingSong: IPlayingSong
 }
 
@@ -49,7 +49,7 @@ class PlayingPage extends React.Component<IProps> {
 
 const mapStateToProps = (state: IStoreState, ownProps) => {
   return {
-    playingState: state.playingState,
+    playState: state.playState,
     playingSong: state.playingSong
   }
 }

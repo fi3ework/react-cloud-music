@@ -3,13 +3,30 @@ import { observer } from 'mobx-react'
 import { get } from 'lodash'
 import * as style from './style.scss'
 import Track from '@/components/Track'
+import cs from 'classnames'
+import PropTypes from 'prop-types'
 
 type ITrackListProps = {
   payload: object | null
 }
 
-const Bar: React.SFC<{ tracksCount: number }> = ({ tracksCount }) => {
-  return <div className={style.bar}>{`播放全部（共${tracksCount}首）`}</div>
+class Bar extends React.Component<{ tracksCount: number }> {
+  static contextTypes = {
+    store: PropTypes.object
+  }
+
+  handleClick: React.MouseEventHandler<HTMLDivElement> = () => {
+    this.context.store.dispatch({})
+  }
+
+  render() {
+    return (
+      <div className={style.bar} onClick={this.handleClick}>
+        <i className={cs({ 'iconfont-ncm': true, [style.playAllIcon]: true })}>&#xe641;</i>
+        {`播放全部（共${this.props.tracksCount}首）`}
+      </div>
+    )
+  }
 }
 
 @observer

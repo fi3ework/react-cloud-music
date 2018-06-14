@@ -8,6 +8,7 @@
     "exclude": ["config/**/*.js", "node_modules/**/*.ts"]
   },
   "rules": {
+    "max-classes-per-file": false,
     "prettier": true,
     "arrow-parens": false,
     "arrow-return-shorthand": [false],
@@ -43,13 +44,7 @@
       "severity": "off",
       "options": ["parameter", "property-declaration"]
     },
-    "variable-name": [
-      true,
-      "ban-keywords",
-      "check-format",
-      "allow-pascal-case",
-      "allow-leading-underscore"
-    ],
+    "variable-name": [true, "ban-keywords", "check-format", "allow-pascal-case", "allow-leading-underscore"],
     // tslint-react
     "jsx-no-lambda": false
   }

@@ -1,6 +1,6 @@
 import React from 'react'
 import * as style from './style.scss'
-import { IPlayingSong, IPlayingState } from '../../../store'
+import { IPlayingSong, IPlayState } from '../../../store'
 
 type IProps = {
   playingSong: IPlayingSong
