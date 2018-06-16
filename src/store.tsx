@@ -87,12 +87,15 @@ export const changePlaylistIndexActionCreator: IActionCreator = (pace: number) =
 // compose：切换 index + 播放当前 index
 export const SwitchSongByPace: any = (pace: number) => {
   return (dispatch, getState) => {
-    // 先在调整当前播放歌曲的 index
+    // 1. 先在调整当前播放歌曲的 index
     dispatch(changePlaylistIndexActionCreator(pace))
-    // 开始播放当前列表
+    // 2. 开始播放当前列表
     dispatch({
       type: PLAY_PLAYLIST
     })
+    // 3. 异步获取对应的歌曲 url
+    const currState: IStoreState = getState()
+    dispatch(fetchSongUrl(currState.playingSong.id))
   }
 }
 
@@ -113,16 +116,21 @@ export const addToPlaylist: IActionCreator = songs => {
 // 开始播放当前列表
 export const playCurrPlaylist: any = songs => {
   console.log('play current list')
-  return dispatch => {
+  return (dispatch, getState) => {
+    // 1. 将歌添加到播放列表中
     dispatch(
       addToPlaylist({
         type: PUSH_TO_PLAYLIST,
         songsToPush: Array.isArray(songs) ? songs : [songs]
       })
     )
+    // 2. 开始播放 currindex 对应的歌曲
     dispatch({
       type: PLAY_PLAYLIST
     })
+    // 3. 异步获取对应的歌曲 url
+    const currState: IStoreState = getState()
+    dispatch(fetchSongUrl(currState.playingSong.id))
   }
 }
 
@@ -145,8 +153,8 @@ export const syncReplacePlayingSong: IActionCreator = payload => ({
   payload
 })
 
-// 异步获取一首歌的 URL
-export const fetchSongUrlActionCreator: IActionCreator = payload => ({
+// 异步获取一首歌的 URL 成功
+export const fetchSongUrlSuccessActionCreator: IActionCreator = payload => ({
   type: FETCH_SONG_URL_SUCCESS,
   payload
 })
@@ -157,7 +165,7 @@ export const fetchSongDetail = id =>
 
 // 异步获取一首歌的 URL（export 给组件）
 export const fetchSongUrl = id =>
-  generateFetchActionCreator(getURL(NETEASE_API.songUrl, { ids: id }), fetchSongUrlActionCreator)
+  generateFetchActionCreator(getURL(NETEASE_API.songUrl, { ids: id }), fetchSongUrlSuccessActionCreator)
 
 // 通用异步获取
 export const generateFetchActionCreator = (URL, actionCreator) => {
