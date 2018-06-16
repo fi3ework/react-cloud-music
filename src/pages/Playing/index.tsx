@@ -2,7 +2,7 @@ import * as React from 'react'
 import * as style from './style.scss'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { connect } from 'react-redux'
-import { IStoreState, IPlayingSong, IPlayState, switchPrevSong, switchNextSong, switchPlayState } from '../../store'
+import { IStoreState, IPlayingSong, IPlayState, SwitchSongByPace } from '../../store'
 import RotatingCover from './RotatingCover'
 import Header from './HeaderBar'
 import ControlBar from './ControlBar'
@@ -20,12 +20,12 @@ class PlayingPage extends React.Component<IProps> {
   }
 
   handleSwitchPrevSong = () => {
-    this.context.store.dispatch(switchPrevSong)
+    this.context.store.dispatch(SwitchSongByPace(-1))
     console.log('←')
   }
 
   handleSwitchNextSong = () => {
-    this.context.store.dispatch(switchNextSong)
+    this.context.store.dispatch(SwitchSongByPace(1))
     console.log('→')
   }
 

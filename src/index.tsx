@@ -6,8 +6,9 @@ import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import { reducers, defaultState } from './store'
 import promiseMiddleware from 'redux-promise'
+import thunkMiddleware from 'redux-thunk'
 
-const middlewares = [promiseMiddleware]
+const middlewares = [thunkMiddleware, promiseMiddleware]
 if (process.env.NODE_ENV === `development`) {
   const { logger } = require(`redux-logger`)
   middlewares.push(logger)

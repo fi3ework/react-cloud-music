@@ -2,15 +2,17 @@ import NETEASE_API, { getURL } from '@/constant/api'
 import axios from 'axios'
 
 // ===== constant ===== //
-export const PLAY_SONG = 'click on a fucking song to fucking play'
-export const FETCH_URL = 'start to fetching a fucking url'
-export const FETCH_SONG_DETIAL_SUCCESS = 'the fucking song fetch success'
-export const FETCH_SONG_URL_SUCCESS = 'the fucking song url fetch success'
-export const SWITCH_PREV_SONG = 'switch to prev fucking song'
-export const SWITCH_NEXT_SONG = 'switch to next fucking song'
-export const SWITCH_PLAY_STATE = 'switch fucking pause or play'
-export const PUSH_TO_PLAYLIST = 'push the fucking song to the fucking playlist'
-export const EMPTY_PLAYLIST = 'clear the fucking playlist'
+export const PLAY_SONG = 'PLAY_SONG'
+export const FETCH_URL = 'FETCH_URL'
+export const FETCH_SONG_DETIAL_SUCCESS = 'FETCH_SONG_DETIAL_SUCCESS'
+export const FETCH_SONG_URL_SUCCESS = 'FETCH_SONG_URL_SUCCESS'
+export const SWITCH_PREV_SONG = 'SWITCH_PREV_SONG'
+export const SWITCH_NEXT_SONG = 'SWITCH_NEXT_SONG'
+export const SWITCH_PLAY_STATE = 'SWITCH_PLAY_STATE'
+export const PUSH_TO_PLAYLIST = 'PUSH_TO_PLAYLIST'
+export const EMPTY_PLAYLIST = 'EMPTY_PLAYLIST'
+export const PLAY_PLAYLIST = 'PLAY_PLAYLIST'
+export const CHANGE_PLAYLIST_INDEX = 'CHANGE_PLAYLIST_INDEX'
 // ===== type ===== //
 
 export type IAction = {
@@ -76,16 +78,22 @@ type IReducer = (state: IStoreState, action: IAction) => IStoreState
 
 // ===== action creator ===== //
 
-// 切换到播放列表中的上一首歌
-export const switchPrevSong: IAction = {
-  type: SWITCH_PREV_SONG,
-  pace: -1
-}
+// 更改播放列表中的 index
+export const changePlaylistIndexActionCreator: IActionCreator = (pace: number) => ({
+  type: CHANGE_PLAYLIST_INDEX,
+  pace: pace
+})
 
-// 切换到播放列表中的下一首歌
-export const switchNextSong: IAction = {
-  type: SWITCH_NEXT_SONG,
-  pace: 1
+// compose：切换 index + 播放当前 index
+export const SwitchSongByPace: any = (pace: number) => {
+  return (dispatch, getState) => {
+    // 先在调整当前播放歌曲的 index
+    dispatch(changePlaylistIndexActionCreator(pace))
+    // 开始播放当前列表
+    dispatch({
+      type: PLAY_PLAYLIST
+    })
+  }
 }
 
 // 切换播放 / 暂停
@@ -95,9 +103,26 @@ export const switchPlayState: IAction = {
 
 // 将歌曲添加到播放列表中
 export const addToPlaylist: IActionCreator = songs => {
+  console.log('add')
   return {
     type: PUSH_TO_PLAYLIST,
-    songsToPush: Array.isArray(songs) ? songs : [songs]
+    songsToPush: Array.isArray(songs.songsToPush) ? songs.songsToPush : [songs.songsToPush]
+  }
+}
+
+// 开始播放当前列表
+export const playCurrPlaylist: any = songs => {
+  console.log('play current list')
+  return dispatch => {
+    dispatch(
+      addToPlaylist({
+        type: PUSH_TO_PLAYLIST,
+        songsToPush: Array.isArray(songs) ? songs : [songs]
+      })
+    )
+    dispatch({
+      type: PLAY_PLAYLIST
+    })
   }
 }
 
@@ -114,8 +139,8 @@ export const playSongActionCreator: IActionCreator = id => ({
   nextPlayingSongId: id
 })
 
-// 异步获取一首歌的详情
-export const fetchSongDetailSucceedActionCreator: IActionCreator = payload => ({
+// 已成功到获取一首歌的详情
+export const syncReplacePlayingSong: IActionCreator = payload => ({
   type: FETCH_SONG_DETIAL_SUCCESS,
   payload
 })
@@ -128,7 +153,7 @@ export const fetchSongUrlActionCreator: IActionCreator = payload => ({
 
 // 异步获取一首歌的详情（export 给组件）
 export const fetchSongDetail = id =>
-  generateFetchActionCreator(getURL(NETEASE_API.songDetail, { ids: id }), fetchSongDetailSucceedActionCreator)
+  generateFetchActionCreator(getURL(NETEASE_API.songDetail, { ids: id }), syncReplacePlayingSong)
 
 // 异步获取一首歌的 URL（export 给组件）
 export const fetchSongUrl = id =>
@@ -166,25 +191,21 @@ const fetchSongUrlSuccessReducer: IReducer = (state, action) => {
   return { ...state, playingSong: nextPlayingSong }
 }
 
-// 点击一首歌开始播放，更改同步状态
-const playSongReducer: IReducer = (state, action) => {
-  console.log(action)
-  if (state.playingSong.id === action.id) {
-    return state
-  } else {
-    const prevPlayingSong: IPlayingSong = state.playingSong
-    const nextPlayingSong: IPlayingSong = { ...prevPlayingSong, id: action.nextPlayingSongId }
-    const nextPlayingState: IPlayState = {
-      isPlaying: true,
-      cycleMode: state.playState.cycleMode,
-      playingTime: 0
-    }
-    return { ...state, playingSong: nextPlayingSong, playState: nextPlayingState }
+// 开始播放当前列表中对应 index 的歌曲
+const playCurrSongReducer: IReducer = (state, action) => {
+  console.log('ready to play')
+  const nextPlayingSong: IPlayingSong = state.playlist.list[state.playlist.currIndex]
+  console.log(nextPlayingSong)
+  const nextPlayingState: IPlayState = {
+    isPlaying: true,
+    cycleMode: state.playState.cycleMode,
+    playingTime: 0
   }
+  return { ...state, playingSong: nextPlayingSong, playState: nextPlayingState }
 }
 
-// 切换前后歌
-const switchSongReducer: IReducer = (state, action) => {
+// 更改列表中的 index
+const changePlaylistIndexReducer: IReducer = (state, action) => {
   console.log('切歌')
   const prevPlaylist = state.playlist
   const nextSongIndex = prevPlaylist.currIndex + action.pace
@@ -195,32 +216,40 @@ const switchSongReducer: IReducer = (state, action) => {
   }
   const nextIndex = nextSongIndex
   const nextPlaylist = { ...prevPlaylist, currIndex: nextIndex }
-  const prevPlayState = state.playState
-  const nextPlayState = { ...prevPlayState, isPlaying: true }
-  return { ...state, playState: nextPlayState, playlist: nextPlaylist }
+  return { ...state, playlist: nextPlaylist }
 }
 
-// 切换播放状态
-const switchPlayStateReducer: IReducer = (state, action) => {
+// 切换播放/暂停状态
+const switchPlayingStateReducer: IReducer = (state, action) => {
   const prevPlayState = state.playState
   const nextPlayState = { ...prevPlayState, isPlaying: !prevPlayState.isPlaying }
-  return { ...state, playState: prevPlayState }
+  return { ...state, playState: nextPlayState }
 }
+
+const pushSongsToPlaylistREducer: IReducer = (state, action) => {
+  const nextPlaylist = {
+    currIndex: 0,
+    list: action.songsToPush
+  }
+  return { ...state, playlist: nextPlaylist }
+}
+
+// 总 reducer
 export const reducers: IReducer = (state, action) => {
   console.log(action)
   switch (action.type) {
-    case PLAY_SONG:
-      return playSongReducer(state, action)
+    case PLAY_PLAYLIST:
+      return playCurrSongReducer(state, action)
     case FETCH_SONG_DETIAL_SUCCESS:
       return fetchSongDetialSuccessReducer(state, action)
     case FETCH_SONG_URL_SUCCESS:
       return fetchSongUrlSuccessReducer(state, action)
-    case SWITCH_PREV_SONG:
-      return switchSongReducer(state, action)
-    case SWITCH_NEXT_SONG:
-      return switchSongReducer(state, action)
+    case CHANGE_PLAYLIST_INDEX:
+      return changePlaylistIndexReducer(state, action)
     case SWITCH_PLAY_STATE:
-      return switchPlayStateReducer(state, action)
+      return switchPlayingStateReducer(state, action)
+    case PUSH_TO_PLAYLIST:
+      return pushSongsToPlaylistREducer(state, action)
     default:
       return state
   }
