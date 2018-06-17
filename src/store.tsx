@@ -79,16 +79,31 @@ type IReducer = (state: IStoreState, action: IAction) => IStoreState
 // ===== action creator ===== //
 
 // 更改播放列表中的 index
-export const changePlaylistIndexActionCreator: IActionCreator = (pace: number) => ({
-  type: CHANGE_PLAYLIST_INDEX,
-  pace: pace
-})
+export const changePlaylistIndexActionCreator: any = ({ pace, nextIndex }: { pace?: number; nextIndex?: number }) => {
+  return dispatch => {
+    if (typeof pace === 'number') {
+      dispatch({
+        type: CHANGE_PLAYLIST_INDEX,
+        pace
+      })
+    } else if (typeof nextIndex === 'number') {
+      dispatch({
+        type: CHANGE_PLAYLIST_INDEX,
+        nextIndex
+      })
+    } else {
+      dispatch({
+        type: CHANGE_PLAYLIST_INDEX
+      })
+    }
+  }
+}
 
 // compose：切换 index + 播放当前 index
-export const SwitchSongByPace: any = (pace: number) => {
+export const SwitchSongByPace: (pace: number) => void = pace => {
   return (dispatch, getState) => {
     // 1. 先在调整当前播放歌曲的 index
-    dispatch(changePlaylistIndexActionCreator(pace))
+    dispatch(changePlaylistIndexActionCreator({ pace }))
     // 2. 开始播放当前列表
     dispatch({
       type: PLAY_PLAYLIST
@@ -106,7 +121,6 @@ export const switchPlayState: IAction = {
 
 // 将歌曲添加到播放列表中
 export const addToPlaylist: IActionCreator = songs => {
-  console.log('add')
   return {
     type: PUSH_TO_PLAYLIST,
     songsToPush: Array.isArray(songs.songsToPush) ? songs.songsToPush : [songs.songsToPush]
@@ -114,7 +128,7 @@ export const addToPlaylist: IActionCreator = songs => {
 }
 
 // 开始播放当前列表
-export const playCurrPlaylist: any = songs => {
+export const playCurrPlaylist: any = (songs, index = 0) => {
   console.log('play current list')
   return (dispatch, getState) => {
     // 1. 将歌添加到播放列表中
@@ -124,11 +138,13 @@ export const playCurrPlaylist: any = songs => {
         songsToPush: Array.isArray(songs) ? songs : [songs]
       })
     )
-    // 2. 开始播放 currindex 对应的歌曲
+    // 2. 将 currIndex 置为 0
+    dispatch(changePlaylistIndexActionCreator({ nextIndex: index }))
+    // 3. 开始播放 currindex 对应的歌曲
     dispatch({
       type: PLAY_PLAYLIST
     })
-    // 3. 异步获取对应的歌曲 url
+    // 4. 异步获取对应的歌曲 url
     const currState: IStoreState = getState()
     dispatch(fetchSongUrl(currState.playingSong.id))
   }
@@ -169,6 +185,7 @@ export const fetchSongUrl = id =>
 
 // 通用异步获取
 export const generateFetchActionCreator = (URL, actionCreator) => {
+  // TODO: 加入取消之前的请求
   return axios
     .get(URL)
     .then(response => {
@@ -201,9 +218,7 @@ const fetchSongUrlSuccessReducer: IReducer = (state, action) => {
 
 // 开始播放当前列表中对应 index 的歌曲
 const playCurrSongReducer: IReducer = (state, action) => {
-  console.log('ready to play')
   const nextPlayingSong: IPlayingSong = state.playlist.list[state.playlist.currIndex]
-  console.log(nextPlayingSong)
   const nextPlayingState: IPlayState = {
     isPlaying: true,
     cycleMode: state.playState.cycleMode,
@@ -216,10 +231,18 @@ const playCurrSongReducer: IReducer = (state, action) => {
 const changePlaylistIndexReducer: IReducer = (state, action) => {
   console.log('切歌')
   const prevPlaylist = state.playlist
-  const nextSongIndex = prevPlaylist.currIndex + action.pace
+  let nextSongIndex
+  if (typeof action.pace === 'number') {
+    nextSongIndex = prevPlaylist.currIndex + action.pace
+  } else if (typeof action.nextIndex === 'number') {
+    nextSongIndex = action.nextIndex
+  } else {
+    nextSongIndex = prevPlaylist.currIndex
+  }
+
   // 如果超出播放列表的边界则什么都不做
   // TODO: 全部循环时列表会首尾相接
-  if (nextSongIndex < 0 || nextSongIndex >= prevPlaylist.list.length) {
+  if (nextSongIndex < 0 || nextSongIndex >= prevPlaylist.list.length || nextSongIndex === prevPlaylist.currIndex) {
     return state
   }
   const nextIndex = nextSongIndex
@@ -234,11 +257,10 @@ const switchPlayingStateReducer: IReducer = (state, action) => {
   return { ...state, playState: nextPlayState }
 }
 
+// 将新的歌推入歌单中
 const pushSongsToPlaylistREducer: IReducer = (state, action) => {
-  const nextPlaylist = {
-    currIndex: 0,
-    list: action.songsToPush
-  }
+  const prevPlaylist = state.playlist
+  const nextPlaylist = { ...prevPlaylist, list: action.songsToPush }
   return { ...state, playlist: nextPlaylist }
 }
 

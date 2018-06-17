@@ -7,6 +7,7 @@ import cs from 'classnames'
 import PropTypes from 'prop-types'
 import { IPlayingSong, playCurrPlaylist } from '../../store'
 import { Link } from 'react-router-dom'
+
 type ITrackListProps = {
   payload: object | null
 }
@@ -16,8 +17,8 @@ class Bar extends React.Component<{ tracksCount: number; tracks: any[] }> {
     store: PropTypes.object
   }
 
-  handleClick: React.MouseEventHandler<HTMLDivElement> = () => {
-    const songs = this.props.tracks.map(track => {
+  generateSongs: () => IPlayingSong[] = () => {
+    return this.props.tracks.map(track => {
       const song: IPlayingSong = {
         id: track.id,
         coverImg: track.album.picUrl,
@@ -27,13 +28,17 @@ class Bar extends React.Component<{ tracksCount: number; tracks: any[] }> {
       }
       return song
     })
+  }
+
+  playAllSongs: React.MouseEventHandler<HTMLDivElement> = () => {
+    const songs = this.generateSongs()
     this.context.store.dispatch(playCurrPlaylist(songs))
   }
 
   render() {
     return (
       <Link to={`/playing/`}>
-        <div className={style.bar} onClick={this.handleClick}>
+        <div className={style.bar} onClick={this.playAllSongs}>
           <i className={cs({ 'iconfont-ncm': true, [style.playAllIcon]: true })}>&#xe641;</i>
           {`播放全部（共${this.props.tracksCount}首）`}
         </div>
@@ -44,6 +49,38 @@ class Bar extends React.Component<{ tracksCount: number; tracks: any[] }> {
 
 @observer
 export default class TrackList extends React.Component<ITrackListProps> {
+  static contextTypes = {
+    store: PropTypes.object
+  }
+
+  generateSongs: () => IPlayingSong[] = () => {
+    return get(this.props.payload, 'result.tracks').map(track => {
+      const song: IPlayingSong = {
+        id: track.id,
+        coverImg: track.album.picUrl,
+        url: '',
+        artists: track.artists.map(artist => artist.name),
+        album: track.album.name
+      }
+      return song
+    })
+  }
+
+  getNormalizedSongs: any = () => {
+    let songs
+    if (!songs) {
+      songs = this.generateSongs()
+    }
+    return songs
+  }
+
+  playCertainSong = index => {
+    // const songs = this.generateSongs()
+    return () => {
+      this.context.store.dispatch(playCurrPlaylist(this.getNormalizedSongs(), index))
+    }
+  }
+
   calcTracks = store => {
     const tracks = get(store, 'result.tracks')
     if (!tracks) {
@@ -58,6 +95,7 @@ export default class TrackList extends React.Component<ITrackListProps> {
             album={item.album}
             index={index + 1}
             id={item.id}
+            play={this.playCertainSong(index)}
           />
         )
       })

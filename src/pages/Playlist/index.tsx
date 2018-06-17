@@ -27,8 +27,6 @@ class Playlist extends React.Component<any> {
     const locationState = this.props.location.state || {}
     const { playCount, picUrl, name } = locationState
     const coverImg = get(this.listStore, 'payload.result.coverImgUrl')
-    console.log(this.listStore)
-    console.log(coverImg)
     return (
       <div className={style.wrapper} style={{ ...this.props.style }}>
         <div className={style.foreground}>
