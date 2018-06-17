@@ -39,7 +39,14 @@ const dynamicRoute = ({ location }) => {
         />
         <Route path={`/playlist/:id`} component={Playlist} />
       </div>
-      <ButtomBar />
+      <Switch>
+        <Route path={`/explore`} component={ButtomBar} />
+        <Route path={`/video`} component={ButtomBar} />
+        <Route path={`/mine`} component={ButtomBar} />
+        <Route path={`/friends`} component={ButtomBar} />
+        <Route path={`/account`} component={ButtomBar} />
+        <Route path={`/playlist`} component={ButtomBar} />
+      </Switch>
     </React.Fragment>
   )
 }

@@ -1,4 +1,16 @@
-.coverImg {
-  width: 200px;
-  border-radius: 50%;
+.headerWrapper {
+  width: 100%;
+  color: #fff;
+  padding: 20px 0 10px 0;
+  border-bottom: 1px solid rgba($color: #fff, $alpha: 0.5);
+}
+
+.songName {
+  margin: 0 auto 5px auto;
+  text-align: center;
+}
+
+.artists {
+  font-size: 20px;
+  text-align: center;
 }

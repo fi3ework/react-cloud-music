@@ -21,6 +21,7 @@ class Bar extends React.Component<{ tracksCount: number; tracks: any[] }> {
     return this.props.tracks.map(track => {
       const song: IPlayingSong = {
         id: track.id,
+        name: track.name,
         coverImg: track.album.picUrl,
         url: '',
         artists: track.artists.map(artist => artist.name),
@@ -57,6 +58,7 @@ export default class TrackList extends React.Component<ITrackListProps> {
     return get(this.props.payload, 'result.tracks').map(track => {
       const song: IPlayingSong = {
         id: track.id,
+        name: track.name,
         coverImg: track.album.picUrl,
         url: '',
         artists: track.artists.map(artist => artist.name),

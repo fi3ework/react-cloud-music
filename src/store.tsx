@@ -38,6 +38,7 @@ export type IPlayState = {
 // 异步 action 修改
 export type IPlayingSong = {
   id: string
+  name: string
   coverImg: string
   url: string
   artists: string
@@ -58,6 +59,7 @@ export type IStoreState = {
 export const defaultState: IStoreState = {
   playingSong: {
     id: '',
+    name: '',
     coverImg: '',
     url: '',
     artists: '',

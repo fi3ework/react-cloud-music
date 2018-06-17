@@ -2,7 +2,14 @@ import * as React from 'react'
 import * as style from './style.scss'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { connect } from 'react-redux'
-import { IStoreState, IPlayingSong, IPlayState, SwitchSongByPace, fetchSongUrl } from '../../store'
+import {
+  IStoreState,
+  IPlayingSong,
+  IPlayState,
+  SwitchSongByPace,
+  fetchSongUrl,
+  CHANGE_PLAYLIST_INDEX
+} from '../../store'
 import RotatingCover from './RotatingCover'
 import Header from './HeaderBar'
 import ControlBar from './ControlBar'
@@ -21,12 +28,10 @@ class PlayingPage extends React.Component<IProps> {
 
   handleSwitchPrevSong = () => {
     this.context.store.dispatch(SwitchSongByPace(-1))
-    console.log('←')
   }
 
   handleSwitchNextSong = () => {
     this.context.store.dispatch(SwitchSongByPace(1))
-    console.log('→')
   }
 
   handleSwitchPlayState = () => {
@@ -34,19 +39,21 @@ class PlayingPage extends React.Component<IProps> {
   }
 
   render() {
-    console.log(this.props)
     return (
       <TransitionGroup className="todo-list">
         <CSSTransition key={'v'} timeout={500} classNames="fade">
           <div className={style.wrapper} style={{ ...this.props.style }}>
-            <Header artists={this.props.playingSong.artists} album={this.props.playingSong.album} />
-            <RotatingCover playingSong={this.props.playingSong} />
-            <ControlBar
-              switchPrevSong={this.handleSwitchPrevSong}
-              switchNextSong={this.handleSwitchNextSong}
-              switchPlayState={this.handleSwitchPlayState}
-            />
-            <audio src={this.props.playingSong.url} autoPlay={true} />
+            <div className={style.foreground}>
+              <Header artists={this.props.playingSong.artists} name={this.props.playingSong.name} />
+              <RotatingCover playingSong={this.props.playingSong} />
+              <ControlBar
+                switchPrevSong={this.handleSwitchPrevSong}
+                switchNextSong={this.handleSwitchNextSong}
+                switchPlayState={this.handleSwitchPlayState}
+              />
+              <audio src={this.props.playingSong.url} autoPlay={true} />
+            </div>
+            <div style={{ backgroundImage: `url(${this.props.playingSong.coverImg})` }} className={style.playingBg} />
           </div>
         </CSSTransition>
       </TransitionGroup>
@@ -61,4 +68,4 @@ const mapStateToProps = (state: IStoreState, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps)(PlayingPage)
+export default connect<any>(mapStateToProps)(PlayingPage)
