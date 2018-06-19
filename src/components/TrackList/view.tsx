@@ -68,13 +68,16 @@ export default class TrackList extends React.Component<ITrackListProps> {
     })
   }
 
-  getNormalizedSongs: any = () => {
+  // tslint:disable-next-line:member-ordering
+  getNormalizedSongs: any = (() => {
     let songs
-    if (!songs) {
-      songs = this.generateSongs()
+    return () => {
+      if (!songs) {
+        songs = this.generateSongs()
+      }
+      return songs
     }
-    return songs
-  }
+  })()
 
   playCertainSong = index => {
     // const songs = this.generateSongs()
