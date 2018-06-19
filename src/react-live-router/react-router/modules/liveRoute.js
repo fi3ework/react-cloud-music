@@ -94,30 +94,34 @@ class Route extends React.Component {
     })
   }
 
+  generateLiveComponent = (props, match, componentClass) => {
+    console.log('>>> into live component <<<')
+    const oriComponent = React.createElement(componentClass, props)
+    // this.componentDisplayName = componentClass.display
+    const displayStyle = match
+      ? {}
+      : {
+          visibility: 'hidden',
+          position: 'absolute',
+          display: 'none',
+          zIndex: '-999999'
+        }
+    return React.cloneElement(oriComponent, {
+      style: displayStyle
+    })
+  }
+
   render() {
     const { match } = this.state
-    const { children, component, render, liveComponent } = this.props
+    const { children, component, render, liveComponent, live } = this.props
     const { history, route, staticContext } = this.context.router
     const location = this.props.location || route.location
     const props = { match, location, history, staticContext }
 
-    if (liveComponent) {
-      console.log('into live component')
-      const oriComponent = React.createElement(liveComponent, props)
-      this.componentDisplayName = liveComponent.display
-      const displayStyle = match
-        ? {}
-        : {
-            visibility: 'hidden',
-            position: 'absolute',
-            display: 'none',
-            zIndex: '-999999'
-          }
-      return React.cloneElement(oriComponent, {
-        style: displayStyle
-      })
-    }
-
+    // console.log(live)
+    // if (live) {
+    //   return this.generateLiveComponent(props, match, component)
+    // }
     if (component) return match ? React.createElement(component, props) : null
 
     if (render) return match ? render(props) : null
