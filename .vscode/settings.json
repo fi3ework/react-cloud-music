@@ -1,10 +1,7 @@
 {
   "javascript.implicitProjectConfig.experimentalDecorators": true,
   "files.exclude": {
-      "**/.git": true
+    "**/.git": true
   },
-  "cSpell.words": [
-    "NETEASE"
-  ],
-  "cSpell.enabled": false
+  "cSpell.words": ["NETEASE"]
 }

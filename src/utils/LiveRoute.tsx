@@ -3,7 +3,6 @@ import invariant from 'invariant'
 import React, { ReactElement, Attributes } from 'react'
 import PropTypes from 'prop-types'
 import matchPath from '../../node_modules/react-router/matchPath'
-import Revivier from './Reviver'
 
 const isEmptyChildren = children => React.Children.count(children) === 0
 

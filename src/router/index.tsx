@@ -12,7 +12,7 @@ import BaseHeaderBar from '@/layouts/HeaderBar'
 import ExploreHeaderBar from '@/layouts/ExploreHeaderBar'
 import * as style from './routerTrans.scss'
 import LiverRoute from '@/utils/LiveRoute'
-import { AnimatedRoute } from 'react-router-transition'
+// import { AnimatedRoute } from 'react-router-transition'
 
 const dynamicRoute = ({ location }) => {
   return (
@@ -30,13 +30,14 @@ const dynamicRoute = ({ location }) => {
         <Route path={`/mine`} component={MinePage} />
         <LiverRoute path={`/friends`} liveComponent={FriendsPage} />
         <Route path={`/account`} component={AccountPage} />
-        <AnimatedRoute
+        <LiverRoute path={`/playing`} liveComponent={Playing} />
+        {/* <AnimatedRoute
           path="/playing"
           component={Playing}
           atEnter={{ opacity: 0 }}
           atLeave={{ opacity: 0 }}
           atActive={{ opacity: 1 }}
-        />
+        /> */}
         <Route path={`/playlist/:id`} component={Playlist} />
       </div>
       <Switch>

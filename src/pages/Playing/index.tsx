@@ -1,15 +1,7 @@
 import * as React from 'react'
 import * as style from './style.scss'
-import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { connect } from 'react-redux'
-import {
-  IStoreState,
-  IPlayingSong,
-  IPlayState,
-  SwitchSongByPace,
-  fetchSongUrl,
-  CHANGE_PLAYLIST_INDEX
-} from '../../store'
+import { IStoreState, IPlayingSong, IPlayState, SwitchSongByPace, switchPlayState } from '../../store'
 import RotatingCover from './RotatingCover'
 import Header from './HeaderBar'
 import ControlBar from './ControlBar'
@@ -21,9 +13,19 @@ interface IProps {
   playingSong: IPlayingSong
 }
 
-class PlayingPage extends React.Component<IProps> {
+type IState = {
+  isPlaying: boolean
+}
+
+class PlayingPage extends React.Component<IProps, IState> {
   static contextTypes = {
     store: PropTypes.object
+  }
+
+  audio: HTMLAudioElement | null
+
+  getIsPlaying = () => {
+    return this.context.store.getState().playState.isPlaying
   }
 
   handleSwitchPrevSong = () => {
@@ -35,28 +37,39 @@ class PlayingPage extends React.Component<IProps> {
   }
 
   handleSwitchPlayState = () => {
-    console.log('!!!')
+    this.context.store.dispatch(switchPlayState)
+    if (this.audio) {
+      const isPlaying = this.getIsPlaying()
+      if (isPlaying) {
+        this.audio.play()
+      } else {
+        this.audio.pause()
+      }
+    }
   }
 
   render() {
     return (
-      <TransitionGroup className="todo-list">
-        <CSSTransition key={'v'} timeout={500} classNames="fade">
-          <div className={style.wrapper} style={{ ...this.props.style }}>
-            <div className={style.foreground}>
-              <Header artists={this.props.playingSong.artists} name={this.props.playingSong.name} />
-              <RotatingCover playingSong={this.props.playingSong} />
-              <ControlBar
-                switchPrevSong={this.handleSwitchPrevSong}
-                switchNextSong={this.handleSwitchNextSong}
-                switchPlayState={this.handleSwitchPlayState}
-              />
-              <audio src={this.props.playingSong.url} autoPlay={true} />
-            </div>
-            <div style={{ backgroundImage: `url(${this.props.playingSong.coverImg})` }} className={style.playingBg} />
-          </div>
-        </CSSTransition>
-      </TransitionGroup>
+      <div className={style.wrapper} style={{ ...this.props.style }}>
+        <div className={style.foreground}>
+          <Header artists={this.props.playingSong.artists} name={this.props.playingSong.name} />
+          <RotatingCover playingSong={this.props.playingSong} />
+          <ControlBar
+            isPlaying={this.getIsPlaying()}
+            switchPrevSong={this.handleSwitchPrevSong}
+            switchNextSong={this.handleSwitchNextSong}
+            switchPlayState={this.handleSwitchPlayState}
+          />
+          <audio
+            ref={ref => {
+              this.audio = ref
+            }}
+            src={this.props.playingSong.url}
+            autoPlay={true}
+          />
+        </div>
+        <div style={{ backgroundImage: `url(${this.props.playingSong.coverImg})` }} className={style.playingBg} />
+      </div>
     )
   }
 }

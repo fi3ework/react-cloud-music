@@ -205,16 +205,16 @@ export const generateFetchActionCreator = (URL, actionCreator) => {
 const fetchSongDetialSuccessReducer: IReducer = (state, action) => {
   console.log(action)
   const firstSong = action.payload.songs[0]
-  const prevPlaingSong = state.playingSong
-  const nextPlayingSong = { ...prevPlaingSong, coverImg: firstSong.al.picUrl }
+  const prevplayingSong = state.playingSong
+  const nextPlayingSong = { ...prevplayingSong, coverImg: firstSong.al.picUrl }
   return { ...state, playingSong: nextPlayingSong }
 }
 
 // 歌曲 URL reducer
 const fetchSongUrlSuccessReducer: IReducer = (state, action) => {
   const firstSong = action.payload.data[0]
-  const prevPlaingSong = state.playingSong
-  const nextPlayingSong = { ...prevPlaingSong, url: firstSong.url }
+  const prevplayingSong = state.playingSong
+  const nextPlayingSong = { ...prevplayingSong, url: firstSong.url }
   return { ...state, playingSong: nextPlayingSong }
 }
 
