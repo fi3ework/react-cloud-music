@@ -5,7 +5,7 @@
     "esModuleInterop": true
   },
   "linterOptions": {
-    "exclude": ["config/**/*.js", "node_modules/**/*.ts"]
+    "exclude": ["config/**/*.js", "node_modules/**/*.ts", "src/react-live-router/**/*.js"]
   },
   "rules": {
     "no-var-requires": false,

@@ -1,3 +1,4 @@
 /config/*
 /src/registerServiceWorker.js
 /node_modules/*
+/src/react-live-router/*

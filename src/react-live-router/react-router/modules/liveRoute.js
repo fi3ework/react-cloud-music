@@ -1,27 +1,15 @@
 import warning from 'warning'
 import invariant from 'invariant'
-import React, { ReactElement, Attributes } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import matchPath from '../../node_modules/react-router/matchPath'
+import matchPath from './matchPath'
 
 const isEmptyChildren = children => React.Children.count(children) === 0
-
-interface IProps {
-  location?: any
-  component?: React.ComponentClass
-  liveComponent?: any
-  floatComponent?: any
-  render?: (props: any) => React.ReactNode
-  children?: (props: any) => React.ReactNode
-  path?: any
-  style?: React.CSSProperties
-  liveRender?: () => React.ReactNode
-}
 
 /**
  * The public API for matching a single path and rendering.
  */
-class Route extends React.Component<IProps> {
+class Route extends React.Component {
   static propTypes = {
     computedMatch: PropTypes.object, // private, from <Switch>
     path: PropTypes.string,
@@ -46,13 +34,6 @@ class Route extends React.Component<IProps> {
     router: PropTypes.object.isRequired
   }
 
-  state = {
-    underFloatComponentLocation: '',
-    match: this.computeMatch(this.props, this.context.router)
-  }
-
-  componentDisplayName: any = null
-
   getChildContext() {
     return {
       router: {
@@ -65,10 +46,12 @@ class Route extends React.Component<IProps> {
     }
   }
 
-  computeMatch({ computedMatch, location, path, strict, exact, sensitive }: any, router) {
-    if (computedMatch) {
-      return computedMatch
-    } // <Switch> already computed the match for us
+  state = {
+    match: this.computeMatch(this.props, this.context.router)
+  }
+
+  computeMatch({ computedMatch, location, path, strict, exact, sensitive }, router) {
+    if (computedMatch) return computedMatch // <Switch> already computed the match for us
 
     invariant(router, 'You should not use <Route> or withRouter() outside a <Router>')
 
@@ -78,7 +61,7 @@ class Route extends React.Component<IProps> {
     return matchPath(pathname, { path, strict, exact, sensitive }, route.match)
   }
 
-  UNSAFE_componentWillMount() {
+  componentWillMount() {
     warning(
       !(this.props.component && this.props.render),
       'You should not use <Route component> and <Route render> in the same route; <Route render> will be ignored'
@@ -95,10 +78,9 @@ class Route extends React.Component<IProps> {
     )
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
+  componentWillReceiveProps(nextProps, nextContext) {
     warning(
       !(nextProps.location && !this.props.location),
-      // tslint:disable:max-line-length
       '<Route> elements should not change from uncontrolled to controlled (or vice versa). You initially used no "location" prop and then provided one on a subsequent render.'
     )
 
@@ -107,14 +89,6 @@ class Route extends React.Component<IProps> {
       '<Route> elements should not change from controlled to uncontrolled (or vice versa). You provided a "location" prop initially but omitted it on a subsequent render.'
     )
 
-    // float prepare
-    if (nextProps.floatComponent) {
-      console.log(this.props)
-      this.setState({
-        underFloatComponentLocation: ''
-      })
-    }
-
     this.setState({
       match: this.computeMatch(nextProps, nextContext.router)
     })
@@ -122,12 +96,11 @@ class Route extends React.Component<IProps> {
 
   render() {
     const { match } = this.state
-    const { children, component, liveComponent, floatComponent, render } = this.props
+    const { children, component, render, liveComponent } = this.props
     const { history, route, staticContext } = this.context.router
     const location = this.props.location || route.location
     const props = { match, location, history, staticContext }
 
-    // liveComponent
     if (liveComponent) {
       console.log('into live component')
       const oriComponent = React.createElement(liveComponent, props)
@@ -140,32 +113,18 @@ class Route extends React.Component<IProps> {
             display: 'none',
             zIndex: '-999999'
           }
-      return React.cloneElement(oriComponent as ReactElement<any>, {
+      return React.cloneElement(oriComponent, {
         style: displayStyle
       })
     }
 
-    if (floatComponent) {
-      console.log('into float component')
+    if (component) return match ? React.createElement(component, props) : null
 
-      return match ? React.createElement(floatComponent, props as Attributes) : null
-    }
+    if (render) return match ? render(props) : null
 
-    if (component) {
-      return match ? React.createElement(component, props as Attributes) : null
-    }
+    if (typeof children === 'function') return children(props)
 
-    if (render) {
-      return match ? render(props) : null
-    }
-
-    if (typeof children === 'function') {
-      return children(props)
-    }
-
-    if (children && !isEmptyChildren(children)) {
-      return React.Children.only(children)
-    }
+    if (children && !isEmptyChildren(children)) return React.Children.only(children)
 
     return null
   }

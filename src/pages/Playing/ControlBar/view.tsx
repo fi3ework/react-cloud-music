@@ -13,19 +13,19 @@ const RotatingCover: React.SFC<IProps> = props => {
   return (
     <div className={style.controlButtonsWrapper}>
       <i onClick={props.switchPrevSong} className={'iconfont-ncm'}>
-        &#xe679;
+        &#xe67d;
       </i>
       {props.isPlaying ? (
         <i onClick={props.switchPlayState} className={'iconfont-ncm'}>
-          &#xe6c8;
+          &#xe83b;
         </i>
       ) : (
         <i onClick={props.switchPlayState} className={'iconfont-ncm'}>
-          &#xe641;
+          &#xe631;
         </i>
       )}
       <i onClick={props.switchNextSong} className={'iconfont-ncm'}>
-        &#xe60c;
+        &#xe67e;
       </i>
     </div>
   )

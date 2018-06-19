@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Route, Switch, BrowserRouter as Router } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from '../react-live-router/react-router-dom/modules/index.js'
 import ExplorePage from '@/pages/Explore'
 import VideoPage from '@/pages/Video'
 import MinePage from '@/pages/Mine'
@@ -7,7 +7,7 @@ import FriendsPage from '@/pages/Friends'
 import AccountPage from '@/pages/Account'
 import Playing from '@/pages/Playing'
 import Playlist from '@/pages/Playlist'
-import ButtomBar from '@/layouts/BottomBar'
+import BottomBar from '@/layouts/BottomBar'
 import BaseHeaderBar from '@/layouts/HeaderBar'
 import ExploreHeaderBar from '@/layouts/ExploreHeaderBar'
 import * as style from './routerTrans.scss'
@@ -30,7 +30,6 @@ const dynamicRoute = ({ location }) => {
         <Route path={`/mine`} component={MinePage} />
         <LiverRoute path={`/friends`} liveComponent={FriendsPage} />
         <Route path={`/account`} component={AccountPage} />
-        <LiverRoute path={`/playing`} liveComponent={Playing} />
         {/* <AnimatedRoute
           path="/playing"
           component={Playing}
@@ -38,26 +37,27 @@ const dynamicRoute = ({ location }) => {
           atLeave={{ opacity: 0 }}
           atActive={{ opacity: 1 }}
         /> */}
+        <LiverRoute path={`/playing`} floatComponent={Playing} />
         <Route path={`/playlist/:id`} component={Playlist} />
       </div>
       <Switch>
-        <Route path={`/explore`} component={ButtomBar} />
-        <Route path={`/video`} component={ButtomBar} />
-        <Route path={`/mine`} component={ButtomBar} />
-        <Route path={`/friends`} component={ButtomBar} />
-        <Route path={`/account`} component={ButtomBar} />
-        <Route path={`/playlist`} component={ButtomBar} />
+        <Route path={`/explore`} component={BottomBar} />
+        <Route path={`/video`} component={BottomBar} />
+        <Route path={`/mine`} component={BottomBar} />
+        <Route path={`/friends`} component={BottomBar} />
+        <Route path={`/account`} component={BottomBar} />
+        <Route path={`/playlist`} component={BottomBar} />
       </Switch>
     </React.Fragment>
   )
 }
 
 const Routes = () => (
-  <Router>
+  <BrowserRouter>
     <div className={style.rootWrapper}>
       <Route render={dynamicRoute} />
     </div>
-  </Router>
+  </BrowserRouter>
 )
 
 export default Routes
