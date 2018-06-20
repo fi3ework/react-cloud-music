@@ -27,7 +27,11 @@ class Route extends React.Component {
       history: PropTypes.object.isRequired,
       route: PropTypes.object.isRequired,
       staticContext: PropTypes.object
-    })
+    }),
+    setPrevContextAndMatch: PropTypes.func.isRequired,
+    setGoingToFloatRoute: PropTypes.func.isRequired,
+    _backupRouter: PropTypes.object.isRequired,
+    isGoingToFloatRoute: PropTypes.bool.isRequired
   }
 
   static childContextTypes = {
@@ -47,7 +51,8 @@ class Route extends React.Component {
   }
 
   state = {
-    match: this.computeMatch(this.props, this.context.router)
+    match: this.computeMatch(this.props, this.context.router),
+    previousMatch: false
   }
 
   computeMatch({ computedMatch, location, path, strict, exact, sensitive }, router) {
@@ -79,6 +84,7 @@ class Route extends React.Component {
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
+    console.log('>>> nextProps <<<')
     warning(
       !(nextProps.location && !this.props.location),
       '<Route> elements should not change from uncontrolled to controlled (or vice versa). You initially used no "location" prop and then provided one on a subsequent render.'
@@ -88,13 +94,45 @@ class Route extends React.Component {
       !(!nextProps.location && this.props.location),
       '<Route> elements should not change from controlled to uncontrolled (or vice versa). You provided a "location" prop initially but omitted it on a subsequent render.'
     )
+    console.log(nextProps)
+    console.log(this.context)
+    console.log(nextContext)
+    const match = this.computeMatch(nextProps, nextContext.router)
 
+    // 1. 普通 Route 每次都触发
+    if (!nextProps.float) {
+      console.log('000')
+      const thisPropsMatch = this.computeMatch(this.props, this.context.router)
+      nextContext.setPrevContextAndMatch(this.context.router)
+    }
+
+    // 1. 进入 Float Route 时触发
+    if (match && nextProps.float && !nextContext.isGoingToFloatRoute) {
+      console.log('111')
+      nextContext.setGoingToFloatRoute(true)
+    }
+
+    // 2. 计算 still match
+    let stillMatch
+    if (nextContext.isGoingToFloatRoute) {
+      console.log('222')
+      stillMatch = this.computeMatch(nextProps, nextContext._backupRouter)
+      if (nextContext.isGoingToFloatRoute && stillMatch) {
+        console.log('333')
+        console.log(stillMatch)
+      }
+    }
+
+    console.log('---down')
+    console.log(this.computeMatch(nextProps, nextContext.router))
+    console.log(stillMatch)
+    console.log('---up')
     this.setState({
-      match: this.computeMatch(nextProps, nextContext.router)
+      match: this.computeMatch(nextProps, nextContext.router) || stillMatch
     })
   }
 
-  generateLiveComponent = (props, match, componentClass) => {
+  makeComponentLive = (props, match, componentClass) => {
     console.log('>>> into live component <<<')
     const oriComponent = React.createElement(componentClass, props)
     // this.componentDisplayName = componentClass.display
@@ -111,17 +149,18 @@ class Route extends React.Component {
     })
   }
 
+  makeComponentFloat = () => {}
+
   render() {
     const { match } = this.state
-    const { children, component, render, liveComponent, live } = this.props
+    const { children, component, render, liveComponent, live, float } = this.props
     const { history, route, staticContext } = this.context.router
     const location = this.props.location || route.location
     const props = { match, location, history, staticContext }
 
-    // console.log(live)
-    // if (live) {
-    //   return this.generateLiveComponent(props, match, component)
-    // }
+    if (live) {
+      return this.makeComponentLive(props, match, component)
+    }
     if (component) return match ? React.createElement(component, props) : null
 
     if (render) return match ? render(props) : null
