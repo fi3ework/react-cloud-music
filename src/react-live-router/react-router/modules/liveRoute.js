@@ -3,6 +3,7 @@ import invariant from 'invariant'
 import React from 'react'
 import PropTypes from 'prop-types'
 import matchPath from './matchPath'
+import * as ReactDOM from 'react-dom'
 
 const isEmptyChildren = children => React.Children.count(children) === 0
 
@@ -28,10 +29,12 @@ class Route extends React.Component {
       route: PropTypes.object.isRequired,
       staticContext: PropTypes.object
     }),
-    setPrevContextAndMatch: PropTypes.func.isRequired,
+    setBackupRouter: PropTypes.func.isRequired,
     setGoingToFloatRoute: PropTypes.func.isRequired,
     _backupRouter: PropTypes.object.isRequired,
     isGoingToFloatRoute: PropTypes.bool.isRequired
+    // registerFloat: PropTypes.func.isRequired
+    // isNextRouteFloat: PropTypes.func.isRequired
   }
 
   static childContextTypes = {
@@ -67,6 +70,9 @@ class Route extends React.Component {
   }
 
   componentWillMount() {
+    // 0. 注册所有 float 页面
+    // this.props.float && this.context.registerFloat(this.props.path)
+
     warning(
       !(this.props.component && this.props.render),
       'You should not use <Route component> and <Route render> in the same route; <Route render> will be ignored'
@@ -83,6 +89,35 @@ class Route extends React.Component {
     )
   }
 
+  componentDidMount() {
+    console.log('didmount')
+    this.getDom()
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log('didupdate')
+    this.getDom()
+  }
+
+  getDom() {
+    let routeDom = ReactDOM.findDOMNode(this)
+    this.routeDom = routeDom
+    console.log('--- dom got ---')
+    console.log(this.routeDom)
+  }
+
+  hideRoute() {
+    if (this.routeDom) {
+      this.routeDom.style.display = 'none'
+    }
+  }
+
+  showRoute() {
+    if (this.routeDom) {
+      this.routeDom.style.display = 'block'
+    }
+  }
+
   componentWillReceiveProps(nextProps, nextContext) {
     console.log('>>> nextProps <<<')
     warning(
@@ -97,59 +132,88 @@ class Route extends React.Component {
     console.log(nextProps)
     console.log(this.context)
     console.log(nextContext)
+    const prevMatch = this.computeMatch(this.props, this.context.router)
     const match = this.computeMatch(nextProps, nextContext.router)
 
-    // 1. 普通 Route 每次都触发
+    // 1. 普通 Route 每次都触发，不会触发顶层 setState
     if (!nextProps.float) {
       console.log('000')
-      const thisPropsMatch = this.computeMatch(this.props, this.context.router)
-      nextContext.setPrevContextAndMatch(this.context.router)
+      this.context.setBackupRouter(this.context.router)
     }
 
-    // 1. 进入 Float Route 时触发
+    // 1. 保住 undercover 的路由在等待顶层更新到来前不被卸载
+    // this.isPending = false
+    // if (prevMatch) {
+    //   this.isPending = true
+    // }
+
+    // 1. 进入 Float Route 时触发浮动，触发顶层 setState
     if (match && nextProps.float && !nextContext.isGoingToFloatRoute) {
       console.log('111')
       nextContext.setGoingToFloatRoute(true)
     }
 
-    // 2. 计算 still match
-    let stillMatch
-    if (nextContext.isGoingToFloatRoute) {
-      console.log('222')
-      stillMatch = this.computeMatch(nextProps, nextContext._backupRouter)
-      if (nextContext.isGoingToFloatRoute && stillMatch) {
-        console.log('333')
-        console.log(stillMatch)
-      }
-    }
+    // 1.5 确定 pending 状态：如果当前页匹配 && 下一页是 float 页
+    // if (prevMatch && this.context.isNextRouteFloat()) {
+    //   this.isPending = true
+    // }
 
-    console.log('---down')
+    // 进入普通 Route 退出清除浮动，触发顶层 setState
+    // if (match && !nextProps.float && nextContext.isGoingToFloatRoute) {
+    //   console.log('444')
+    //   nextContext.setGoingToFloatRoute(false)
+    // }
+
+    // 2. 计算 still match
+    let undercoverMatch
+    if (nextContext.isGoingToFloatRoute) {
+      undercoverMatch = this.computeMatch(nextProps, nextContext._backupRouter)
+    }
+    // if (undercoverMatch) {
+    //   this.isPending = false
+    // }
+
     console.log(this.computeMatch(nextProps, nextContext.router))
-    console.log(stillMatch)
-    console.log('---up')
     this.setState({
-      match: this.computeMatch(nextProps, nextContext.router) || stillMatch
+      match: this.computeMatch(nextProps, nextContext.router) || undercoverMatch
+      // isUnderFloat: undercoverMatch
     })
   }
+
+  // isPending = false
+
+  // shouldComponentUpdate(nextProps, nextState, nextContext) {
+  //   console.log('should component update' + this.isPending)
+  //   if (this.isPending) {
+  //     return false
+  //   }
+  //   return true
 
   makeComponentLive = (props, match, componentClass) => {
     console.log('>>> into live component <<<')
-    const oriComponent = React.createElement(componentClass, props)
-    // this.componentDisplayName = componentClass.display
-    const displayStyle = match
-      ? {}
-      : {
-          visibility: 'hidden',
-          position: 'absolute',
-          display: 'none',
-          zIndex: '-999999'
-        }
-    return React.cloneElement(oriComponent, {
-      style: displayStyle
-    })
+    if (match) {
+      this.showRoute()
+    } else {
+      this.hideRoute()
+    }
+    return React.createElement(componentClass, props)
+    // const oriComponent = React.createElement(componentClass, props)
+    // const displayStyle = match
+    //   ? {}
+    //   : {
+    //       position: 'absolute',
+    //       display: 'none',
+    //       visibility: 'hidden',
+    //       top: '99999px',
+    //       left: '99999px',
+    //       zIndex: '-999999'
+    //     }
+    // return React.cloneElement(oriComponent, {
+    //   style: displayStyle
+    // })
   }
 
-  makeComponentFloat = () => {}
+  componentInited = false
 
   render() {
     const { match } = this.state
@@ -158,9 +222,19 @@ class Route extends React.Component {
     const location = this.props.location || route.location
     const props = { match, location, history, staticContext }
 
-    if (live) {
+    // live
+
+    if (match) {
+      this.componentInited = true
+      // this.getDom()
+    }
+
+    if (this.componentInited && live) {
       return this.makeComponentLive(props, match, component)
     }
+
+    console.log('---match0---' + this.props.name)
+    console.log(match)
     if (component) return match ? React.createElement(component, props) : null
 
     if (render) return match ? render(props) : null

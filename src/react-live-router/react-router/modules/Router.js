@@ -21,7 +21,7 @@ class Router extends React.Component {
     router: PropTypes.object.isRequired,
     setGoingToFloatRoute: PropTypes.func.isRequired,
     isGoingToFloatRoute: PropTypes.bool.isRequired,
-    setPrevContextAndMatch: PropTypes.func.isRequired,
+    setBackupRouter: PropTypes.func.isRequired,
     _backupRouter: PropTypes.object.isRequired
   }
 
@@ -37,7 +37,7 @@ class Router extends React.Component {
           match: this.state.match
         }
       },
-      setPrevContextAndMatch: router => {
+      setBackupRouter: router => {
         console.log('----fucking')
         this._backupRouter = router
       },

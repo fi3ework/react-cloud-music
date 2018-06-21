@@ -24,7 +24,7 @@ const dynamicRoute = ({ location }) => {
         {/* <LiveRoute path={`/account`} component={BaseHeaderBar} /> */}
       </Switch>
       <div className={style.routeWrapper}>
-        <LiveRoute path={`/explore`} component={ExplorePage} live={true} />
+        <LiveRoute path={`/explore`} component={ExplorePage} />
         {/* <LiveRoute path={`/video`} component={VideoPage} /> */}
         {/* <LiveRoute path={`/mine`} component={MinePage} /> */}
         {/* <LiveRoute path={`/friends`} component={FriendsPage} live={true} /> */}
@@ -36,8 +36,8 @@ const dynamicRoute = ({ location }) => {
           atLeave={{ opacity: 0 }}
           atActive={{ opacity: 1 }}
         /> */}
-        <LiveRoute path={`/playing`} component={Playing} live={true} float={true} />
-        <LiveRoute path={`/playlist/:id`} component={Playlist} />
+        <LiveRoute path={`/playing`} component={Playing} name="playing" />
+        <LiveRoute path={`/playlist/:id`} component={Playlist} live={true} name="playlist" />
       </div>
       <Switch>
         {/* <LiveRoute path={`/explore`} component={BottomBar} /> */}
