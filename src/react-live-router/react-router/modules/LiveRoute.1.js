@@ -31,7 +31,8 @@ class Route extends React.Component {
     }),
     setUnmountLiveKey: PropTypes.func.isRequired,
     setNextOnLiveKey: PropTypes.func.isRequired,
-    isGoingToOnLiveRoute: PropTypes.string.isRequired
+    _backupRouter: PropTypes.object.isRequired,
+    isGoingToOnLiveRoute: PropTypes.bool.isRequired
     // registerFloat: PropTypes.func.isRequired
     // isNextRouteFloat: PropTypes.func.isRequired
   }
@@ -70,7 +71,7 @@ class Route extends React.Component {
 
   componentWillMount() {
     // 0. 注册所有 float 页面
-    // this.props.onLiveKey && this.context.registerFloat(this.props.onLiveKey)
+    // this.props.float && this.context.registerFloat(this.props.path)
 
     warning(
       !(this.props.component && this.props.render),
@@ -89,16 +90,20 @@ class Route extends React.Component {
   }
 
   componentDidMount() {
+    console.log('didmount')
     this.getDom()
   }
 
   componentDidUpdate(prevProps, prevState) {
+    console.log('didupdate')
     this.getDom()
   }
 
   getDom() {
     let routeDom = ReactDOM.findDOMNode(this)
     this.routeDom = routeDom
+    console.log('--- dom got ---')
+    console.log(this.routeDom)
   }
 
   hideRoute() {
@@ -113,8 +118,6 @@ class Route extends React.Component {
     }
   }
 
-  keyCanLiveOnCurrLocation = 0
-  prevUnmountKey = ''
   componentWillReceiveProps(nextProps, nextContext) {
     console.log('>>> nextProps <<<')
     warning(
@@ -126,94 +129,112 @@ class Route extends React.Component {
       !(!nextProps.location && this.props.location),
       '<Route> elements should not change from controlled to uncontrolled (or vice versa). You provided a "location" prop initially but omitted it on a subsequent render.'
     )
+    console.log(nextProps)
+    console.log(this.context)
+    console.log(nextContext)
     const prevMatch = this.computeMatch(this.props, this.context.router)
     const match = this.computeMatch(nextProps, nextContext.router)
 
-    // 1. 当进入一个 onLiveKey 页面的时候，更新 context，通知 Live 组件可以存活
-    if (match && nextProps.onLiveKey && nextContext.isGoingToOnLiveRoute.indexOf('@@KEY_') < 0) {
-      console.log('000通知进入')
-      this.context.setNextOnLiveKey(nextProps.onLiveKey)
+    // 1. 普通 Route 每次都触发，不会触发顶层 setState
+    if (!nextProps.float) {
+      console.log('000')
+      this.context.setUnmountLiveKey(this.context.router)
     }
 
-    // 2. 当离开一个 onLiveKey 页面的时候，更新 context，通知 Live 组件去死
-    if (prevMatch && !match && nextProps.onLiveKey) {
-      console.log('000通知离开')
-      this.context.setUnmountLiveKey()
+    // 1. 保住 undercover 的路由在等待顶层更新到来前不被卸载
+    // this.isPending = false
+    // if (prevMatch) {
+    //   this.isPending = true
+    // }
+
+    // 1. 进入 Float Route 时触发浮动，触发顶层 setState
+    if (match && nextProps.float && !nextContext.isGoingToOnLiveRoute) {
+      console.log('111')
+      nextContext.setNextOnLiveKey(true)
     }
 
-    // 2. 确定当前的 liveKey Route 是否可以在当前路由上存活
-    this.keyCanLiveOnCurrLocation = 1
-    const DO_NOTHING = 0
-    const SHOW = 1
-    const HIDE = 2
-    const UN_MOUNT = 3
+    // 1.5 确定 pending 状态：如果当前页匹配 && 下一页是 float 页
+    // if (prevMatch && this.context.isNextRouteFloat()) {
+    //   this.isPending = true
+    // }
 
-    // 进入某 onLiveKey 页，确定 liveKey 页是否可以在当前路由上存活
-    // 隐藏存活，动作：隐藏
-    if (match && nextProps.liveKey) {
-      if (nextContext.isGoingToOnLiveRoute === `@@KEY_${nextProps.liveKey}`) {
-        this.keyCanLiveOnCurrLocation = HIDE
-      }
-    } else if (
-      !match &&
-      this.prevUnmountKey &&
-      nextContext.isGoingToOnLiveRoute.indexOf('@@UM') >= 0 &&
-      nextContext.isGoingToOnLiveRoute !== this.prevUnmountKey
-    ) {
-      console.log('444')
-      console.log(this.prevUnmountKey)
-      console.log(nextContext.isGoingToOnLiveRoute)
-      this.keyCanLiveOnCurrLocation = UN_MOUNT
-      this.prevUnmountKey = nextContext.isGoingToOnLiveRoute
+    // 进入普通 Route 退出清除浮动，触发顶层 setState
+    // if (match && !nextProps.float && nextContext.isGoingToOnLiveRoute) {
+    //   console.log('444')
+    //   nextContext.setNextOnLiveKey(false)
+    // }
+
+    // 2. 计算 still match
+    let undercoverMatch
+    if (nextContext.isGoingToOnLiveRoute) {
+      undercoverMatch = this.computeMatch(nextProps, nextContext._backupRouter)
     }
+    // if (undercoverMatch) {
+    //   this.isPending = false
+    // }
 
-    // 正常存活
-
+    console.log(this.computeMatch(nextProps, nextContext.router))
     this.setState({
-      match: this.computeMatch(nextProps, nextContext.router)
+      match: this.computeMatch(nextProps, nextContext.router) || undercoverMatch
+      // isUnderFloat: undercoverMatch
     })
   }
 
+  // isPending = false
+
+  // shouldComponentUpdate(nextProps, nextState, nextContext) {
+  //   console.log('should component update' + this.isPending)
+  //   if (this.isPending) {
+  //     return false
+  //   }
+  //   return true
+
   makeComponentLive = (props, match, componentClass) => {
     console.log('>>> into live component <<<')
-    console.log(this.keyCanLiveOnCurrLocation)
-    // 销毁
-    if (this.keyCanLiveOnCurrLocation === 3) {
-      console.log('销毁')
-      return null
-    }
-    // 靠 key 存活
-    if (this.keyCanLiveOnCurrLocation === 2) {
-      console.log('隐藏')
+    if (match) {
+      this.showRoute()
+    } else {
       this.hideRoute()
     }
-    // 正常存活
-    if (this.keyCanLiveOnCurrLocation === 1) {
-      console.log('显示')
-      this.showRoute()
-    }
     return React.createElement(componentClass, props)
+    // const oriComponent = React.createElement(componentClass, props)
+    // const displayStyle = match
+    //   ? {}
+    //   : {
+    //       position: 'absolute',
+    //       display: 'none',
+    //       visibility: 'hidden',
+    //       top: '99999px',
+    //       left: '99999px',
+    //       zIndex: '-999999'
+    //     }
+    // return React.cloneElement(oriComponent, {
+    //   style: displayStyle
+    // })
   }
 
   componentInited = false
 
   render() {
     const { match } = this.state
-    const { children, component, render, liveComponent, liveKey, float } = this.props
+    const { children, component, render, liveComponent, live, float } = this.props
     const { history, route, staticContext } = this.context.router
     const location = this.props.location || route.location
     const props = { match, location, history, staticContext }
 
-    // 初始化
+    // live
+
     if (match) {
       this.componentInited = true
+      // this.getDom()
     }
 
-    // 如果已经初始化 && 需要判断是否靠 key 存活
-    if (this.componentInited && liveKey) {
+    if (this.componentInited && live) {
       return this.makeComponentLive(props, match, component)
     }
 
+    console.log('---match0---' + this.props.name)
+    console.log(match)
     if (component) return match ? React.createElement(component, props) : null
 
     if (render) return match ? render(props) : null

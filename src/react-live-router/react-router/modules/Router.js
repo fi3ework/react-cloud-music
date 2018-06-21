@@ -19,13 +19,12 @@ class Router extends React.Component {
 
   static childContextTypes = {
     router: PropTypes.object.isRequired,
-    setGoingToFloatRoute: PropTypes.func.isRequired,
-    isGoingToFloatRoute: PropTypes.bool.isRequired,
-    setBackupRouter: PropTypes.func.isRequired,
-    _backupRouter: PropTypes.object.isRequired
+    setNextOnLiveKey: PropTypes.func.isRequired,
+    isGoingToOnLiveRoute: PropTypes.string.isRequired,
+    setUnmountLiveKey: PropTypes.func.isRequired
   }
 
-  _backupRouter = {}
+  unmount = 0
 
   getChildContext() {
     return {
@@ -37,23 +36,27 @@ class Router extends React.Component {
           match: this.state.match
         }
       },
-      setBackupRouter: router => {
-        console.log('----fucking')
-        this._backupRouter = router
-      },
-      setGoingToFloatRoute: is => {
+      setUnmountLiveKey: () => {
+        console.log('----- unmounting key -----')
+        this.unmount++
         this.setState({
-          isGoingToFloatRoute: true
+          isGoingToOnLiveRoute: '@@UM_' + this.unmount
         })
       },
-      isGoingToFloatRoute: this.state.isGoingToFloatRoute,
-      _backupRouter: this._backupRouter
+      setNextOnLiveKey: key => {
+        console.log('---- into set key ---')
+        console.log(key)
+        this.setState({
+          isGoingToOnLiveRoute: `@@KEY_${key}`
+        })
+      },
+      isGoingToOnLiveRoute: this.state.isGoingToOnLiveRoute
     }
   }
 
   state = {
     match: this.computeMatch(this.props.history.location.pathname),
-    isGoingToFloatRoute: false
+    isGoingToOnLiveRoute: ''
   }
 
   computeMatch(pathname) {
