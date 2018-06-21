@@ -148,14 +148,17 @@ class Route extends React.Component {
     const HIDE = 2
     const UN_MOUNT = 3
 
-    // 进入某 onLiveKey 页，确定 liveKey 页是否可以在当前路由上存活
-    // 隐藏存活，动作：隐藏
+    // 触发页面：liveKey 页面
+    // 触发时机：进入一个 liveKey 页面时
+    // 触发动作：判断是否在对应 onLiveKey 上，如果是，则隐藏自己
     if (match && nextProps.liveKey) {
       if (nextContext.isGoingToOnLiveRoute === `@@KEY_${nextProps.liveKey}`) {
         this.keyCanLiveOnCurrLocation = HIDE
       }
     } else if (
+      // 触发页面: onLiveKey 页面
       // 触发时机：离开一个 onLiveKey 页面
+      // 触发动作：判断当前页面是否可以销毁
       !match &&
       nextProps.onLiveKey &&
       nextContext.isGoingToOnLiveRoute.indexOf('@@UM') >= 0 &&
