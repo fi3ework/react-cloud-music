@@ -155,15 +155,18 @@ class Route extends React.Component {
         this.keyCanLiveOnCurrLocation = HIDE
       }
     } else if (
+      // 触发时机：离开一个 onLiveKey 页面
       !match &&
-      this.prevUnmountKey &&
+      nextProps.onLiveKey &&
       nextContext.isGoingToOnLiveRoute.indexOf('@@UM') >= 0 &&
       nextContext.isGoingToOnLiveRoute !== this.prevUnmountKey
     ) {
       console.log('444')
+      if (this.prevUnmountKey) {
+        this.keyCanLiveOnCurrLocation = UN_MOUNT
+      }
       console.log(this.prevUnmountKey)
       console.log(nextContext.isGoingToOnLiveRoute)
-      this.keyCanLiveOnCurrLocation = UN_MOUNT
       this.prevUnmountKey = nextContext.isGoingToOnLiveRoute
     }
 
