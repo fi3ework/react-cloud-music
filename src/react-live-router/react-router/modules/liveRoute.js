@@ -6,8 +6,8 @@ import matchPath from './matchPath'
 import ReactDOM from 'react-dom'
 
 const isEmptyChildren = children => React.Children.count(children) === 0
-const NORMAL = 0
-const HIDED = 1
+const NORMAL_RENDER = 0
+const HIDE_RENDER = 1
 /**
  * The public API for matching a single path and rendering.
  */
@@ -102,13 +102,13 @@ class Route extends React.Component {
     if (match) {
       console.log('--- NORMAL ---')
       // 正常存活
-      this.liveState = NORMAL
+      this.liveState = NORMAL_RENDER
       this._prevRouter = this.context.router
       return match
     } else if (livePathMatch) {
       // 备份一下需要渲染的参数
       console.log('--- HIDE ---')
-      this.liveState = HIDED
+      this.liveState = HIDE_RENDER
       const prevMatch = this.computeMatch(props, this.context.router)
       return prevMatch
     }
@@ -142,24 +142,32 @@ class Route extends React.Component {
   // 获取 Route 对应的 DOM
   getRouteDom() {
     let routeDom = ReactDOM.findDOMNode(this)
+    console.log(routeDom)
     this.routeDom = routeDom
   }
 
   // 获取 Route 对应的 DOM
   componentDidMount() {
     // 需要在这里模仿 cwrp 保存一下 router
-    this._prevRouter = this.context.router
-    this.getRouteDom()
+    if (this.props.livePath && this.state.match) {
+      this._prevRouter = this.context.router
+      this.getRouteDom()
+    }
   }
 
   // 获取 Route 对应的 DOM
   componentDidUpdate(prevProps, prevState) {
-    this.getRouteDom()
+    if (this.props.livePath && this.state.match) {
+      this.getRouteDom()
+    }
   }
 
   // 隐藏 DOM
   hideRoute() {
     if (this.routeDom) {
+      const _previousDisplayStyle = this.routeDom.style.display
+      this._previousDisplayStyle = _previousDisplayStyle
+      console.log(_previousDisplayStyle)
       this.routeDom.style.display = 'none'
     }
   }
@@ -167,7 +175,7 @@ class Route extends React.Component {
   // 显示 DOM
   showRoute() {
     if (this.routeDom) {
-      this.routeDom.style.display = 'block'
+      this.routeDom.style.display = this._previousDisplayStyle
     }
   }
 
@@ -181,13 +189,12 @@ class Route extends React.Component {
     // 如果已经初始化 && 需要判断是否靠 key 存活
     if (livePath && component) {
       // 正常渲染
-      console.log(this.liveState)
-      if (this.liveState === NORMAL) {
+      if (this.liveState === NORMAL_RENDER) {
         this.showRoute()
         return match ? React.createElement(component, props) : null
       }
       // 隐藏渲染
-      else if (this.liveState === HIDED) {
+      else if (this.liveState === HIDE_RENDER) {
         console.log('取出的 _prevRouter')
         console.log(this._prevRouter)
         const prevRouter = this._prevRouter
