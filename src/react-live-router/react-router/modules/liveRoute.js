@@ -6,7 +6,8 @@ import matchPath from './matchPath'
 import ReactDOM from 'react-dom'
 
 const isEmptyChildren = children => React.Children.count(children) === 0
-
+const NORMAL = 0
+const HIDED = 1
 /**
  * The public API for matching a single path and rendering.
  */
@@ -100,7 +101,7 @@ class Route extends React.Component {
       const livePathMatch = this.computeMatch(nextPropsWithLivePath, nextContext.router)
       if (match) {
         console.log('--- 0 ---')
-        this.liveState = 0
+        this.liveState = NORMAL
         // 正常存活
         this.setState({
           match: this.computeMatch(nextProps, nextContext.router)
@@ -110,7 +111,7 @@ class Route extends React.Component {
       } else if (livePathMatch) {
         // 备份一下需要渲染的参数
         console.log('--- 1 ---')
-        this.liveState = 1
+        this.liveState = HIDED
         this._prevProps = this.props
         console.log('存储的 _prevProps')
         console.log(this._prevProps)
@@ -134,17 +135,17 @@ class Route extends React.Component {
     }
   }
 
+  getRouteDom() {
+    let routeDom = ReactDOM.findDOMNode(this)
+    this.routeDom = routeDom
+  }
+
   componentDidMount() {
-    this.getDom()
+    this.getRouteDom()
   }
 
   componentDidUpdate(prevProps, prevState) {
-    this.getDom()
-  }
-
-  getDom() {
-    let routeDom = ReactDOM.findDOMNode(this)
-    this.routeDom = routeDom
+    this.getRouteDom()
   }
 
   hideRoute() {
@@ -159,20 +160,6 @@ class Route extends React.Component {
     }
   }
 
-  // makeComponentLive = (state, props, match, component) => {
-  //   this.plog('>>> into live component <<<')
-  //   // 隐藏
-  //   if (this.state === 0) {
-  //     this.plog('>>> 正常')
-  //     return match ? React.createElement(component, props) : null
-  //   }
-  //   if (this.state === 1) {
-  //     this.plog('>>> 隐藏')
-  //     this.hideRoute()
-  //   }
-  //   return React.createElement(component, this._prevProps)
-  // }
-
   render() {
     const { match } = this.state
     const { children, component, render, livePath } = this.props
@@ -182,9 +169,13 @@ class Route extends React.Component {
 
     // 如果已经初始化 && 需要判断是否靠 key 存活
     if (livePath && component) {
-      if (this.liveState === 0) {
+      // 正常渲染
+      if (this.liveState === NORMAL) {
+        this.showRoute()
         return match ? React.createElement(component, props) : null
-      } else if (this.liveState === 1) {
+      }
+      // 隐藏渲染
+      else if (this.liveState === HIDED) {
         console.log('取出的 _prevProps')
         console.log(this._prevProps)
         console.log('取出的 _prevRouter')
@@ -194,7 +185,7 @@ class Route extends React.Component {
         const { history, route, staticContext } = prevRouter
         const location = this.props.location || route.location
         const liveProps = { match, location, history, staticContext }
-
+        this.hideRoute()
         return React.createElement(component, liveProps)
       }
     }
