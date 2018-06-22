@@ -80,8 +80,42 @@ class Route extends React.Component {
     )
   }
 
+  /**
+   *
+   *
+   * @param {*} props: this.props
+   * @param {*} nextProps: nextProps
+   * @param {*} nextContext: nextContext
+   * @param {*} match: match
+   * @returns 如果当前的 livePath 匹配，则返回最近一次正常渲染的 match。
+   *          如果当前的 livePath 不匹配，则返回正常计算的 match。
+   * @memberof Route
+   * 在每次正常渲染的时候，都备份它当前的 router，备份给下一次的 livePath 渲染。
+   * 在每次隐藏渲染的时候，都返回一个 prevMatch，等到渲染的时候，它拿这次的 prevMatch 和之前的 router 去最终渲染。
+   */
+  computeLivePath(props, nextProps, nextContext, match) {
+    console.log('进入 livePath')
+    // 计算 livePath 是否匹配
+    const livePath = nextProps.livePath
+    const nextPropsWithLivePath = { ...nextProps, path: livePath }
+    const livePathMatch = this.computeMatch(nextPropsWithLivePath, nextContext.router)
+    if (match) {
+      console.log('--- NORMAL ---')
+      // 正常存活
+      this.liveState = NORMAL
+      this._prevRouter = this.context.router
+      return match
+    } else if (livePathMatch) {
+      // 备份一下需要渲染的参数
+      console.log('--- HIDE ---')
+      this.liveState = HIDED
+      const prevMatch = this.computeMatch(props, this.context.router)
+      return prevMatch
+    }
+  }
+
   componentWillReceiveProps(nextProps, nextContext) {
-    this.plog('into cwrp')
+    console.log('into cwrp')
     warning(
       !(nextProps.location && !this.props.location),
       '<Route> elements should not change from uncontrolled to controlled (or vice versa). You initially used no "location" prop and then provided one on a subsequent render.'
@@ -93,67 +127,42 @@ class Route extends React.Component {
     )
 
     const match = this.computeMatch(nextProps, nextContext.router)
-    const prevMatch = this.computeMatch(this.props, this.context.router)
-    if (this.props.livePath) {
-      this.plog('进入专属')
-      const livePath = nextProps.livePath
-      const nextPropsWithLivePath = { ...nextProps, path: livePath }
-      const livePathMatch = this.computeMatch(nextPropsWithLivePath, nextContext.router)
-      if (match) {
-        console.log('--- 0 ---')
-        this.liveState = NORMAL
-        // 正常存活
-        this.setState({
-          match: this.computeMatch(nextProps, nextContext.router)
-        })
-        console.log('存储的 _prevRouter')
-        this._prevRouter = this.context.router
-      } else if (livePathMatch) {
-        // 备份一下需要渲染的参数
-        console.log('--- 1 ---')
-        this.liveState = HIDED
-        this._prevProps = this.props
-        console.log('存储的 _prevProps')
-        console.log(this._prevProps)
-        this.setState({
-          match: prevMatch
-        })
-      }
+    let computedMatch = match
 
-      return
+    // 如果是 livePath 页面，需要重新计算 match
+    if (this.props.livePath) {
+      computedMatch = this.computeLivePath(this.props, nextProps, nextContext, match)
     }
 
     this.setState({
-      match
+      match: computedMatch
     })
   }
 
-  plog = text => {
-    const that = this
-    if (that.props.name === 'playlist') {
-      console.log(text)
-    }
-  }
-
+  // 获取 Route 对应的 DOM
   getRouteDom() {
     let routeDom = ReactDOM.findDOMNode(this)
     this.routeDom = routeDom
   }
 
+  // 获取 Route 对应的 DOM
   componentDidMount() {
     this.getRouteDom()
   }
 
+  // 获取 Route 对应的 DOM
   componentDidUpdate(prevProps, prevState) {
     this.getRouteDom()
   }
 
+  // 隐藏 DOM
   hideRoute() {
     if (this.routeDom) {
       this.routeDom.style.display = 'none'
     }
   }
 
+  // 显示 DOM
   showRoute() {
     if (this.routeDom) {
       this.routeDom.style.display = 'block'
@@ -176,8 +185,6 @@ class Route extends React.Component {
       }
       // 隐藏渲染
       else if (this.liveState === HIDED) {
-        console.log('取出的 _prevProps')
-        console.log(this._prevProps)
         console.log('取出的 _prevRouter')
         console.log(this._prevRouter)
         const prevRouter = this._prevRouter
