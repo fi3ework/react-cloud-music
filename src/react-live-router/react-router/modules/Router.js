@@ -2,7 +2,6 @@ import warning from 'warning'
 import invariant from 'invariant'
 import React from 'react'
 import PropTypes from 'prop-types'
-import { isStringTextContainingNode } from 'typescript'
 
 /**
  * The public API for putting history on context.
@@ -18,20 +17,7 @@ class Router extends React.Component {
   }
 
   static childContextTypes = {
-    router: PropTypes.object.isRequired,
-    setNextOnLiveKey: PropTypes.func.isRequired,
-    isGoingToOnLiveRoute: PropTypes.string.isRequired,
-    setUnmountLiveKey: PropTypes.func.isRequired,
-    setPending: PropTypes.func.isRequired,
-    step: PropTypes.number.isRequired
-  }
-
-  step = 0
-  unmount = 0
-  isPending = false
-
-  setPending = step => {
-    this.step = step
+    router: PropTypes.object.isRequired
   }
 
   getChildContext() {
@@ -43,32 +29,12 @@ class Router extends React.Component {
           location: this.props.history.location,
           match: this.state.match
         }
-      },
-      setNextOnLiveKey: key => {
-        console.log('---- into set key ---')
-        console.log(key)
-        this.setPending(0)
-        this.setState({
-          isGoingToOnLiveRoute: `@@KEY_${key}`
-        })
-      },
-      setUnmountLiveKey: () => {
-        this.unmount++
-        console.log('----- unmounting key -----' + this.unmount)
-        this.setPending(0)
-        this.setState({
-          isGoingToOnLiveRoute: '@@UM_' + this.unmount
-        })
-      },
-      step: this.step,
-      setPending: this.setPending,
-      isGoingToOnLiveRoute: this.state.isGoingToOnLiveRoute
+      }
     }
   }
 
   state = {
-    match: this.computeMatch(this.props.history.location.pathname),
-    isGoingToOnLiveRoute: '@@UM_0'
+    match: this.computeMatch(this.props.history.location.pathname)
   }
 
   computeMatch(pathname) {
@@ -89,7 +55,6 @@ class Router extends React.Component {
     // location in componentWillMount. This happens e.g. when doing
     // server rendering using a <StaticRouter>.
     this.unlisten = history.listen(() => {
-      // console.log(history.location.pathname)
       this.setState({
         match: this.computeMatch(history.location.pathname)
       })

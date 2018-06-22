@@ -36,8 +36,8 @@ const dynamicRoute = ({ location }) => {
           atLeave={{ opacity: 0 }}
           atActive={{ opacity: 1 }}
         /> */}
-        <LiveRoute path={`/playing`} component={Playing} onLiveKey={'ff'} name="playing" />
-        <LiveRoute path={`/playlist/:id`} component={Playlist} liveKey={'ff'} name="playlist" />
+        <LiveRoute path={`/playing`} component={Playing} name="playing" />
+        <LiveRoute path={`/playlist/:id`} component={Playlist} name="playlist" livePath={`/playing`} />
       </div>
       <Switch>
         {/* <LiveRoute path={`/explore`} component={BottomBar} /> */}
