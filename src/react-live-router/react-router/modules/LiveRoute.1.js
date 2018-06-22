@@ -138,6 +138,7 @@ class Route extends React.Component {
     // 1. 普通 Route 每次都触发，不会触发顶层 setState
     if (!nextProps.float) {
       console.log('000')
+      this.setPending(2)
       this.context.setUnmountLiveKey(this.context.router)
     }
 
@@ -150,6 +151,7 @@ class Route extends React.Component {
     // 1. 进入 Float Route 时触发浮动，触发顶层 setState
     if (match && nextProps.float && !nextContext.isGoingToOnLiveRoute) {
       console.log('111')
+      this.setPending(2)
       nextContext.setNextOnLiveKey(true)
     }
 

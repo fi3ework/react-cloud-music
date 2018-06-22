@@ -268,7 +268,7 @@ const pushSongsToPlaylistREducer: IReducer = (state, action) => {
 
 // 总 reducer
 export const reducers: IReducer = (state, action) => {
-  console.log(action)
+  // console.log(action)
   switch (action.type) {
     case PLAY_PLAYLIST:
       return playCurrSongReducer(state, action)

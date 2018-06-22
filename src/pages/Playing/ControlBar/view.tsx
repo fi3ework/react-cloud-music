@@ -9,7 +9,6 @@ type IProps = {
 }
 
 const RotatingCover: React.SFC<IProps> = props => {
-  console.log(props.isPlaying)
   return (
     <div className={style.controlButtonsWrapper}>
       <i onClick={props.switchPrevSong} className={'iconfont-ncm'}>

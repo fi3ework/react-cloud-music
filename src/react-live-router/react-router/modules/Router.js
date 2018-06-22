@@ -21,10 +21,18 @@ class Router extends React.Component {
     router: PropTypes.object.isRequired,
     setNextOnLiveKey: PropTypes.func.isRequired,
     isGoingToOnLiveRoute: PropTypes.string.isRequired,
-    setUnmountLiveKey: PropTypes.func.isRequired
+    setUnmountLiveKey: PropTypes.func.isRequired,
+    setPending: PropTypes.func.isRequired,
+    step: PropTypes.number.isRequired
   }
 
+  step = 0
   unmount = 0
+  isPending = false
+
+  setPending = step => {
+    this.step = step
+  }
 
   getChildContext() {
     return {
@@ -36,27 +44,31 @@ class Router extends React.Component {
           match: this.state.match
         }
       },
-      setUnmountLiveKey: () => {
-        console.log('----- unmounting key -----')
-        this.unmount++
-        this.setState({
-          isGoingToOnLiveRoute: '@@UM_' + this.unmount
-        })
-      },
       setNextOnLiveKey: key => {
         console.log('---- into set key ---')
         console.log(key)
+        this.setPending(0)
         this.setState({
           isGoingToOnLiveRoute: `@@KEY_${key}`
         })
       },
+      setUnmountLiveKey: () => {
+        this.unmount++
+        console.log('----- unmounting key -----' + this.unmount)
+        this.setPending(0)
+        this.setState({
+          isGoingToOnLiveRoute: '@@UM_' + this.unmount
+        })
+      },
+      step: this.step,
+      setPending: this.setPending,
       isGoingToOnLiveRoute: this.state.isGoingToOnLiveRoute
     }
   }
 
   state = {
     match: this.computeMatch(this.props.history.location.pathname),
-    isGoingToOnLiveRoute: ''
+    isGoingToOnLiveRoute: '@@UM_0'
   }
 
   computeMatch(pathname) {
