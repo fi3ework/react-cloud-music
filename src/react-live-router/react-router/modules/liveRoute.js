@@ -147,6 +147,8 @@ class Route extends React.Component {
 
   // 获取 Route 对应的 DOM
   componentDidMount() {
+    // 需要在这里模仿 cwrp 保存一下 router
+    this._prevRouter = this.context.router
     this.getRouteDom()
   }
 
@@ -179,6 +181,7 @@ class Route extends React.Component {
     // 如果已经初始化 && 需要判断是否靠 key 存活
     if (livePath && component) {
       // 正常渲染
+      console.log(this.liveState)
       if (this.liveState === NORMAL) {
         this.showRoute()
         return match ? React.createElement(component, props) : null
@@ -194,6 +197,8 @@ class Route extends React.Component {
         const liveProps = { match, location, history, staticContext }
         this.hideRoute()
         return React.createElement(component, liveProps)
+      } else {
+        console.log('react-live-router: this is mount render, will do nothing.')
       }
     }
 
