@@ -102,22 +102,27 @@ class Route extends React.Component {
    */
   computeLivePath(props, nextProps, nextContext, match) {
     console.log('进入 livePath')
+    console.log(this._routeInited)
     // 计算 livePath 是否匹配
     const livePath = nextProps.livePath
     const nextPropsWithLivePath = { ...nextProps, path: livePath }
     const livePathMatch = this.computeMatch(nextPropsWithLivePath, nextContext.router)
-    if (match) {
-      console.log('--- NORMAL ---')
+    if (match || (props.alwaysLive && !this._routeInited)) {
+      console.log('------- NORMAL -------')
       // 正常存活
       this.liveState = NORMAL_RENDER
       this._prevRouter = this.context.router
       return match
     } else if (livePathMatch) {
       // 备份一下需要渲染的参数
-      console.log('--- HIDE ---')
+      console.log('------- HIDE -------')
       this.liveState = HIDE_RENDER
       const prevMatch = this.computeMatch(props, this.context.router)
       return prevMatch
+    } else {
+      this.liveState = NORMAL_RENDER
+      console.log('------- NO MATCH -------')
+      console.error('err')
     }
   }
 
@@ -137,7 +142,7 @@ class Route extends React.Component {
     let computedMatch = match
 
     // 如果是 livePath 页面，需要重新计算 match
-    if (this.props.livePath) {
+    if (this.props.livePath || this.props.alwaysLive) {
       computedMatch = this.computeLivePath(this.props, nextProps, nextContext, match)
     }
 
@@ -159,6 +164,10 @@ class Route extends React.Component {
     if ((this.props.livePath || this.props.alwaysLive) && this.state.match) {
       this._prevRouter = this.context.router
       this.getRouteDom()
+      if (this.routeDom) {
+        this._routeInited = true
+        console.log('--- inited ---')
+      }
     }
   }
 
@@ -166,6 +175,10 @@ class Route extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if ((this.props.livePath || this.props.alwaysLive) && this.state.match) {
       this.getRouteDom()
+      if (this.routeDom) {
+        this._routeInited = true
+        console.log('--- inited ---')
+      }
     }
   }
 
@@ -173,7 +186,10 @@ class Route extends React.Component {
   hideRoute() {
     if (this.routeDom) {
       const _previousDisplayStyle = this.routeDom.style.display
-      this._previousDisplayStyle = _previousDisplayStyle
+      if (_previousDisplayStyle !== 'none') {
+        this._previousDisplayStyle = _previousDisplayStyle
+        console.log('setted = ' + _previousDisplayStyle)
+      }
       console.log(_previousDisplayStyle)
       this.routeDom.style.display = 'none'
     }
@@ -193,28 +209,8 @@ class Route extends React.Component {
     const location = this.props.location || route.location
     const props = { match, location, history, staticContext }
 
-    // 如果是不死组件
-    if (alwaysLive && component) {
-      if (!this._routeInited) {
-        if (match) {
-          console.log('--- init ---')
-          this._routeInited = true
-          return React.createElement(component, props)
-        } else {
-          return null
-        }
-      } else {
-        if (!match) {
-          this.hideRoute()
-        } else {
-          this.showRoute()
-        }
-        return React.createElement(component, props)
-      }
-    }
-
-    // 如果已经初始化 && 需要判断是否靠 key 存活
-    if (livePath && component) {
+    if ((livePath || alwaysLive) && component) {
+      console.log('=== render: ' + this.liveState + ' ===')
       // 正常渲染
       if (this.liveState === NORMAL_RENDER) {
         this.showRoute()
@@ -225,7 +221,6 @@ class Route extends React.Component {
         console.log('取出的 _prevRouter')
         console.log(this._prevRouter)
         const prevRouter = this._prevRouter
-
         const { history, route, staticContext } = prevRouter
         const location = this.props.location || route.location
         const liveProps = { match, location, history, staticContext }
@@ -233,6 +228,7 @@ class Route extends React.Component {
         return React.createElement(component, liveProps)
       } else {
         console.log('react-live-router: this is mount render, will do nothing.')
+        return match ? React.createElement(component, props) : null
       }
     }
 
