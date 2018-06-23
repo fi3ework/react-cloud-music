@@ -36,6 +36,13 @@ class Route extends React.Component {
     router: PropTypes.object.isRequired
   }
 
+  constructor(props, context) {
+    super(props, context)
+    if (props.alwaysLive) {
+      this._routeInited = false
+    }
+  }
+
   getChildContext() {
     return {
       router: {
@@ -149,7 +156,7 @@ class Route extends React.Component {
   // 获取 Route 对应的 DOM
   componentDidMount() {
     // 需要在这里模仿 cwrp 保存一下 router
-    if (this.props.livePath && this.state.match) {
+    if ((this.props.livePath || this.props.alwaysLive) && this.state.match) {
       this._prevRouter = this.context.router
       this.getRouteDom()
     }
@@ -157,7 +164,7 @@ class Route extends React.Component {
 
   // 获取 Route 对应的 DOM
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.livePath && this.state.match) {
+    if ((this.props.livePath || this.props.alwaysLive) && this.state.match) {
       this.getRouteDom()
     }
   }
@@ -181,10 +188,30 @@ class Route extends React.Component {
 
   render() {
     const { match } = this.state
-    const { children, component, render, livePath } = this.props
+    const { children, component, render, livePath, alwaysLive } = this.props
     const { history, route, staticContext } = this.context.router
     const location = this.props.location || route.location
     const props = { match, location, history, staticContext }
+
+    // 如果是不死组件
+    if (alwaysLive && component) {
+      if (!this._routeInited) {
+        if (match) {
+          console.log('--- init ---')
+          this._routeInited = true
+          return React.createElement(component, props)
+        } else {
+          return null
+        }
+      } else {
+        if (!match) {
+          this.hideRoute()
+        } else {
+          this.showRoute()
+        }
+        return React.createElement(component, props)
+      }
+    }
 
     // 如果已经初始化 && 需要判断是否靠 key 存活
     if (livePath && component) {
