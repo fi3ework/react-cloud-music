@@ -106,6 +106,7 @@ class Route extends React.Component {
     // 计算 livePath 是否匹配
     const livePath = nextProps.livePath
     const nextPropsWithLivePath = { ...nextProps, path: livePath }
+    const prevMatch = this.computeMatch(props, this.context.router)
     const livePathMatch = this.computeMatch(nextPropsWithLivePath, nextContext.router)
     if (match || (props.alwaysLive && !this._routeInited)) {
       console.log('------- NORMAL -------')
@@ -113,11 +114,10 @@ class Route extends React.Component {
       this.liveState = NORMAL_RENDER
       this._prevRouter = this.context.router
       return match
-    } else if (livePathMatch) {
+    } else if ((livePathMatch && prevMatch) || props.alwaysLive) {
       // 备份一下需要渲染的参数
       console.log('------- HIDE -------')
       this.liveState = HIDE_RENDER
-      const prevMatch = this.computeMatch(props, this.context.router)
       return prevMatch
     } else {
       this.liveState = NORMAL_RENDER
