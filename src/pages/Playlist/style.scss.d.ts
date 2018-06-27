@@ -1,5 +1,6 @@
 export const wrapper: string;
 export const foreground: string;
+export const back: string;
 export const content: string;
 export const infoWrapper: string;
 export const bgImg: string;

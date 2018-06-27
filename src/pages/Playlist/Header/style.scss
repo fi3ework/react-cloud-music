@@ -1,0 +1,10 @@
+@import '@/constant/style.scss';
+
+.back {
+  display: block;
+  color: rgba(255, 255, 255, 0.7);
+  height: $headerBarHeight;
+  line-height: $headerBarHeight;
+  font-weight: bolder;
+  padding-left: 30px;
+}

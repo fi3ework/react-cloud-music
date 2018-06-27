@@ -1,7 +1,6 @@
 import React, { MouseEventHandler } from 'react'
 import style from './style.scss'
 import { withRouter } from 'react-router-dom'
-import cs from 'classnames'
 
 type IProps = {
   artists: string

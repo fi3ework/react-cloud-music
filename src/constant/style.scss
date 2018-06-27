@@ -11,6 +11,10 @@ $bottomBarHeight: 100px;
     url('//at.alicdn.com/t/font_669459_afqsk5w06kd.svg#iconfont-cloud-music') format('svg');
 }
 
+$base-font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, 'PingFang SC', 'Hiragino Sans GB',
+  STHeiti, 'Microsoft YaHei', 'Microsoft JhengHei', 'Source Han Sans SC', 'Noto Sans CJK SC', 'Source Han Sans CN',
+  'Noto Sans SC', 'Source Han Sans TC', 'Noto Sans CJK TC', 'WenQuanYi Micro Hei', SimSun, sans-serif;
+
 :global {
   html,
   body,
@@ -19,6 +23,7 @@ $bottomBarHeight: 100px;
     position: relative;
     height: 100%;
     overflow: hidden;
+    font-family: $base-font-family;
   }
   a {
     color: #fff;

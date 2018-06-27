@@ -1,8 +1,8 @@
 import * as React from 'react'
 import * as cs from 'classnames'
 import * as style from './style.scss'
-import { withRouter } from 'react-router-dom'
 import Custom from './Custom'
+import List from './List'
 import PropTypes from 'prop-types'
 
 interface IProps {
@@ -147,8 +147,6 @@ class Explore extends React.Component<IProps> {
   render() {
     const wrapperClass = cs({
       [style.exploreWrapper]: true,
-      // [style.showCustom]: this.props.location.pathname === '/explore/custom',
-      // [style.showDj]: this.props.location.pathname === '/explore/dj',
       [style.isTransitioning]: this.state.isTransitioning === true
     })
 
@@ -167,7 +165,7 @@ class Explore extends React.Component<IProps> {
           <Custom />
         </div>
         <div className={style.innerWrapper}>
-          <div className={style.dj}>2</div>
+          <List />
         </div>
       </div>
     )

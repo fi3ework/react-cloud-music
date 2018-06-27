@@ -3,16 +3,17 @@ import style from './style.scss'
 import { Link } from 'react-router-dom'
 
 type IProps = {
-  render?: () => ReactNode
+  render?: (props) => ReactNode
   component?: React.ComponentClass
 }
 
-const HeaderBar: React.SFC<IProps> = ({ component, render }) => {
+const HeaderBar: React.SFC<IProps> = props => {
   let children
+  const { component, render } = props
   if (component) {
-    children = React.createElement(component)
+    children = React.createElement(component, props)
   } else if (render) {
-    children = render()
+    children = render(props)
   }
 
   return (

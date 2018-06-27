@@ -11,6 +11,7 @@ type Iapis = {
   songDetail: Iapi
   playlist: Iapi
   songUrl: Iapi
+  list: Iapi
 }
 
 const ProxyHost = '/api'
@@ -27,14 +28,18 @@ const NETEASE_API = {
   songUrl: {
     path: '/music/url?id=:ids'
   },
+  // 歌曲详情
   songDetail: {
-    // 歌曲详情
     path: '/song/detail?ids=:ids'
   },
   // 歌曲 URL 备胎
   songUrlBackUp: {
     path: 'http://music.163.com/song/media/outer/url?id=:id.mp3'
-  }
+  },
+  // 排行榜
+  list: {
+    path: '/top/list?idx=:idx'
+  },
 }
 
 const addHost = (APIs, hostPath) => {
