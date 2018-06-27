@@ -1,5 +1,7 @@
 import * as React from 'react'
-import { BrowserRouter, Route, LiveRoute, Switch } from '../react-live-router/react-router-dom/modules/index.js'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { LiveRoute } from '../react-live-router/react-router-dom/modules/index.js'
+// import LiveRoute from '@/react-live-router/react-router/modules/LiveRoute'
 import ExplorePage from '@/pages/Explore'
 import VideoPage from '@/pages/Video'
 import MinePage from '@/pages/Mine'
@@ -11,24 +13,24 @@ import BottomBar from '@/layouts/BottomBar'
 import BaseHeaderBar from '@/layouts/HeaderBar'
 import ExploreHeaderBar from '@/layouts/ExploreHeaderBar'
 import * as style from './routerTrans.scss'
-// import { AnimatedRoute } from 'react-router-transition'
+import { AnimatedRoute } from 'react-router-transition'
 
 const dynamicRoute = ({ location }) => {
   return (
     <React.Fragment>
       <Switch>
-        {/* <LiveRoute path={`/explore`} component={ExploreHeaderBar} /> */}
-        {/* <LiveRoute path={`/video`} component={BaseHeaderBar} /> */}
-        {/* <LiveRoute path={`/mine`} component={BaseHeaderBar} /> */}
-        {/* <LiveRoute path={`/friends`} component={BaseHeaderBar} /> */}
-        {/* <LiveRoute path={`/account`} component={BaseHeaderBar} /> */}
+        <Route path={`/explore`} component={ExploreHeaderBar} />
+        <Route path={`/video`} component={BaseHeaderBar} />
+        <Route path={`/mine`} component={BaseHeaderBar} />
+        <Route path={`/friends`} component={BaseHeaderBar} />
+        <Route path={`/account`} component={BaseHeaderBar} />
       </Switch>
       <div className={style.routeWrapper}>
-        <LiveRoute path={`/explore`} component={ExplorePage} />
-        {/* <LiveRoute path={`/video`} component={VideoPage} /> */}
-        {/* <LiveRoute path={`/mine`} component={MinePage} /> */}
-        {/* <LiveRoute path={`/friends`} component={FriendsPage} live={true} /> */}
-        {/* <LiveRoute path={`/account`} component={AccountPage} /> */}
+        <Route path={`/explore`} component={ExplorePage} />
+        <Route path={`/video`} component={VideoPage} />
+        <Route path={`/mine`} component={MinePage} />
+        <Route path={`/friends`} component={FriendsPage} />
+        <Route path={`/account`} component={AccountPage} />
         {/* <AnimatedRoute
           path="/playing"
           component={Playing}
@@ -36,16 +38,16 @@ const dynamicRoute = ({ location }) => {
           atLeave={{ opacity: 0 }}
           atActive={{ opacity: 1 }}
         /> */}
-        <LiveRoute path={`/playing`} component={Playing} name="playing" />
+        <LiveRoute path={`/playing`} component={Playing} name="playing" alwaysLive={true} />
         <LiveRoute path={`/playlist/:id`} component={Playlist} name="playlist" livePath={`/playing`} />
       </div>
       <Switch>
-        {/* <LiveRoute path={`/explore`} component={BottomBar} /> */}
-        {/* <LiveRoute path={`/video`} component={BottomBar} /> */}
-        {/* <LiveRoute path={`/mine`} component={BottomBar} /> */}
-        {/* <LiveRoute path={`/friends`} component={BottomBar} /> */}
-        {/* <LiveRoute path={`/account`} component={BottomBar} /> */}
-        {/* <LiveRoute path={`/playlist`} component={BottomBar} /> */}
+        <Route path={`/explore`} component={BottomBar} />
+        <Route path={`/video`} component={BottomBar} />
+        <Route path={`/mine`} component={BottomBar} />
+        <Route path={`/friends`} component={BottomBar} />
+        <Route path={`/account`} component={BottomBar} />
+        <Route path={`/playlist`} component={BottomBar} />
       </Switch>
     </React.Fragment>
   )

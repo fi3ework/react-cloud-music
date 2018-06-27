@@ -61,6 +61,7 @@
     "react": "^16.3.2",
     "react-dev-utils": "^5.0.1",
     "react-dom": "^16.3.2",
+    "react-live-route": "^1.0.0",
     "react-redux": "^5.0.7",
     "react-reviver": "^0.1.0",
     "react-router": "^4.2.0",
