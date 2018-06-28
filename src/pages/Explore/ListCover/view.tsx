@@ -27,8 +27,21 @@ export default class Custom extends React.Component<IProps, IState> {
     console.log(this.store)
     const coverImgUrl = get(this.store, 'payload.playlist.coverImgUrl')
     const previewItems = get(this.store, 'payload.playlist.tracks')
+    const name = get(this.store, 'payload.playlist.name')
+    const playCount = get(this.store, 'payload.playlist.playCount')
+    const path = `/playlist/${get(this.store, 'payload.playlist.id')}`
     return (
-      <Link className={style.wrapper} to="">
+      <Link
+        className={style.wrapper}
+        to={{
+          pathname: path,
+          state: {
+            picUrl: coverImgUrl,
+            name: name,
+            playCount
+          }
+        }}
+      >
         <img className={style.coverImg} src={coverImgUrl} />
         <div className={style.previews}>
           {previewItems &&
