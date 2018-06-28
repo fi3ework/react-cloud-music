@@ -1,29 +1,29 @@
 @import '@/constant/style.scss';
 .exploreWrapper {
-    margin: 0;
-    width: 200%;
-    text-align: center;
-    background-color: $ncmRed;
-    height: 100%;
-    overflow-x: scroll;
-    overflow-y: hidden;
-    display: flex;
+  margin: 0;
+  width: 200%;
+  text-align: center;
+  background-color: $ncmRed;
+  height: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  display: flex;
 }
 
 .isTransitioning {
-    transition: transform 0.2s ease-out;
+  transition: transform 0.2s ease-out;
 }
 
 .custom {
-    position: relative;
-    // height: 3750px;
-    background-color: #fff;
-    padding: 0 0 1px 0;
+  position: relative;
+  // height: 3750px;
+  background-color: #fff;
+  padding: 0 0 1px 0;
 }
 
-.dj {
-    background-color: #fff;
-    height: 750px;
+.lists {
+  padding-top: 30px;
+  background-color: #fff;
 }
 
 // .showDj {
@@ -33,27 +33,27 @@
 //     transform: translate3d(0, 0, 0) !important
 // }
 .innerWrapper {
-    flex-shrink: 0;
-    box-sizing: border-box;
-    border: 1px solid transparent;
-    border-width: 150px 0 $bottomBarHeight 0;
-    width: 50%;
-    height: 100%;
-    overflow-x: auto;
-    overflow-y: auto;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  border-width: 150px 0 $bottomBarHeight 0;
+  width: 50%;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
 }
 
 .banners {
-    border-radius: 10px;
-    margin: 10px auto 10px auto;
-    -webkit-mask-image: -webkit-radial-gradient(white, black); // TODO
-    width: 98%;
-    overflow: hidden;
+  border-radius: 10px;
+  margin: 10px auto 10px auto;
+  -webkit-mask-image: -webkit-radial-gradient(white, black); // TODO
+  width: 98%;
+  overflow: hidden;
 }
 
 .redBg {
-    position: absolute;
-    background-color: $ncmRed;
-    width: 100%;
-    height: 120px;
+  position: absolute;
+  background-color: $ncmRed;
+  width: 100%;
+  height: 120px;
 }
