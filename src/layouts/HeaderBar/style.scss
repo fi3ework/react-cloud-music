@@ -2,28 +2,30 @@
 
 .headerBar {
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   top: 0;
   left: 0;
   right: 0;
   z-index: 99;
-  margin: 0;
-  padding: 30px 0 10px 0;
   width: 100%;
+  height: $headerBarHeight - 5px;
   background-color: $ncmRed;
-  border-top: 1px solid #eee;
+  overflow: hidden;
 }
 
-.playingLink{
+.playingLink {
   position: absolute;
   right: 20px;
-  i{
+  i {
     font-size: 50px;
   }
 }
 
-.search{
-  &::placeholder{
-    color: rgba($color: #fff, $alpha: 0.5)
+.search {
+  &::placeholder {
+    color: rgba($color: #fff, $alpha: 0.5);
   }
   display: block;
   height: 45px;

@@ -1,3 +1,4 @@
+export const headerBar: string;
 export const wrapper: string;
 export const slideNav: string;
 export const slider: string;

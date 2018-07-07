@@ -1,8 +1,10 @@
 import React, { ReactNode } from 'react'
 import style from './style.scss'
 import { Link } from 'react-router-dom'
+import cs from 'classnames'
 
 type IProps = {
+  style?: any
   render?: (props) => ReactNode
   component?: React.ComponentClass
 }
@@ -17,7 +19,12 @@ const HeaderBar: React.SFC<IProps> = props => {
   }
 
   return (
-    <nav className={style.headerBar}>
+    <nav
+      className={cs({
+        [style.headerBar]: true,
+        [props.style]: true
+      })}
+    >
       <div>
         <Link className={style.playingLink} to="/playing">
           <i className={'iconfont-ncm'}>&#xe6cf;</i>

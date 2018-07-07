@@ -1,7 +1,12 @@
 @import '@/constant/style.scss';
 
 .wrapper {
-    text-align: center;
-    height: 8888px;
-    background-color: green;
+  text-align: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: lightgoldenrodyellow;
+  overflow: hidden;
+  color: #333;
 }

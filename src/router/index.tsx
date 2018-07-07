@@ -2,6 +2,7 @@ import * as React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { LiveRoute } from '../react-live-router/react-router-dom/modules/index.js'
 // import LiveRoute from '@/react-live-router/react-router/modules/LiveRoute'
+// import LiveRoute from 'react-live-route'
 import ExplorePage from '@/pages/Explore'
 import VideoPage from '@/pages/Video'
 import MinePage from '@/pages/Mine'
@@ -31,6 +32,8 @@ const dynamicRoute = ({ location }) => {
         <Route path={`/mine`} component={MinePage} />
         <Route path={`/friends`} component={FriendsPage} />
         <Route path={`/account`} component={AccountPage} />
+        <LiveRoute path={`/playlist/:id`} component={Playlist} name="playlist" livePath={`/playing`} />
+        <LiveRoute path={`/playing`} component={Playing} name="playing" alwaysLive={true} />
         {/* <AnimatedRoute
           path="/playing"
           component={Playing}
@@ -38,8 +41,6 @@ const dynamicRoute = ({ location }) => {
           atLeave={{ opacity: 0 }}
           atActive={{ opacity: 1 }}
         /> */}
-        <LiveRoute path={`/playing`} component={Playing} name="playing" alwaysLive={true} />
-        <LiveRoute path={`/playlist/:id`} component={Playlist} name="playlist" livePath={`/playing`} />
       </div>
       <Switch>
         <Route path={`/explore`} component={BottomBar} />

@@ -1,8 +1,13 @@
 @import '@/constant/style.scss';
 
 .wrapper {
-    margin: $headerBarHeight 0 $bottomBarHeight 0;
     text-align: center;
-    height: 750px;
-    background-color: lightblue;
-}
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: salmon;
+    overflow: hidden;
+    color: #333;
+  }
+  

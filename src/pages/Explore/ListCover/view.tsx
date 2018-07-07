@@ -24,7 +24,6 @@ export default class Custom extends React.Component<IProps, IState> {
   }
 
   render() {
-    console.log(this.store)
     const coverImgUrl = get(this.store, 'payload.playlist.coverImgUrl')
     const previewItems = get(this.store, 'payload.playlist.tracks')
     const name = get(this.store, 'payload.playlist.name')

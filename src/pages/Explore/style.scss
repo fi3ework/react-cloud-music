@@ -16,7 +16,6 @@
 
 .custom {
   position: relative;
-  // height: 3750px;
   background-color: #fff;
   padding: 0 0 1px 0;
 }
@@ -26,17 +25,11 @@
   background-color: #fff;
 }
 
-// .showDj {
-//     transform: translate3d(-50%, 0, 0) !important
-// }
-// .showCustom {
-//     transform: translate3d(0, 0, 0) !important
-// }
 .innerWrapper {
   flex-shrink: 0;
   box-sizing: border-box;
   border: 1px solid transparent;
-  border-width: 150px 0 $bottomBarHeight 0;
+  border-width: 170px 0 $bottomBarHeight 0;
   width: 50%;
   height: 100%;
   overflow-x: auto;

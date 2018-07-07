@@ -15,7 +15,7 @@ class BottomBar extends React.Component {
       },
       {
         router: 'mine',
-        name: '视频'
+        name: '我的'
       },
       {
         router: 'friends',

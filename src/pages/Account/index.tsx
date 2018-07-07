@@ -8,8 +8,8 @@ interface IProps {
 class App extends React.Component<IProps> {
   render() {
     return (
-      <div className={style.wrapper} style={{ ...this.props.style }}>
-        Account
+      <div className={style.wrapper}>
+        <h1>👤 account page</h1>
       </div>
     )
   }

@@ -27,7 +27,7 @@ class SlideNav extends React.Component<any, IState> {
             个性推荐
           </Link>
           <Link to="/explore/dj" onClick={() => this.changePage(1)}>
-            主播电台
+            排行榜
           </Link>
         </div>
         <div
@@ -43,5 +43,5 @@ class SlideNav extends React.Component<any, IState> {
 }
 
 export default () => {
-  return <BaseHeaderBar component={SlideNav} />
+  return <BaseHeaderBar component={SlideNav} style={style.headerBar} />
 }

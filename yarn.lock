@@ -7327,9 +7327,9 @@ react-lifecycles-compat@^3.0.2:
   version "3.0.4"
   resolved "http://registry.npm.taobao.org/react-lifecycles-compat/download/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
 
-react-live-route@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/react-live-route/-/react-live-route-1.0.1.tgz#72da9495a6214eaffb2a2358b303c0fe9a9e2680"
+react-live-route@^1.1.7:
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/react-live-route/-/react-live-route-1.1.7.tgz#114eafb03c4bef919281eaace4f7abfeb748736b"
   dependencies:
     history "^4.7.2"
     hoist-non-react-statics "^2.5.0"

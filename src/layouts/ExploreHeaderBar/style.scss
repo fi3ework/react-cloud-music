@@ -1,22 +1,26 @@
 @import '@/constant/style.scss';
 
-.wrapper{
+.headerBar {
+  height: 170px;
+}
+
+.wrapper {
   position: relative;
   background-color: $ncmRed;
   margin: 10px 0 0 0;
 }
 
-.slideNav{
+.slideNav {
   display: flex;
   position: relative;
   list-style-type: none;
   justify-content: center;
-  a{
+  a {
     padding: 10px 80px;
   }
 }
 
-.slider{
+.slider {
   transition: all ease 0.5s;
   position: absolute;
   bottom: 0px;
@@ -27,10 +31,10 @@
   border-radius: 3px;
 }
 
-.index0{
+.index0 {
   transform: translate(190px, 0);
 }
 
-.index1{
+.index1 {
   transform: translate(480px, 0);
 }

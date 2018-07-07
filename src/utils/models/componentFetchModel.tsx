@@ -23,7 +23,6 @@ class Store {
 
   @action
   fetchData() {
-    console.log(this.URL)
     this.state = 'pending'
     this.fetchURL().then(
       response => {
