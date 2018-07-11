@@ -4,7 +4,6 @@
   position: relative;
   border: 1px solid transparent;
   border-width: 0 0 $bottomBarHeight 0;
-  //   padding-top: $headerBarHeight;
   height: 100%;
   box-sizing: border-box;
   overflow-y: auto;
@@ -14,8 +13,8 @@
 
 .foreground {
   position: absolute;
+  margin-top: $headerBarHeight;
   width: 100%;
-  //   top: $headerBarHeight;
   left: 0;
   z-index: 2;
 }
@@ -49,7 +48,7 @@
   height: 500px;
   z-index: 1;
   background-size: cover;
-  filter: blur(10px);
+  filter: blur(15px);
 }
 
 .coverWrapper {

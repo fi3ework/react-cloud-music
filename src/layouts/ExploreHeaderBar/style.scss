@@ -38,3 +38,15 @@
 .index1 {
   transform: translate(480px, 0);
 }
+
+.back {
+  display: block;
+  height: $headerBarHeight;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: $headerBarHeight;
+  font-weight: bolder;
+  padding-left: 30px;
+  i {
+    font-size: 40px;
+  }
+}

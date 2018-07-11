@@ -31,7 +31,7 @@ class Playlist extends React.Component<IProps> {
     return (
       <div className={style.wrapper}>
         <div className={style.foreground}>
-          <Header />
+          <Header bgImgUrl={coverImg} />
           <div className={style.infoWrapper}>
             <div className={style.coverWrapper}>
               <img src={picUrl} />
