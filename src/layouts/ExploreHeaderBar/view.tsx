@@ -12,8 +12,8 @@ type IState = {
 
 class SlideNav extends React.Component<any, IState> {
   ee = emitter
-  INDEX0_POS_X = 95
-  INDEX1_POS_X = 230
+  INDEX0_POS_X = window.screen.width * 0.26
+  INDEX1_POS_X = window.screen.width * 0.6
 
   state = {
     index: 0,

@@ -23,7 +23,7 @@ class Explore extends React.Component<IProps> {
   }
 
   SWIPE_DIS_THRESH = 50
-  PAGE_WIDTH = 375
+  PAGE_WIDTH = window.screen.width
   PAGE_NUMBER = 2
 
   componentDidMount() {
