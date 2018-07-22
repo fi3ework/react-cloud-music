@@ -32,7 +32,6 @@ class SlideNav extends React.Component<any, IState> {
   }
 
   changePos: (disXPercent: number) => void = disXPercent => {
-    console.log(disXPercent)
     const disX = disXPercent * (this.INDEX1_POS_X - this.INDEX0_POS_X) + this[`INDEX${this.state.index}_POS_X`]
     this.setState({
       disX
