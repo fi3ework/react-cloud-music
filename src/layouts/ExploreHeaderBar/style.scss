@@ -13,6 +13,7 @@
 .slideNav {
   display: flex;
   position: relative;
+  padding: 0 0 10px 0;
   list-style-type: none;
   justify-content: center;
   a {
@@ -21,10 +22,10 @@
 }
 
 .slider {
-  transition: all ease 0.5s;
+  transition: all ease 0.2s;
   position: absolute;
   bottom: 0px;
-  width: 80px;
+  width: 120px;
   left: 0;
   height: 6px;
   background-color: #fff;

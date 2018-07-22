@@ -119,9 +119,9 @@ class Route extends React.Component {
     // 是正常的显示渲染
     console.log(this.liveState)
     if (this.liveState === NORMAL_RENDER_MATCH) {
-      console.log('1111')
       this.showRoute()
       this.restoreScroll()
+      this.clearScroll()
     }
 
     // 正常渲染标记 DOM
@@ -131,9 +131,7 @@ class Route extends React.Component {
   }
 
   componentWillUnmount() {
-    if (this.doesRouteEnableLive()) {
-      this.scrollPosBackup = null
-    }
+    this.clearScroll()
   }
 
   doesRouteEnableLive() {
@@ -164,9 +162,12 @@ class Route extends React.Component {
       // 匹配正常渲染
       console.log('---- NORMAL MATCH FLAG ----')
       this.liveState = NORMAL_RENDER_MATCH
-      this._prevRouter = this.context.router
       return match
     } else if ((livePathMatch || props.alwaysLive) && this.routeDom) {
+      // 在从正常渲染到隐藏的时候备份 router
+      if (prevMatch) {
+        this._prevRouter = this.context.router
+      }
       // 隐藏渲染
       console.log('---- HIDE FLAG----')
       this.liveState = HIDE_RENDER
@@ -203,8 +204,8 @@ class Route extends React.Component {
 
   // 隐藏 DOM 并保存 scroll
   hideRoute() {
-    console.log('--- hide route ---')
     if (this.routeDom && this.routeDom.style.display !== 'none') {
+      console.log('--- hide route ---')
       this.previousDisplayStyle = this.routeDom.style.display
       this.routeDom.style.display = 'none'
     }
@@ -218,7 +219,7 @@ class Route extends React.Component {
   }
 
   // 保存离开前的 scroll
-  saveScroll = () => {
+  saveScroll() {
     if (this.routeDom && this.scrollPosBackup === null) {
       const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
       const scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft
@@ -228,11 +229,18 @@ class Route extends React.Component {
   }
 
   // 恢复离开前的 scroll
-  restoreScroll = () => {
+  restoreScroll() {
     const scroll = this.scrollPosBackup
     console.log(scroll)
     if (scroll && this.routeDom) {
       window.scroll({ top: scroll.top, left: scroll.left })
+    }
+  }
+
+  // 清除 scroll
+  clearScroll() {
+    if (this.doesRouteEnableLive()) {
+      this.scrollPosBackup = null
     }
   }
 

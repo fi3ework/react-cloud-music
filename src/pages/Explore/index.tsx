@@ -3,7 +3,7 @@ import * as cs from 'classnames'
 import * as style from './style.scss'
 import Custom from './Custom'
 import List from './List'
-import PropTypes from 'prop-types'
+import ee from '@/utils/ee'
 
 interface IProps {
   location: { pathname: string }
@@ -12,13 +12,6 @@ interface IProps {
 }
 
 class Explore extends React.Component<IProps> {
-  static contextTypes = {
-    router: PropTypes.shape({
-      history: PropTypes.object.isRequired,
-      route: PropTypes.object.isRequired,
-      staticContext: PropTypes.object
-    })
-  }
   pageWrapper: HTMLElement | null
 
   state = {
@@ -29,8 +22,11 @@ class Explore extends React.Component<IProps> {
     isTransitioning: false
   }
 
+  SWIPE_DIS_THRESH = 50
+  PAGE_WIDTH = 375
+  PAGE_NUMBER = 2
+
   componentDidMount() {
-    console.log('explore mount')
     if (this.pageWrapper) {
       this.pageWrapper.addEventListener('touchstart', this.handleTouchStart)
       this.pageWrapper.addEventListener('touchmove', this.handleTouchMove)
@@ -38,15 +34,11 @@ class Explore extends React.Component<IProps> {
     }
   }
 
-  componentWillUnmount() {
-    console.log('=== exlore will unmount ===')
-  }
-
   changeRouter = pathName => {
-    console.log(this.props.history.push(`/explore/${pathName}`))
+    this.props.history.push(`/explore/${pathName}`)
   }
 
-  choosePage = () => {
+  stickScroll = () => {
     if (this.pageWrapper) {
       this.pageWrapper.addEventListener('transitionend', () => {
         this.setState({
@@ -56,29 +48,33 @@ class Explore extends React.Component<IProps> {
     }
 
     const swipedDisX = this.state.swipedDisX
-    if (swipedDisX < -50 || (swipedDisX > 0 && swipedDisX <= 50)) {
+    // 切换页 || 不足以切换页回到原页
+    if (swipedDisX < -this.SWIPE_DIS_THRESH || (swipedDisX > 0 && swipedDisX <= this.SWIPE_DIS_THRESH)) {
       this.setState({
-        prevOffsetX: -375,
+        prevOffsetX: -this.PAGE_WIDTH,
         swipedDisX: 0,
         isTransitioning: true
       })
-      this.changeRouter('dj')
-      console.log(2)
+      this.changeRouter('rank')
+      return 1
     }
 
-    if (swipedDisX > 50 || (swipedDisX < 0 && swipedDisX >= -50)) {
+    // 切换页 || 不足以切换页回到原页
+    if (swipedDisX > this.SWIPE_DIS_THRESH || (swipedDisX < 0 && swipedDisX >= -this.SWIPE_DIS_THRESH)) {
       this.setState({
         prevOffsetX: 0,
         swipedDisX: 0,
         isTransitioning: true
       })
       this.changeRouter('custom')
-      console.log(1)
+      return 0
     }
+
+    return -1
   }
 
   handleTouchStart = e => {
-    console.log('===== start =====')
+    console.log('===== start moving =====')
     console.log(this.state.isVerticalScrolling)
     if (e.touches.length === 1) {
       this.setState({
@@ -92,7 +88,7 @@ class Explore extends React.Component<IProps> {
   handleTouchMove = e => {
     if (e.touches.length === 1) {
       const touch = e.touches[0]
-      // measure change in x and y
+      // 计算 x y 方向的移动距离
       const delta = {
         x: touch.screenX - this.state.touchStartPos.x,
         y: touch.screenY - this.state.touchStartPos.y
@@ -106,11 +102,11 @@ class Explore extends React.Component<IProps> {
       }
 
       if (!this.state.isVerticalScrolling) {
+        // 模拟滚动
         e.preventDefault()
-        // prevent overflow the screen
-
         const currSwipedXDis = e.touches[0].screenX - this.state.touchStartPos.x
 
+        // 阻止滑动溢出屏幕
         if (this.state.prevOffsetX + currSwipedXDis > 0) {
           this.setState({
             prevOffsetX: 0,
@@ -119,29 +115,33 @@ class Explore extends React.Component<IProps> {
           return
         }
 
-        if (this.state.prevOffsetX + currSwipedXDis < -375) {
+        // 阻止滑动溢出屏幕
+        if (this.state.prevOffsetX + currSwipedXDis < -this.PAGE_WIDTH) {
           this.setState({
-            prevOffsetX: -375,
+            prevOffsetX: -this.PAGE_WIDTH,
             swipedDisX: 0
           })
           return
         }
 
-        // update current position
+        // update
         this.setState({
           swipedDisX: currSwipedXDis
         })
+        ee.emit('onTouchMove', -currSwipedXDis / this.PAGE_WIDTH)
       }
     }
   }
 
   handleTouchEnd = e => {
+    let endIndex
     if (this.state.isVerticalScrolling === false) {
-      this.choosePage()
+      endIndex = this.stickScroll()
     }
     this.setState({
       isVerticalScrolling: null
     })
+    ee.emit('onTouchEnd', endIndex)
   }
 
   render() {

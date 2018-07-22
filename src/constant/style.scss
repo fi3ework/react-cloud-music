@@ -24,6 +24,9 @@ $base-font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, '
     height: 100%;
     overflow: hidden;
     font-family: $base-font-family;
+    outline: 0;
+    -webkit-text-size-adjust: none;
+    -webkit-tap-highlight-color: transparent;
   }
   a {
     color: #fff;
