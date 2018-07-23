@@ -14,7 +14,7 @@ type Iapis = {
   list: Iapi
 }
 
-const ProxyHost = '/api'
+const PROXY_HOST = process.env.NODE_ENV === 'production' ? 'http://localhost:4000' : '/api'
 
 const NETEASE_API = {
   banner: '/banner', // 轮播图
@@ -39,38 +39,24 @@ const NETEASE_API = {
   // 排行榜
   list: {
     path: '/top/list?idx=:idx'
-  },
+  }
 }
 
-const addHost = (APIs, hostPath) => {
-  const ApiWithPrefix = {} as Iapis
-  Object.keys(APIs).forEach(key => {
-    if (typeof APIs[key] === 'string') {
-      ApiWithPrefix[key] = `${hostPath}${APIs[key]}`
-    } else {
-      if (APIs[key].path[0] === '/') {
-        ApiWithPrefix[key] = {
-          path: `${hostPath}${APIs[key].path}`
-        }
-      } else {
-        ApiWithPrefix[key] = {
-          path: `${APIs[key].path}`
-        }
-      }
-    }
-  })
-  console.log(ApiWithPrefix)
-  return ApiWithPrefix
+// 给 URL 添加 hostPath
+const addHost = (URL, hostPath) => {
+  return hostPath + URL
 }
 
+export default NETEASE_API
+
+// 根据 API 和 params 来 compose URL
 export const getURL = (API: any, params?) => {
   // simple API
   if (!params) {
-    return API
+    return addHost(API, PROXY_HOST)
   }
   // complex API
   const toPath = compile(`${API.path}`)
-  return toPath(params)
+  const urlWithoutHost = toPath(params)
+  return addHost(urlWithoutHost, PROXY_HOST)
 }
-
-export default addHost(NETEASE_API, ProxyHost)
