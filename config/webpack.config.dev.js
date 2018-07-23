@@ -146,7 +146,6 @@ module.exports = {
               compact: true
             }
           },
-
           // Compile .tsx?
           {
             test: /\.(ts|tsx)$/,
@@ -166,7 +165,6 @@ module.exports = {
           // "style" loader turns CSS into JS modules that inject <style> tags.
           // In production, we use a plugin to extract that CSS to a file, but
           // in development "style" loader enables hot editing of CSS.
-
           {
             test: /\.(scss)$/,
             exclude: /node_modules|antd\.css/,

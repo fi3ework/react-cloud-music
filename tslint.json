@@ -10,7 +10,7 @@
   "rules": {
     "no-var-requires": false,
     "max-classes-per-file": false,
-    "prettier": true,
+    // "prettier": true,
     "arrow-parens": false,
     "arrow-return-shorthand": [false],
     "comment-format": [true, "check-space"],
