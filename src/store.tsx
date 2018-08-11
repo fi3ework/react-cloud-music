@@ -203,7 +203,6 @@ export const generateFetchActionCreator = (URL, actionCreator) => {
 
 // 歌曲详情 reducer
 const fetchSongDetialSuccessReducer: IReducer = (state, action) => {
-  console.log(action)
   const firstSong = action.payload.songs[0]
   const prevplayingSong = state.playingSong
   const nextPlayingSong = { ...prevplayingSong, coverImg: firstSong.al.picUrl }

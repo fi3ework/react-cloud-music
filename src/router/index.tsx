@@ -1,7 +1,5 @@
 import * as React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
-// import { LiveRoute } from '../react-live-router/react-router-dom/modules/index.js'
-// import LiveRoute from '@/react-live-router/react-router/modules/LiveRoute'
 import LiveRoute from 'react-live-route'
 import ExplorePage from '@/pages/Explore'
 import VideoPage from '@/pages/Video'
@@ -14,7 +12,6 @@ import BottomBar from '@/layouts/BottomBar'
 import BaseHeaderBar from '@/layouts/HeaderBar'
 import ExploreHeaderBar from '@/layouts/ExploreHeaderBar'
 import * as style from './routerTrans.scss'
-import { AnimatedRoute } from 'react-router-transition'
 
 const dynamicRoute = ({ location }) => {
   return (
@@ -38,13 +35,6 @@ const dynamicRoute = ({ location }) => {
         </Switch>
         <LiveRoute path={`/playlist/:id`} component={Playlist} name="playlist" livePath={`/playing`} />
         <LiveRoute path={`/playing`} component={Playing} name="playing" alwaysLive={true} />
-        {/* <AnimatedRoute
-          path="/playing"
-          component={Playing}
-          atEnter={{ opacity: 0 }}
-          atLeave={{ opacity: 0 }}
-          atActive={{ opacity: 1 }}
-        /> */}
       </div>
       <Switch>
         <Route path={`/explore`} component={BottomBar} />

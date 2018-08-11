@@ -14,7 +14,7 @@ type Iapis = {
   list: Iapi
 }
 
-const PROXY_HOST = process.env.NODE_ENV === 'production' ? 'http://localhost:4000' : '/api'
+const PROXY_HOST = process.env.NODE_ENV === 'production' ? 'http://118.24.21.99:4000' : '/api'
 
 const NETEASE_API = {
   banner: '/banner', // 轮播图
