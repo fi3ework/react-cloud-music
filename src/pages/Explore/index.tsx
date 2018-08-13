@@ -4,6 +4,7 @@ import * as style from './style.scss'
 import Custom from './Custom'
 import List from './List'
 import ee from '@/utils/ee'
+import { Route } from 'react-router-dom'
 
 interface IProps {
   location: { pathname: string }
@@ -19,7 +20,8 @@ class Explore extends React.Component<IProps> {
     swipedDisX: 0,
     isVerticalScrolling: null,
     prevOffsetX: 0,
-    isTransitioning: false
+    isTransitioning: false,
+    hasRankLoaded: false
   }
 
   SWIPE_DIS_THRESH = 50
@@ -36,6 +38,9 @@ class Explore extends React.Component<IProps> {
 
   changeRouter = pathName => {
     this.props.history.push(`/explore/${pathName}`)
+    this.setState({
+      hasRankLoaded: true
+    })
   }
 
   stickScroll = () => {
@@ -145,6 +150,7 @@ class Explore extends React.Component<IProps> {
   }
 
   render() {
+    // console.log(this.props.match)
     const wrapperClass = cs({
       [style.exploreWrapper]: true,
       [style.isTransitioning]: this.state.isTransitioning === true
@@ -162,10 +168,11 @@ class Explore extends React.Component<IProps> {
         }}
       >
         <div className={style.innerWrapper}>
-          <Custom />
+          <Route path={`/explore/`} component={Custom} />
+          {/* <Custom /> */}
         </div>
         <div className={style.innerWrapper}>
-          <List />
+          <Route path={this.state.hasRankLoaded ? `/explore` : `/explore/rank`} component={List} />
         </div>
       </div>
     )

@@ -1,5 +1,3 @@
-## React 仿网易云音乐
-
 🎶 基于 React 实现的仿 iOS 客户端网易云音乐。
 
 在线地址：**[戳我](http://118.24.21.99:5001/)**（PC 浏览器需切换到移动端模式）
@@ -14,11 +12,16 @@
 
 ## 技术栈
 
- React 16.3 + TypeScript + Mobx + Redux + react-redux + react-router-v4 + Scss
+- React 16.3
+- TypeScript
+- Mobx + Redux
+- react-redux
+- react-router-v4
+- Scss
 
 ## 实现细节
 
-目前只实现了上面四个页面，但是总体的结构已经形成了，其他页面的添加只是时间上的问题，本着 Don't Repeat Yourself 的原则~~（其实是懒）~~，暂时没有实现，下面讲一下目前实现的一些细节。
+目前只实现了上面四个页面，但是总体的结构已经形成了，其他页面的添加只是时间上的问题 ~~（其实是懒）~~，暂时没有实现，下面是目前已实现的功能的细节：
 
 ### 局部状态管理
 
