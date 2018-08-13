@@ -1,9 +1,10 @@
 import * as React from 'react'
-import BaseHeaderBar from '../HeaderBar'
-import * as style from './style.scss'
+import BaseHeaderBar from '@/layouts/HeaderBar'
+import * as style from '@/layouts/ExploreHeaderBar/style.scss'
 import { Link } from 'react-router-dom'
 import cs from 'classnames'
 import emitter from '@/utils/ee'
+import { SlideContext } from '@/router/slideContext'
 
 type IState = {
   index: number
@@ -52,6 +53,7 @@ class SlideNav extends React.Component<any, IState> {
   }
 
   render() {
+    console.log(this.props.pos)
     return (
       <div className={style.wrapper}>
         <div className={style.slideNav}>
@@ -78,5 +80,9 @@ class SlideNav extends React.Component<any, IState> {
 }
 
 export default () => {
-  return <BaseHeaderBar component={SlideNav} style={style.headerBar} />
+  return (
+    <SlideContext.Consumer>
+      {pos => <BaseHeaderBar component={SlideNav} style={style.headerBar} pos={pos} />}
+    </SlideContext.Consumer>
+  )
 }

@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import style from './style.scss'
+import style from '@/layouts/HeaderBar/style.scss'
 import { Link } from 'react-router-dom'
 import cs from 'classnames'
 
@@ -7,6 +7,7 @@ type IProps = {
   style?: any
   render?: (props) => ReactNode
   component?: React.ComponentClass
+  pos?: any
 }
 
 const HeaderBar: React.SFC<IProps> = props => {

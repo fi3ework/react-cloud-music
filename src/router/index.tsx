@@ -11,48 +11,61 @@ import Playlist from '@/pages/Playlist'
 import BottomBar from '@/layouts/BottomBar'
 import BaseHeaderBar from '@/layouts/HeaderBar'
 import ExploreHeaderBar from '@/layouts/ExploreHeaderBar'
-import * as style from './routerTrans.scss'
+import * as style from '@/router/routerTrans.scss'
+import { SlideContext } from '@/router/slideContext'
 
-const dynamicRoute = ({ location }) => {
-  return (
-    <React.Fragment>
-      <Switch>
-        <Route path={`/explore`} component={ExploreHeaderBar} />
-        <Route path={`/video`} component={BaseHeaderBar} />
-        <Route path={`/mine`} component={BaseHeaderBar} />
-        <Route path={`/friends`} component={BaseHeaderBar} />
-        <Route path={`/account`} component={BaseHeaderBar} />
-        <Route path={`/`} exact={true} component={ExploreHeaderBar} />
-      </Switch>
-      <div className={style.routeWrapper}>
-        <Switch>
-          <Route path={`/explore`} component={ExplorePage} />
-          <Route path={`/video`} component={VideoPage} />
-          <Route path={`/mine`} component={MinePage} />
-          <Route path={`/friends`} component={FriendsPage} />
-          <Route path={`/account`} component={AccountPage} />
-          <Route path={`/`} exact={true} component={ExplorePage} />
-        </Switch>
-        <LiveRoute path={`/playlist/:id`} component={Playlist} name="playlist" livePath={`/playing`} />
-        <LiveRoute path={`/playing`} component={Playing} name="playing" alwaysLive={true} />
-      </div>
-      <Switch>
-        <Route path={`/explore`} component={BottomBar} />
-        <Route path={`/video`} component={BottomBar} />
-        <Route path={`/mine`} component={BottomBar} />
-        <Route path={`/friends`} component={BottomBar} />
-        <Route path={`/account`} component={BottomBar} />
-        <Route path={`/playlist`} component={BottomBar} />
-        <Route path={`/`} exact={true} component={BottomBar} />
-      </Switch>
-    </React.Fragment>
-  )
+class DynamicRoute extends React.PureComponent {
+  state = { pos: 0 }
+
+  changePos = newPos => {
+    this.setState({
+      pos: newPos
+    })
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        <SlideContext.Provider value={{ pos: this.state.pos, changePos: this.changePos }}>
+          <Switch>
+            <Route path={`/explore`} component={ExploreHeaderBar} />
+            <Route path={`/video`} component={BaseHeaderBar} />
+            <Route path={`/mine`} component={BaseHeaderBar} />
+            <Route path={`/friends`} component={BaseHeaderBar} />
+            <Route path={`/account`} component={BaseHeaderBar} />
+            <Route path={`/`} exact={true} component={ExploreHeaderBar} />
+          </Switch>
+          <div className={style.routeWrapper}>
+            <Switch>
+              <Route path={`/explore`} component={ExplorePage} />
+              <Route path={`/video`} component={VideoPage} />
+              <Route path={`/mine`} component={MinePage} />
+              <Route path={`/friends`} component={FriendsPage} />
+              <Route path={`/account`} component={AccountPage} />
+              <Route path={`/`} exact={true} component={ExplorePage} />
+            </Switch>
+            <LiveRoute path={`/playlist/:id`} component={Playlist} name="playlist" livePath={`/playing`} />
+            <LiveRoute path={`/playing`} component={Playing} name="playing" alwaysLive={true} />
+          </div>
+          <Switch>
+            <Route path={`/explore`} component={BottomBar} />
+            <Route path={`/video`} component={BottomBar} />
+            <Route path={`/mine`} component={BottomBar} />
+            <Route path={`/friends`} component={BottomBar} />
+            <Route path={`/account`} component={BottomBar} />
+            <Route path={`/playlist`} component={BottomBar} />
+            <Route path={`/`} exact={true} component={BottomBar} />
+          </Switch>
+        </SlideContext.Provider>
+      </React.Fragment>
+    )
+  }
 }
 
 const Routes = () => (
   <BrowserRouter>
     <div className={style.rootWrapper}>
-      <Route render={dynamicRoute} />
+      <DynamicRoute />
     </div>
   </BrowserRouter>
 )
