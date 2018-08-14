@@ -1,17 +1,14 @@
 import * as React from 'react'
 import * as cs from 'classnames'
 import * as style from '@/pages/Explore/style.scss'
-import Custom from '@/pages/Explore/Custom'
-import List from '@/pages/Explore/List'
-import ee from '@/utils/ee'
-import { Route } from 'react-router-dom'
-import { SlideContext } from '@/router/slideContext'
 
 interface IProps {
   location: { pathname: string }
   history: any
   style?: React.CSSProperties
   setRankLoaded: (isLoaded: boolean) => void
+  changePos: (pos: number) => void
+  setPageIndex: (index: number) => void
 }
 
 class Slider extends React.Component<IProps> {
@@ -136,8 +133,7 @@ class Slider extends React.Component<IProps> {
         this.setState({
           swipedDisX: currSwipedXDis
         })
-        // ee.emit('onTouchMove', -currSwipedXDis / this.PAGE_WIDTH)
-        // changePos(-currSwipedXDis / this.PAGE_WIDTH)
+        this.props.changePos(-currSwipedXDis / this.PAGE_WIDTH)
       }
     }
   }
@@ -150,7 +146,8 @@ class Slider extends React.Component<IProps> {
     this.setState({
       isVerticalScrolling: null
     })
-    ee.emit('onTouchEnd', endIndex)
+    this.props.setPageIndex(endIndex)
+    // ee.emit('onTouchEnd', endIndex)
   }
 
   render() {

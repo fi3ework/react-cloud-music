@@ -14,8 +14,8 @@ import ExploreHeaderBar from '@/layouts/ExploreHeaderBar'
 import * as style from '@/router/routerTrans.scss'
 import { SlideContext } from '@/router/slideContext'
 
-class DynamicRoute extends React.PureComponent {
-  state = { pos: 0 }
+class DynamicRoute extends React.Component {
+  state = { pos: 0, pageIndex: 0 }
 
   changePos = newPos => {
     this.setState({
@@ -23,10 +23,23 @@ class DynamicRoute extends React.PureComponent {
     })
   }
 
+  setPageIndex = index => {
+    this.setState({
+      pageIndex: index
+    })
+  }
+
   render() {
     return (
       <React.Fragment>
-        <SlideContext.Provider value={{ pos: this.state.pos, changePos: this.changePos }}>
+        <SlideContext.Provider
+          value={{
+            pos: this.state.pos,
+            pageIndex: this.state.pageIndex,
+            changePos: this.changePos,
+            setPageIndex: this.setPageIndex
+          }}
+        >
           <Switch>
             <Route path={`/explore`} component={ExploreHeaderBar} />
             <Route path={`/video`} component={BaseHeaderBar} />

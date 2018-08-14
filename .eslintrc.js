@@ -28,6 +28,7 @@ module.exports = {
     'typescript/member-ordering': 'off',
     'typescript/member-delimiter-style': 'off',
     'react/jsx-indent-props': 'off',
+    'react/no-did-update-set-state': 'off',
     indent: [
       'off',
       2,

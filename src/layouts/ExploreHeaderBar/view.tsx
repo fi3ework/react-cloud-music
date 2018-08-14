@@ -11,19 +11,66 @@ type IState = {
   disX: number
 }
 
-class SlideNav extends React.Component<any, IState> {
+type IProps = {
+  pageIndex: number
+  pos: number
+  style: any
+  component: any
+}
+
+class SlideNav extends React.PureComponent<IProps, IState> {
   ee = emitter
-  INDEX0_POS_X = window.screen.width * 0.26
-  INDEX1_POS_X = window.screen.width * 0.6
+  INDEX0_POS_X = window.screen.width * (200 / 750)
+  INDEX1_POS_X = window.screen.width * (450 / 750)
 
   state = {
     index: 0,
     disX: this.INDEX0_POS_X
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    console.log(`${nextProps.pos} + '   ' + ${nextProps.pageIndex}`)
+    return null
+  }
+
+  // shouldComponentUpdate(nextProps, nextState, nextContext) {
+  //   console.log(`== ${this.props.pos} + '   ' + ${nextProps.pos}`)
+  //   console.log(`== ${this.props.pageIndex} + '   ' + ${nextProps.pageIndex}`)
+  //   if (nextProps.pos !== this.props.pos) {
+  //     return true
+  //   }
+
+  //   if (nextProps.pageIndex !== this.props.pageIndex) {
+  //     return true
+  //   }
+  //   return false
+  // }
+
+  componentDidUpdate(prevProps, prevState) {
+    // console.log(this.props.pos)
+    // console.log(this.state.disX)
+    if (prevProps.pos !== this.props.pos) {
+      this.setState({
+        disX: this.changePos(this.props.pos)
+      })
+    }
+
+    console.log(`-- ${prevProps.pageIndex} + '   ' + ${this.props.pageIndex}`)
+    if (prevProps.pageIndex !== this.props.pageIndex) {
+      this.stickScroll(this.props.pageIndex)
+    }
+  }
+
+  // getSnapshotBeforeUpdate(prevProps, prevState) {
+  //   return {
+  //     pos: this.changePos(this.props.pos),
+  //     index: this.props.pageIndex
+  //   }
+  // }
+
   componentDidMount() {
-    this.ee.on('onTouchMove', this.changePos)
-    this.ee.on('onTouchEnd', this.stickScroll)
+    // this.ee.on('onTouchMove', this.changePos)
+    // this.ee.on('onTouchEnd', this.stickScroll)
   }
 
   changePage: (index: number) => void = index => {
@@ -32,15 +79,15 @@ class SlideNav extends React.Component<any, IState> {
     })
   }
 
-  changePos: (disXPercent: number) => void = disXPercent => {
+  changePos: (disXPercent: number) => number = disXPercent => {
     const disX = disXPercent * (this.INDEX1_POS_X - this.INDEX0_POS_X) + this[`INDEX${this.state.index}_POS_X`]
-    this.setState({
-      disX
-    })
+    return disX
   }
 
   stickScroll: (index: number) => void = index => {
     if (index >= 0) {
+      console.log('set page')
+      console.log(this[`INDEX${index}_POS_X`])
       this.setState({
         index: index,
         disX: this[`INDEX${index}_POS_X`]
@@ -53,7 +100,6 @@ class SlideNav extends React.Component<any, IState> {
   }
 
   render() {
-    console.log(this.props.pos)
     return (
       <div className={style.wrapper}>
         <div className={style.slideNav}>
@@ -70,8 +116,6 @@ class SlideNav extends React.Component<any, IState> {
           }}
           className={cs({
             [style.slider]: true
-            // [style.index0]: this.state.index === 0,
-            // [style.index1]: this.state.index === 1
           })}
         />
       </div>
@@ -82,7 +126,9 @@ class SlideNav extends React.Component<any, IState> {
 export default () => {
   return (
     <SlideContext.Consumer>
-      {pos => <BaseHeaderBar component={SlideNav} style={style.headerBar} pos={pos} />}
+      {({ pos, pageIndex }) => (
+        <BaseHeaderBar component={SlideNav} style={style.headerBar} pos={pos} pageIndex={pageIndex} />
+      )}
     </SlideContext.Consumer>
   )
 }

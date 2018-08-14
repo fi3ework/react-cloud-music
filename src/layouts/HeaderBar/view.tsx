@@ -7,7 +7,8 @@ type IProps = {
   style?: any
   render?: (props) => ReactNode
   component?: React.ComponentClass
-  pos?: any
+  pos?: number
+  pageIndex?: number
 }
 
 const HeaderBar: React.SFC<IProps> = props => {
