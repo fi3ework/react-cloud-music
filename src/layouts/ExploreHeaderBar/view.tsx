@@ -3,7 +3,6 @@ import BaseHeaderBar from '@/layouts/HeaderBar'
 import * as style from '@/layouts/ExploreHeaderBar/style.scss'
 import { Link } from 'react-router-dom'
 import cs from 'classnames'
-import emitter from '@/utils/ee'
 import { SlideContext } from '@/router/slideContext'
 
 type IState = {
@@ -19,7 +18,6 @@ type IProps = {
 }
 
 class SlideNav extends React.PureComponent<IProps, IState> {
-  ee = emitter
   INDEX0_POS_X = window.screen.width * (200 / 750)
   INDEX1_POS_X = window.screen.width * (450 / 750)
 
@@ -28,10 +26,10 @@ class SlideNav extends React.PureComponent<IProps, IState> {
     disX: this.INDEX0_POS_X
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    console.log(`${nextProps.pos} + '   ' + ${nextProps.pageIndex}`)
-    return null
-  }
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   console.log(`${nextProps.pos} + '   ' + ${nextProps.pageIndex}`)
+  //   return null
+  // }
 
   // shouldComponentUpdate(nextProps, nextState, nextContext) {
   //   console.log(`== ${this.props.pos} + '   ' + ${nextProps.pos}`)
@@ -50,44 +48,27 @@ class SlideNav extends React.PureComponent<IProps, IState> {
     // console.log(this.props.pos)
     // console.log(this.state.disX)
     if (prevProps.pos !== this.props.pos) {
-      this.setState({
-        disX: this.changePos(this.props.pos)
-      })
+      this.setPos(this.props.pos)
     }
 
-    console.log(`-- ${prevProps.pageIndex} + '   ' + ${this.props.pageIndex}`)
     if (prevProps.pageIndex !== this.props.pageIndex) {
       this.stickScroll(this.props.pageIndex)
     }
   }
 
-  // getSnapshotBeforeUpdate(prevProps, prevState) {
-  //   return {
-  //     pos: this.changePos(this.props.pos),
-  //     index: this.props.pageIndex
-  //   }
-  // }
-
-  componentDidMount() {
-    // this.ee.on('onTouchMove', this.changePos)
-    // this.ee.on('onTouchEnd', this.stickScroll)
-  }
-
-  changePage: (index: number) => void = index => {
-    this.setState({
-      index
-    })
-  }
-
-  changePos: (disXPercent: number) => number = disXPercent => {
+  calcPosByPercent: (disXPercent: number) => number = disXPercent => {
     const disX = disXPercent * (this.INDEX1_POS_X - this.INDEX0_POS_X) + this[`INDEX${this.state.index}_POS_X`]
     return disX
   }
 
+  setPos: (pos: number) => void = pos => {
+    this.setState({
+      disX: this.calcPosByPercent(pos)
+    })
+  }
+
   stickScroll: (index: number) => void = index => {
     if (index >= 0) {
-      console.log('set page')
-      console.log(this[`INDEX${index}_POS_X`])
       this.setState({
         index: index,
         disX: this[`INDEX${index}_POS_X`]
@@ -95,8 +76,10 @@ class SlideNav extends React.PureComponent<IProps, IState> {
     }
   }
 
-  computePos: (disX: number) => number = disX => {
-    return 2
+  changePage: (index: number) => void = index => {
+    this.setState({
+      index
+    })
   }
 
   render() {

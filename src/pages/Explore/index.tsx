@@ -22,24 +22,27 @@ class Explore extends React.Component<IProps> {
 
   render() {
     return (
-      <SlideContext.Consumer>
-        {({ changePos, setPageIndex }) => (
-          <Slider
-            location={this.props.location}
-            history={this.props.history}
-            setRankLoaded={this.setRankLoaded}
-            changePos={changePos}
-            setPageIndex={setPageIndex}
-          >
-            <div className={style.innerWrapper}>
-              <Route path={`/explore/`} component={Custom} />
-            </div>
-            <div className={style.innerWrapper}>
-              <Route path={this.state.hasRankLoaded ? `/explore` : `/explore/rank`} component={List} />
-            </div>
-          </Slider>
-        )}
-      </SlideContext.Consumer>
+      <Route>
+        <SlideContext.Consumer>
+          {({ changePos, setPageIndex }) => (
+            <Slider
+              location={this.props.location}
+              history={this.props.history}
+              setRankLoaded={this.setRankLoaded}
+              changePos={changePos}
+              setPageIndex={setPageIndex}
+            >
+              <div className={style.innerWrapper}>
+                <Route path={`/`} component={Custom} />
+                <Route path={`/explore/`} component={Custom} />
+              </div>
+              <div className={style.innerWrapper}>
+                <Route path={this.state.hasRankLoaded ? `/explore` : `/explore/rank`} component={List} />
+              </div>
+            </Slider>
+          )}
+        </SlideContext.Consumer>
+      </Route>
     )
   }
 }
