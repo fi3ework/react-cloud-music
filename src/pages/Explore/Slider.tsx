@@ -80,7 +80,6 @@ class Slider extends React.Component<IProps> {
 
   handleTouchStart = e => {
     console.log('===== start moving =====')
-    console.log(this.state.isVerticalScrolling)
     if (e.touches.length === 1) {
       this.setState({
         prevOffsetX: this.state.prevOffsetX + this.state.swipedDisX,

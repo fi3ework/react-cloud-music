@@ -45,6 +45,20 @@
 
 我造了一个轮子来解决这个问题：[react-live-route](https://github.com/fi3ework/react-live-route)，是对 react-router-v4 中 Route 组件的增强，简单的说就是将歌单页隐藏掉而不是 unmount 掉，具体的解决思路可以参考轮子里的文档。
 
+### 跨组件传递状态
+
+在 iOS 版的网易云中，可以滑动来切换页面，同时会触发顶部 tab 下的滑块移动。在项目中，滑动页面与滑块分属于两个兄弟组件的子组件且嵌套层次较深，如果直接通过 prop 来传递略显丑陋，有如下解决方案：
+
+1. 通过 redux，但是 redux 最好只负责领域数据，这种 UI 的状态就不要往 store 中放了。
+
+2. event-emitter，其实和 redux 差不多，因为 redux 也是基于 event-emitter 实现的， 虽然可以实现，但是破坏了 react 整个自顶向下界面更新的原则。
+
+3. 通过新的 context API 实现，如下图：
+
+   ![context](./docs/context.png)
+
+
+
 ## API
 
 项目中用到的网易云音乐的 API 来自 [NeteaseCloudMusicApi](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=neteasecloudmusicapi)。
