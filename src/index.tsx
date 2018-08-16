@@ -11,7 +11,7 @@ import thunkMiddleware from 'redux-thunk'
 const middlewares = [thunkMiddleware, promiseMiddleware]
 if (process.env.NODE_ENV === `development`) {
   const { logger } = require(`redux-logger`)
-  // middlewares.push(logger)
+  middlewares.push(logger)
 }
 
 const store = createStore(reducers, defaultState as any, applyMiddleware(...middlewares))

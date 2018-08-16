@@ -27,12 +27,12 @@ const AppRoutes = () => (
       </Switch>
       <div className={style.routeWrapper}>
         <Switch>
+          <Route path={`/`} exact={true} component={ExplorePage} />
           <Route path={`/explore`} component={ExplorePage} />
           <Route path={`/video`} component={VideoPage} />
           <Route path={`/mine`} component={MinePage} />
           <Route path={`/friends`} component={FriendsPage} />
           <Route path={`/account`} component={AccountPage} />
-          <Route path={`/`} exact={true} component={ExplorePage} />
         </Switch>
         <LiveRoute path={`/playlist/:id`} component={Playlist} name="playlist" livePath={`/playing`} />
         <LiveRoute path={`/playing`} component={Playing} name="playing" alwaysLive={true} />

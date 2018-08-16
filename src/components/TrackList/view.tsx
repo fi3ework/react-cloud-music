@@ -55,14 +55,15 @@ export default class TrackList extends React.Component<ITrackListProps> {
   }
 
   generateSongs: () => IPlayingSong[] = () => {
-    return get(this.props.payload, 'result.tracks').map(track => {
+    console.log(this.props.payload)
+    return get(this.props.payload, 'playlist.tracks').map(track => {
       const song: IPlayingSong = {
         id: track.id,
         name: track.name,
-        coverImg: track.album.picUrl,
+        coverImg: track.al.picUrl,
         url: '',
-        artists: track.artists.map(artist => artist.name),
-        album: track.album.name
+        artists: track.ar.map(artist => artist.name),
+        album: track.al.name
       }
       return song
     })
