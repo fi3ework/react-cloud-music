@@ -80,14 +80,13 @@ export default class TrackList extends React.Component<ITrackListProps> {
   })()
 
   playCertainSong = index => {
-    // const songs = this.generateSongs()
     return () => {
       this.context.store.dispatch(playCurrPlaylist(this.getNormalizedSongs(), index))
     }
   }
 
   calcTracks = store => {
-    const tracks = get(store, 'result.tracks')
+    const tracks = get(store, 'playlist.tracks')
     if (!tracks) {
       return null
     } else {
@@ -96,8 +95,8 @@ export default class TrackList extends React.Component<ITrackListProps> {
           <Track
             key={item.id}
             name={item.name}
-            artists={item.artists}
-            album={item.album}
+            artists={item.ar}
+            album={item.al}
             index={index + 1}
             id={item.id}
             play={this.playCertainSong(index)}
@@ -113,7 +112,7 @@ export default class TrackList extends React.Component<ITrackListProps> {
       <div>
         {tracks ? (
           <React.Fragment>
-            <Bar tracksCount={tracks.length} tracks={get(this.props.payload, 'result.tracks')} />
+            <Bar tracksCount={tracks.length} tracks={get(this.props.payload, 'playlist.tracks')} />
             <div>{tracks}</div>
           </React.Fragment>
         ) : (

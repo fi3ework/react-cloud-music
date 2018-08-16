@@ -4,7 +4,7 @@ import axios from 'axios'
 // ===== constant ===== //
 export const PLAY_SONG = 'PLAY_SONG'
 export const FETCH_URL = 'FETCH_URL'
-export const FETCH_SONG_DETIAL_SUCCESS = 'FETCH_SONG_DETIAL_SUCCESS'
+export const FETCH_SONG_DETAIL_SUCCESS = 'FETCH_SONG_DETAIL_SUCCESS'
 export const FETCH_SONG_URL_SUCCESS = 'FETCH_SONG_URL_SUCCESS'
 export const SWITCH_PREV_SONG = 'SWITCH_PREV_SONG'
 export const SWITCH_NEXT_SONG = 'SWITCH_NEXT_SONG'
@@ -13,8 +13,8 @@ export const PUSH_TO_PLAYLIST = 'PUSH_TO_PLAYLIST'
 export const EMPTY_PLAYLIST = 'EMPTY_PLAYLIST'
 export const PLAY_PLAYLIST = 'PLAY_PLAYLIST'
 export const CHANGE_PLAYLIST_INDEX = 'CHANGE_PLAYLIST_INDEX'
-// ===== type ===== //
 
+// ===== type ===== //
 export type IAction = {
   readonly type: string
   [propName: string]: any
@@ -116,7 +116,7 @@ export const SwitchSongByPace: (pace: number) => void = pace => {
   }
 }
 
-// 切换播放 / 暂停
+// 切换播放/暂停
 export const switchPlayState: IAction = {
   type: SWITCH_PLAY_STATE
 }
@@ -142,7 +142,7 @@ export const playCurrPlaylist: any = (songs, index = 0) => {
     )
     // 2. 将 currIndex 置为 0
     dispatch(changePlaylistIndexActionCreator({ nextIndex: index }))
-    // 3. 开始播放 currindex 对应的歌曲
+    // 3. 开始播放 currIndex 对应的歌曲
     dispatch({
       type: PLAY_PLAYLIST
     })
@@ -167,7 +167,7 @@ export const playSongActionCreator: IActionCreator = id => ({
 
 // 已成功到获取一首歌的详情
 export const syncReplacePlayingSong: IActionCreator = payload => ({
-  type: FETCH_SONG_DETIAL_SUCCESS,
+  type: FETCH_SONG_DETAIL_SUCCESS,
   payload
 })
 
@@ -202,18 +202,18 @@ export const generateFetchActionCreator = (URL, actionCreator) => {
 // ===== action reducers ===== //
 
 // 歌曲详情 reducer
-const fetchSongDetialSuccessReducer: IReducer = (state, action) => {
+const fetchSongDetailSuccessReducer: IReducer = (state, action) => {
   const firstSong = action.payload.songs[0]
-  const prevplayingSong = state.playingSong
-  const nextPlayingSong = { ...prevplayingSong, coverImg: firstSong.al.picUrl }
+  const prevPlayingSong = state.playingSong
+  const nextPlayingSong = { ...prevPlayingSong, coverImg: firstSong.al.picUrl }
   return { ...state, playingSong: nextPlayingSong }
 }
 
 // 歌曲 URL reducer
 const fetchSongUrlSuccessReducer: IReducer = (state, action) => {
   const firstSong = action.payload.data[0]
-  const prevplayingSong = state.playingSong
-  const nextPlayingSong = { ...prevplayingSong, url: firstSong.url }
+  const prevPlayingSong = state.playingSong
+  const nextPlayingSong = { ...prevPlayingSong, url: firstSong.url }
   return { ...state, playingSong: nextPlayingSong }
 }
 
@@ -259,7 +259,7 @@ const switchPlayingStateReducer: IReducer = (state, action) => {
 }
 
 // 将新的歌推入歌单中
-const pushSongsToPlaylistREducer: IReducer = (state, action) => {
+const pushSongsToPlaylistReducer: IReducer = (state, action) => {
   const prevPlaylist = state.playlist
   const nextPlaylist = { ...prevPlaylist, list: action.songsToPush }
   return { ...state, playlist: nextPlaylist }
@@ -271,8 +271,8 @@ export const reducers: IReducer = (state, action) => {
   switch (action.type) {
     case PLAY_PLAYLIST:
       return playCurrSongReducer(state, action)
-    case FETCH_SONG_DETIAL_SUCCESS:
-      return fetchSongDetialSuccessReducer(state, action)
+    case FETCH_SONG_DETAIL_SUCCESS:
+      return fetchSongDetailSuccessReducer(state, action)
     case FETCH_SONG_URL_SUCCESS:
       return fetchSongUrlSuccessReducer(state, action)
     case CHANGE_PLAYLIST_INDEX:
@@ -280,7 +280,7 @@ export const reducers: IReducer = (state, action) => {
     case SWITCH_PLAY_STATE:
       return switchPlayingStateReducer(state, action)
     case PUSH_TO_PLAYLIST:
-      return pushSongsToPlaylistREducer(state, action)
+      return pushSongsToPlaylistReducer(state, action)
     default:
       return state
   }

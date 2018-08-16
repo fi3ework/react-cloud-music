@@ -40,10 +40,8 @@ class Store {
           .catch(error => {
             throw new Error('Invalid json response: ' + error)
           })
-        // 将‘“最终的”修改放入一个异步动作中
       },
       error => {
-        // 过程的另一个结局:...
         runInAction(() => {
           this.state = 'error'
         })
