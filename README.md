@@ -51,7 +51,7 @@
 
 1. 通过 redux，但是 redux 最好只负责领域数据，这种 UI 的状态就不要往 store 中放了。
 
-2. event-emitter，其实和 redux 差不多，因为 redux 也是基于 event-emitter 实现的， 虽然可以实现，但是破坏了 react 整个自顶向下界面更新的原则。
+2. 通过 event-emitter，其实和 redux 差不多，因为 redux 也是基于 event-emitter 实现的， 但是不经过 react-redux 虽然可以实现，但是破坏了 react 整个自顶向下界面更新的原则。
 
 3. 通过新的 context API 实现，如下图：
 

@@ -14,9 +14,44 @@ import ExploreHeaderBar from '@/layouts/ExploreHeaderBar'
 import * as style from '@/router/routerTrans.scss'
 import { SlideContext } from '@/router/slideContext'
 
-class DynamicRoute extends React.Component {
-  state = { pos: 0, pageIndex: 0 }
+const AppRoutes = () => (
+  <BrowserRouter>
+    <div className={style.rootWrapper}>
+      <Switch>
+        <Route path={`/explore`} component={ExploreHeaderBar} />
+        <Route path={`/video`} component={BaseHeaderBar} />
+        <Route path={`/mine`} component={BaseHeaderBar} />
+        <Route path={`/friends`} component={BaseHeaderBar} />
+        <Route path={`/account`} component={BaseHeaderBar} />
+        <Route path={`/`} exact={true} component={ExploreHeaderBar} />
+      </Switch>
+      <div className={style.routeWrapper}>
+        <Switch>
+          <Route path={`/explore`} component={ExplorePage} />
+          <Route path={`/video`} component={VideoPage} />
+          <Route path={`/mine`} component={MinePage} />
+          <Route path={`/friends`} component={FriendsPage} />
+          <Route path={`/account`} component={AccountPage} />
+          <Route path={`/`} exact={true} component={ExplorePage} />
+        </Switch>
+        <LiveRoute path={`/playlist/:id`} component={Playlist} name="playlist" livePath={`/playing`} />
+        <LiveRoute path={`/playing`} component={Playing} name="playing" alwaysLive={true} />
+      </div>
+      <Switch>
+        <Route path={`/explore`} component={BottomBar} />
+        <Route path={`/video`} component={BottomBar} />
+        <Route path={`/mine`} component={BottomBar} />
+        <Route path={`/friends`} component={BottomBar} />
+        <Route path={`/account`} component={BottomBar} />
+        <Route path={`/playlist`} component={BottomBar} />
+        <Route path={`/`} exact={true} component={BottomBar} />
+      </Switch>
+    </div>
+  </BrowserRouter>
+)
 
+class Slider extends React.Component {
+  state = { pos: 0, pageIndex: 0 }
   changePos = newPos => {
     this.setState({
       pos: newPos
@@ -40,47 +75,11 @@ class DynamicRoute extends React.Component {
             setPageIndex: this.setPageIndex
           }}
         >
-          <Switch>
-            <Route path={`/explore`} component={ExploreHeaderBar} />
-            <Route path={`/video`} component={BaseHeaderBar} />
-            <Route path={`/mine`} component={BaseHeaderBar} />
-            <Route path={`/friends`} component={BaseHeaderBar} />
-            <Route path={`/account`} component={BaseHeaderBar} />
-            <Route path={`/`} exact={true} component={ExploreHeaderBar} />
-          </Switch>
-          <div className={style.routeWrapper}>
-            <Switch>
-              <Route path={`/explore`} component={ExplorePage} />
-              <Route path={`/video`} component={VideoPage} />
-              <Route path={`/mine`} component={MinePage} />
-              <Route path={`/friends`} component={FriendsPage} />
-              <Route path={`/account`} component={AccountPage} />
-              <Route path={`/`} exact={true} component={ExplorePage} />
-            </Switch>
-            <LiveRoute path={`/playlist/:id`} component={Playlist} name="playlist" livePath={`/playing`} />
-            <LiveRoute path={`/playing`} component={Playing} name="playing" alwaysLive={true} />
-          </div>
-          <Switch>
-            <Route path={`/explore`} component={BottomBar} />
-            <Route path={`/video`} component={BottomBar} />
-            <Route path={`/mine`} component={BottomBar} />
-            <Route path={`/friends`} component={BottomBar} />
-            <Route path={`/account`} component={BottomBar} />
-            <Route path={`/playlist`} component={BottomBar} />
-            <Route path={`/`} exact={true} component={BottomBar} />
-          </Switch>
+          <AppRoutes />
         </SlideContext.Provider>
       </React.Fragment>
     )
   }
 }
 
-const Routes = () => (
-  <BrowserRouter>
-    <div className={style.rootWrapper}>
-      <DynamicRoute />
-    </div>
-  </BrowserRouter>
-)
-
-export default Routes
+export default Slider
