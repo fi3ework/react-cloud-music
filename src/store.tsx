@@ -130,8 +130,7 @@ export const addToPlaylist: IActionCreator = songs => {
 }
 
 // 开始播放当前列表
-export const playCurrPlaylist: any = (songs, index = 0) => {
-  console.log('play current list')
+export const playCurrPlaylist = (songs, index = 0) => {
   return (dispatch, getState) => {
     // 1. 将歌添加到播放列表中
     dispatch(

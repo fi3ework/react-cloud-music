@@ -70,7 +70,7 @@ export default class TrackList extends React.Component<ITrackListProps> {
   }
 
   // tslint:disable-next-line:member-ordering
-  getNormalizedSongs: any = (() => {
+  getNormalizedSongs = (() => {
     let songs
     return () => {
       if (!songs) {
