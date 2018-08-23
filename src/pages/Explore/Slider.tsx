@@ -146,7 +146,6 @@ class Slider extends React.Component<IProps> {
       isVerticalScrolling: null
     })
     this.props.setPageIndex(endIndex)
-    // ee.emit('onTouchEnd', endIndex)
   }
 
   render() {

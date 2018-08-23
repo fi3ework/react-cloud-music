@@ -7,8 +7,8 @@ import { SlideContext } from '@/router/slideContext'
 
 type IState = {
   isGoingToStick: boolean
-  prevPageIndex: number
   prevPos: number
+  isMounting: boolean
 }
 
 type IProps = {
@@ -27,9 +27,9 @@ class SlideNav extends React.PureComponent<IProps, IState> {
   INDEX1_POS_X = window.screen.width * (450 / 750)
 
   state = {
-    prevPos: 233,
-    isGoingToStick: false,
-    prevPageIndex: 0
+    prevPos: 0,
+    isGoingToStick: true,
+    isMounting: true
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -39,6 +39,12 @@ class SlideNav extends React.PureComponent<IProps, IState> {
     }
   }
 
+  componentDidMount() {
+    this.setState({
+      isMounting: false
+    })
+  }
+
   calcPosByPercent: (disXPercent: number) => number = disXPercent => {
     const disX = disXPercent * (this.INDEX1_POS_X - this.INDEX0_POS_X) + this[`INDEX${this.props.pageIndex}_POS_X`]
     return disX
@@ -46,7 +52,7 @@ class SlideNav extends React.PureComponent<IProps, IState> {
 
   render() {
     let disX = this.calcPosByPercent(this.props.pos)
-    if (this.state.isGoingToStick) {
+    if (this.state.isGoingToStick || this.state.isMounting) {
       disX = this[`INDEX${this.props.pageIndex}_POS_X`]
     }
     return (
