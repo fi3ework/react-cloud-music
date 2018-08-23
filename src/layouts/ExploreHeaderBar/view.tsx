@@ -6,8 +6,9 @@ import cs from 'classnames'
 import { SlideContext } from '@/router/slideContext'
 
 type IState = {
-  index: number
-  disX: number
+  isGoingToStick: boolean
+  prevPageIndex: number
+  prevPos: number
 }
 
 type IProps = {
@@ -18,84 +19,45 @@ type IProps = {
 }
 
 class SlideNav extends React.PureComponent<IProps, IState> {
+  static defaultProps = {
+    pageIndex: 0
+  }
+
   INDEX0_POS_X = window.screen.width * (200 / 750)
   INDEX1_POS_X = window.screen.width * (450 / 750)
 
   state = {
-    index: 0,
-    disX: this.INDEX0_POS_X
+    prevPos: 233,
+    isGoingToStick: false,
+    prevPageIndex: 0
   }
 
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   console.log(`${nextProps.pos} + '   ' + ${nextProps.pageIndex}`)
-  //   return null
-  // }
-
-  // shouldComponentUpdate(nextProps, nextState, nextContext) {
-  //   console.log(`== ${this.props.pos} + '   ' + ${nextProps.pos}`)
-  //   console.log(`== ${this.props.pageIndex} + '   ' + ${nextProps.pageIndex}`)
-  //   if (nextProps.pos !== this.props.pos) {
-  //     return true
-  //   }
-
-  //   if (nextProps.pageIndex !== this.props.pageIndex) {
-  //     return true
-  //   }
-  //   return false
-  // }
-
-  componentDidUpdate(prevProps, prevState) {
-    // console.log(this.props.pos)
-    // console.log(this.state.disX)
-    if (prevProps.pos !== this.props.pos) {
-      this.setPos(this.props.pos)
-    }
-
-    if (prevProps.pageIndex !== this.props.pageIndex) {
-      this.stickScroll(this.props.pageIndex)
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return {
+      isGoingToStick: nextProps.pos === prevState.prevPos,
+      prevPos: nextProps.pos
     }
   }
 
   calcPosByPercent: (disXPercent: number) => number = disXPercent => {
-    const disX = disXPercent * (this.INDEX1_POS_X - this.INDEX0_POS_X) + this[`INDEX${this.state.index}_POS_X`]
+    const disX = disXPercent * (this.INDEX1_POS_X - this.INDEX0_POS_X) + this[`INDEX${this.props.pageIndex}_POS_X`]
     return disX
   }
 
-  setPos: (pos: number) => void = pos => {
-    this.setState({
-      disX: this.calcPosByPercent(pos)
-    })
-  }
-
-  stickScroll: (index: number) => void = index => {
-    if (index >= 0) {
-      this.setState({
-        index: index,
-        disX: this[`INDEX${index}_POS_X`]
-      })
-    }
-  }
-
-  changePage: (index: number) => void = index => {
-    this.setState({
-      index
-    })
-  }
-
   render() {
+    let disX = this.calcPosByPercent(this.props.pos)
+    if (this.state.isGoingToStick) {
+      disX = this[`INDEX${this.props.pageIndex}_POS_X`]
+    }
     return (
       <div className={style.wrapper}>
         <div className={style.slideNav}>
-          <Link to="/explore/custom" onClick={() => this.changePage(0)}>
-            个性推荐
-          </Link>
-          <Link to="/explore/dj" onClick={() => this.changePage(1)}>
-            排行榜
-          </Link>
+          <Link to="/explore/custom">个性推荐</Link>
+          <Link to="/explore/dj">排行榜</Link>
         </div>
         <div
           style={{
-            transform: `translate3d(${this.state.disX}px, 0, 0)`
+            transform: `translate3d(${disX}px, 0, 0)`
           }}
           className={cs({
             [style.slider]: true
