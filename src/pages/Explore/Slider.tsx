@@ -141,11 +141,11 @@ class Slider extends React.Component<IProps> {
     let endIndex
     if (this.state.isVerticalScrolling === false) {
       endIndex = this.stickScroll()
+      this.props.setPageIndex(endIndex)
     }
     this.setState({
       isVerticalScrolling: null
     })
-    this.props.setPageIndex(endIndex)
   }
 
   render() {
