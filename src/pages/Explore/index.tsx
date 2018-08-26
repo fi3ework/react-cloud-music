@@ -24,12 +24,13 @@ class Explore extends React.Component<IProps> {
     return (
       <Route>
         <SlideContext.Consumer>
-          {({ changePos, setPageIndex }) => (
+          {({ changePos, setPageIndex, pageIndex }) => (
             <Slider
               location={this.props.location}
               history={this.props.history}
               setRankLoaded={this.setRankLoaded}
               changePos={changePos}
+              pageIndex={pageIndex}
               setPageIndex={setPageIndex}
             >
               <div className={style.innerWrapper}>

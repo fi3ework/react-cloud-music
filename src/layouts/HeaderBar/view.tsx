@@ -9,6 +9,7 @@ type IProps = {
   component?: React.ComponentClass
   pos?: number
   pageIndex?: number
+  setPageIndex?: any
 }
 
 const HeaderBar: React.SFC<IProps> = props => {

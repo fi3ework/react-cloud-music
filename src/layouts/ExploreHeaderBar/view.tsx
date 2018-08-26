@@ -9,16 +9,18 @@ type IState = {
   isGoingToStick: boolean
   prevPos: number
   isMounting: boolean
+  pageIndex: number
 }
 
 type IProps = {
-  pageIndex: number
-  pos: number
-  style: any
   component: any
+  style: any
+  pos: number
+  pageIndex: number
+  setPageIndex: any
 }
 
-class SlideNav extends React.PureComponent<IProps, IState> {
+class SlideNav extends React.Component<IProps, IState> {
   static defaultProps = {
     pageIndex: 0
   }
@@ -29,12 +31,14 @@ class SlideNav extends React.PureComponent<IProps, IState> {
   state = {
     prevPos: 0,
     isGoingToStick: true,
-    isMounting: true
+    isMounting: true,
+    pageIndex: this.props.pageIndex
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     return {
       isGoingToStick: nextProps.pos === prevState.prevPos,
+      pageIndex: nextProps.pageIndex,
       prevPos: nextProps.pos
     }
   }
@@ -46,20 +50,28 @@ class SlideNav extends React.PureComponent<IProps, IState> {
   }
 
   calcPosByPercent: (disXPercent: number) => number = disXPercent => {
-    const disX = disXPercent * (this.INDEX1_POS_X - this.INDEX0_POS_X) + this[`INDEX${this.props.pageIndex}_POS_X`]
+    const disX = disXPercent * (this.INDEX1_POS_X - this.INDEX0_POS_X) + this[`INDEX${this.state.pageIndex}_POS_X`]
     return disX
+  }
+
+  changePage = clickedPageIndex => {
+    this.props.setPageIndex(clickedPageIndex)
   }
 
   render() {
     let disX = this.calcPosByPercent(this.props.pos)
     if (this.state.isGoingToStick || this.state.isMounting) {
-      disX = this[`INDEX${this.props.pageIndex}_POS_X`]
+      disX = this[`INDEX${this.state.pageIndex}_POS_X`]
     }
     return (
       <div className={style.wrapper}>
         <div className={style.slideNav}>
-          <Link to="/explore/custom">个性推荐</Link>
-          <Link to="/explore/dj">排行榜</Link>
+          <Link to="/explore/custom" onClick={() => this.changePage(0)}>
+            个性推荐
+          </Link>
+          <Link to="/explore/rank" onClick={() => this.changePage(1)}>
+            排行榜
+          </Link>
         </div>
         <div
           style={{
@@ -77,8 +89,14 @@ class SlideNav extends React.PureComponent<IProps, IState> {
 export default () => {
   return (
     <SlideContext.Consumer>
-      {({ pos, pageIndex }) => (
-        <BaseHeaderBar component={SlideNav} style={style.headerBar} pos={pos} pageIndex={pageIndex} />
+      {({ pos, pageIndex, setPageIndex }) => (
+        <BaseHeaderBar
+          component={SlideNav}
+          style={style.headerBar}
+          pos={pos}
+          pageIndex={pageIndex}
+          setPageIndex={setPageIndex}
+        />
       )}
     </SlideContext.Consumer>
   )

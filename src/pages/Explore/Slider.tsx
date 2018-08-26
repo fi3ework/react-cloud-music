@@ -9,6 +9,7 @@ interface IProps {
   setRankLoaded: (isLoaded: boolean) => void
   changePos: (pos: number) => void
   setPageIndex: (index: number) => void
+  pageIndex: number
 }
 
 class Slider extends React.Component<IProps> {
@@ -35,10 +36,27 @@ class Slider extends React.Component<IProps> {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    console.log(this.props.pageIndex)
+    if (this.props.pageIndex !== prevProps.pageIndex) {
+      this.forceStickScroll(this.props.pageIndex)
+    }
+  }
+
   changeRouter = pathName => {
     this.props.history.push(`/explore/${pathName}`)
     this.setState({
       hasRankLoaded: true
+    })
+  }
+
+  forceStickScroll = pageIndex => {
+    console.log(pageIndex)
+    const offset = pageIndex === 1 ? -this.PAGE_WIDTH : 0
+    this.setState({
+      prevOffsetX: offset,
+      swipedDisX: 0,
+      isTransitioning: true
     })
   }
 
