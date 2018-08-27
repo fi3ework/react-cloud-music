@@ -8,7 +8,6 @@ type IState = {
   index: number
 }
 
-
 export default class Carousel extends React.Component<IProps, IState> {
   swipe: ReactSwipe | null = null
 
@@ -37,12 +36,7 @@ export default class Carousel extends React.Component<IProps, IState> {
   }
 
   render() {
-    const children = this.props.children ? (
-      this.props.children
-    ) : (
-      <div className={style.loading} />
-    )
-
+    const children = this.props.children ? this.props.children : <div className={style.loading} />
     return (
       <div className="swipe-wrapper">
         <ReactSwipe
@@ -58,11 +52,7 @@ export default class Carousel extends React.Component<IProps, IState> {
           {Array(React.Children.count(this.props.children))
             .fill('ph')
             .map((val, index) => (
-              <span
-                onClick={() => this.handleClickDot(index)}
-                key={index}
-                className={this.dotClass(index)}
-              />
+              <span onClick={() => this.handleClickDot(index)} key={index} className={this.dotClass(index)} />
             ))}
         </div>
       </div>
