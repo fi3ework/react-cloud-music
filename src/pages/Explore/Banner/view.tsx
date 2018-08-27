@@ -52,10 +52,8 @@ class Banner extends React.PureComponent<IProps, any> {
       const testImg = new Image()
       testImg.src = img.picUrl
       testImg.onload = () => {
-        console.log('loaded')
         loadedImgCount++
         if (loadedImgCount === totalImgCount) {
-          console.log('ok')
           this.setState({
             isImgsLoaded: true,
             isInited: true

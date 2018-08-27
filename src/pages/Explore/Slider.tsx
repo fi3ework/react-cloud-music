@@ -12,6 +12,10 @@ interface IProps {
   pageIndex: number
 }
 
+enum PageState {
+  DO_NOT_CHANGE = -1
+}
+
 class Slider extends React.Component<IProps> {
   pageWrapper: HTMLElement | null
 
@@ -37,7 +41,10 @@ class Slider extends React.Component<IProps> {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log(this.props.pageIndex)
+    if (this.props.pageIndex === PageState.DO_NOT_CHANGE) {
+      return
+    }
+
     if (this.props.pageIndex !== prevProps.pageIndex) {
       this.forceStickScroll(this.props.pageIndex)
     }
@@ -93,7 +100,7 @@ class Slider extends React.Component<IProps> {
       return 0
     }
 
-    return -1
+    return PageState.DO_NOT_CHANGE
   }
 
   handleTouchStart = e => {
