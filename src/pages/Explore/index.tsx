@@ -34,8 +34,8 @@ class Explore extends React.Component<IProps> {
               setPageIndex={setPageIndex}
             >
               <div className={style.innerWrapper}>
-                <Route path={`/`} component={Custom} />
-                <Route path={`/explore/`} exact={true} component={Custom} />
+                <Route path={`/`} exact={true} component={Custom} />
+                <Route path={`/explore/`} component={Custom} />
               </div>
               <div className={style.innerWrapper}>
                 <Route path={this.state.hasRankLoaded ? `/explore` : `/explore/rank`} component={List} />
