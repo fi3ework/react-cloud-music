@@ -24,7 +24,7 @@ type IState = {
 }
 
 @observer
-class Banner extends React.PureComponent<IProps, any> {
+class Banner extends React.Component<IProps, any> {
   state = {
     isInited: false,
     isImgsLoaded: false
