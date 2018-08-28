@@ -5,6 +5,7 @@ import List from '@/pages/Explore/List'
 import { Route } from 'react-router-dom'
 import Slider from './Slider'
 import { SlideContext } from '@/router/slideContext'
+import { withRouter } from 'react-router'
 
 interface IProps {
   location: { pathname: string }
@@ -14,6 +15,14 @@ interface IProps {
 
 class Explore extends React.Component<IProps> {
   state = { hasRankLoaded: false }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.location.pathname.split('/').indexOf('rank') >= 0 && !prevState.hasRankLoaded) {
+      return { hasRankLoaded: true }
+    }
+    return null
+  }
+
   setRankLoaded = isLoaded => {
     this.setState({
       hasRankLoaded: isLoaded
@@ -34,12 +43,9 @@ class Explore extends React.Component<IProps> {
               setPageIndex={setPageIndex}
             >
               <div className={style.innerWrapper}>
-                <Route path={`/`} exact={true} component={Custom} />
-                <Route path={`/explore/`} component={Custom} />
+                <Custom />
               </div>
-              <div className={style.innerWrapper}>
-                <Route path={this.state.hasRankLoaded ? `/explore` : `/explore/rank`} component={List} />
-              </div>
+              <div className={style.innerWrapper}>{this.state.hasRankLoaded ? <List /> : null}</div>
             </Slider>
           )}
         </SlideContext.Consumer>
@@ -48,4 +54,4 @@ class Explore extends React.Component<IProps> {
   }
 }
 
-export default Explore
+export default withRouter(Explore)
