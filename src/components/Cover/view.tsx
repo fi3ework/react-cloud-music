@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import phSVG from './placeholder.svg'
 import SVGInline from 'react-svg-inline'
 import { calcPlayCount } from '@/utils/calcFunctions'
+import cs from 'classnames'
 
 type IProps = {
   coverImg: string
@@ -64,8 +65,15 @@ class Cover extends React.Component<IProps, IState> {
               }}
             />
           )}
-          {coverImg ? <p className={style.listName}>{listName}</p> : null}
-          {coverImg ? <p className={style.playCount}>{playCountShow}</p> : null}
+          {coverImg ? (
+            <React.Fragment>
+              <p className={style.listName}>{listName}</p>
+              <div className={style.playCountWrapper}>
+                <i className={cs({ 'iconfont-ncm': true, [style.playCountIcon]: true })}>&#xe645;</i>
+                <span>{playCountShow}</span>
+              </div>
+            </React.Fragment>
+          ) : null}
         </Link>
       </div>
     )

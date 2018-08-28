@@ -12,13 +12,19 @@
   background-color: #ddd; // height: 100%;
 }
 
-.playCount {
+.playCountWrapper {
   position: absolute;
-  font-size: 30px;
+  font-size: 20px;
   color: #fff;
+  text-shadow: 2px 1px 1px rgba(0, 0, 0, 0.2);
   margin: 0;
   top: 10px;
   right: 10px;
+}
+
+.playCountIcon {
+  font-size: 18px !important;
+  margin-right: 5px;
 }
 
 .listName {
@@ -27,7 +33,7 @@
   margin: 10px auto;
 }
 
-.linkWrapper{
+.linkWrapper {
   display: block;
   width: 100%;
 }
