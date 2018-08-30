@@ -1,5 +1,6 @@
 import NETEASE_API, { getURL } from '@/constant/api'
 import axios from 'axios'
+import defaultCover from './assets/cover-default.jpg'
 
 // ===== constant ===== //
 export const PLAY_SONG = 'PLAY_SONG'
@@ -59,8 +60,8 @@ export type IStoreState = {
 export const defaultState: IStoreState = {
   playingSong: {
     id: '',
-    name: '',
-    coverImg: '',
+    name: '💿',
+    coverImg: defaultCover,
     url: '',
     artists: '',
     album: ''
