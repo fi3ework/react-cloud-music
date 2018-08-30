@@ -5123,7 +5123,7 @@ js-tokens@^3.0.0, js-tokens@^3.0.2:
 
 "js-tokens@^3.0.0 || ^4.0.0":
   version "4.0.0"
-  resolved "http://registry.npm.taobao.org/js-tokens/download/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
+  resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
 
 js-yaml@^3.4.3, js-yaml@^3.9.1:
   version "3.11.0"
@@ -7371,9 +7371,9 @@ react-lifecycles-compat@^3.0.2:
   version "3.0.4"
   resolved "http://registry.npm.taobao.org/react-lifecycles-compat/download/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
 
-react-live-route@^1.1.16:
-  version "1.1.16"
-  resolved "http://registry.npm.taobao.org/react-live-route/download/react-live-route-1.1.16.tgz#55fe4d3cd4ee80e6829ffba87813214e13c09859"
+react-live-route@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/react-live-route/-/react-live-route-1.2.4.tgz#07d2363f5c5c7cfea69cb5dfeb4ec4169e343f20"
   dependencies:
     history "^4.7.2"
     hoist-non-react-statics "^2.5.0"
@@ -9343,8 +9343,8 @@ warning@^3.0.0:
     loose-envify "^1.0.0"
 
 warning@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/warning/-/warning-4.0.1.tgz#66ce376b7fbfe8a887c22bdf0e7349d73d397745"
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/warning/-/warning-4.0.2.tgz#aa6876480872116fa3e11d434b0d0d8d91e44607"
   dependencies:
     loose-envify "^1.0.0"
 

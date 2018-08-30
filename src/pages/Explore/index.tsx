@@ -16,7 +16,6 @@ class Explore extends React.Component<IProps> {
   state = { hasRankLoaded: false }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    console.log(nextProps.location)
     if (nextProps.location.pathname.split('/').indexOf('rank') >= 0 && !prevState.hasRankLoaded) {
       return { hasRankLoaded: true }
     }
