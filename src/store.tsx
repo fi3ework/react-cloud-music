@@ -1,7 +1,7 @@
 import NETEASE_API, { getURL } from '@/constant/api'
 import axios from 'axios'
 import defaultCover from './assets/cover-default.jpg'
-
+import get from 'lodash'
 // ===== constant ===== //
 export const PLAY_SONG = 'PLAY_SONG'
 export const FETCH_URL = 'FETCH_URL'
@@ -113,7 +113,12 @@ export const SwitchSongByPace: (pace: number) => void = pace => {
     })
     // 3. 异步获取对应的歌曲 url
     const currState: IStoreState = getState()
-    dispatch(fetchSongUrl(currState.playingSong.id))
+    const id = get(currState, 'playingSong.id')
+    if (typeof id === 'string') {
+      dispatch(fetchSongUrl(currState.playingSong.id))
+    } else {
+      console.error('bad song id requested!')
+    }
   }
 }
 
@@ -220,6 +225,9 @@ const fetchSongUrlSuccessReducer: IReducer = (state, action) => {
 // 开始播放当前列表中对应 index 的歌曲
 const playCurrSongReducer: IReducer = (state, action) => {
   const nextPlayingSong: IPlayingSong = state.playlist.list[state.playlist.currIndex]
+  if (!nextPlayingSong) {
+    return state
+  }
   const nextPlayingState: IPlayState = {
     isPlaying: true,
     cycleMode: state.playState.cycleMode,
