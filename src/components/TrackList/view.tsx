@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { observer } from 'mobx-react'
-import { get } from 'lodash'
+import get from 'lodash/get'
 import * as style from './style.scss'
 import Track from '@/components/Track'
 import cs from 'classnames'

@@ -3,7 +3,7 @@ import * as style from './style.scss'
 import { observer } from 'mobx-react'
 import { ComponentFetchModel } from '@/utils/models'
 import NETEASE_API, { getURL } from '@/constant/api'
-import { get } from 'lodash'
+import get from 'lodash/get'
 import { Link } from 'react-router-dom'
 
 type IProps = {

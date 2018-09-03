@@ -3,7 +3,7 @@ import * as React from 'react'
 import * as style from './style.scss'
 import { observer } from 'mobx-react'
 import Store from '@/utils/models/componentFetchModel'
-import { get } from 'lodash'
+import get from 'lodash/get'
 
 type IBannerItem = {
   url: string

@@ -1,7 +1,7 @@
 import NETEASE_API, { getURL } from '@/constant/api'
 import axios from 'axios'
 import defaultCover from './assets/cover-default.jpg'
-import get from 'lodash'
+import get from 'lodash/get'
 // ===== constant ===== //
 export const PLAY_SONG = 'PLAY_SONG'
 export const FETCH_URL = 'FETCH_URL'
