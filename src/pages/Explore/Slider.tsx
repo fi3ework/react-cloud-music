@@ -145,8 +145,8 @@ class Slider extends React.Component<IProps> {
 
         // 阻止滑动到边缘时继续滑动
         if (
-          this.state.prevOffsetX + currSwipedXDis > 0 ||
-          this.state.prevOffsetX + currSwipedXDis < -(this.PAGE_WIDTH * this.PAGE_NUMBER - 1)
+          this.state.prevOffsetX + currSwipedXDis > 0 || // 右滑超过第 0 屏
+          this.state.prevOffsetX + currSwipedXDis < -(this.PAGE_WIDTH * (this.PAGE_NUMBER - 1)) // 左滑超过最后一屏
         ) {
           return
         }
